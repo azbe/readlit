@@ -7,7 +7,7 @@ ReadLitWindow::ReadLitWindow(QWidget *parent, int width, int height) : QWidget(p
 
 	tabs = new QTabWidget;
 
-	QVBoxLayout *mainLayout = new QVBoxLayout;
+	QBoxLayout *mainLayout = new QVBoxLayout;
 	mainLayout->addWidget(tabs);
 	setLayout(mainLayout);
 }
