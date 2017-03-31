@@ -1,15 +1,14 @@
 #include "ReadlitWindow.h"
-#include <QVBoxLayout>
+#include <QGridLayout>
 
 ReadLitWindow::ReadLitWindow(QWidget *parent, int width, int height) : QWidget(parent)
 {
-	lastParent = parent;
 	resize(width, height);
 	tabs = new QTabWidget;
 
-	QBoxLayout *mainLayout = new QVBoxLayout;
-	mainLayout->addWidget(tabs);
-	setLayout(mainLayout);
+	QGridLayout *layout = new QGridLayout;
+	layout->addWidget(tabs);
+	setLayout(layout);
 }
 
 ReadLitWindow::~ReadLitWindow()

@@ -9,7 +9,7 @@ class ReadLitWindow : public QWidget
 	Q_OBJECT
 
 public:
-	explicit ReadLitWindow(QWidget *parent = 0, int width = 800, int height = 600);
+	explicit ReadLitWindow(QWidget *parent = 0, int width = 800, int height = 400);
 	~ReadLitWindow();
 
 	void addTab(QWidget* frame, const QString& label);
@@ -17,7 +17,6 @@ public:
 
 private:
 	QTabWidget* tabs;
-	QWidget* lastParent;
 
 };
 

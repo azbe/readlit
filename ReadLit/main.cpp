@@ -1,5 +1,4 @@
 #include <QtWidgets/QApplication>
-#include <QPushButton>
 #include "ReadlitWindow.h"
 
 int main(int argc, char *argv[])
@@ -14,7 +13,6 @@ int main(int argc, char *argv[])
 	ReadLitWindow localBooks;
 	ReadLitWindow localAuthors;
 	ReadLitWindow localSettings;
-	QPushButton unpin;
 	local.addTab(&localBooks, "Books");
 	local.addTab(&localAuthors, "Authors");
 	local.addTab(&localSettings, "Local Settings");
