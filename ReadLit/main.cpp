@@ -4,6 +4,8 @@
 #include <QtWidgets/QApplication>
 
 #include "ReadlitWindow.h"
+#include "ListContainer.h"
+#include "Author.h"
 
 #define _CRTDBG_MAP_ALLOC  
 
