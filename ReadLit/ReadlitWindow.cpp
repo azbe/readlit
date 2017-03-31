@@ -1,5 +1,7 @@
-#include "ReadlitWindow.h"
 #include <QGridLayout>
+
+#include "ReadlitWindow.h"
+#include "utils.h"
 
 ReadLitWindow::ReadLitWindow(QWidget *parent, int width, int height) : QWidget(parent)
 {
@@ -13,6 +15,7 @@ ReadLitWindow::ReadLitWindow(QWidget *parent, int width, int height) : QWidget(p
 
 ReadLitWindow::~ReadLitWindow()
 {
+		
 }
 
 void ReadLitWindow::addTab(QWidget* frame, const QString& label)
