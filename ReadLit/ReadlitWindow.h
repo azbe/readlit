@@ -14,11 +14,10 @@ public:
 
 	void addTab(QWidget* frame, const QString& label);
 	void setWidgets(QLayout* mainLayout);
-	int countTabs() const;
+	int countTabs() const; //returneaza numarul de taburi
 
 private:
 	QTabWidget* tabs;
-	QWidget* widgets;
 };
 
 #endif //READLITWINDOW_H
