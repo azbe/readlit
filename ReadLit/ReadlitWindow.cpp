@@ -20,9 +20,13 @@ void ReadLitWindow::addTab(QWidget* frame, const QString& label)
 	tabs->addTab(frame, label);
 }
 
+void ReadLitWindow::setWidgets(QLayout* layout)
+{
+	setLayout(layout);
+}
+
 int ReadLitWindow::countTabs() const
 {
 	if (tabs != NULL) return tabs->count();
 	return 0;
 }
-
