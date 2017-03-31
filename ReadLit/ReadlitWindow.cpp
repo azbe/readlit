@@ -1,8 +1,9 @@
 #include "ReadlitWindow.h"
 #include <QVBoxLayout>
 
-ReadLitWindow::ReadLitWindow(bool isTab, QWidget *parent, int width, int height) : QWidget(parent)
+ReadLitWindow::ReadLitWindow(QWidget *parent, int width, int height) : QWidget(parent)
 {
+	lastParent = parent;
 	resize(width, height);
 	tabs = new QTabWidget;
 

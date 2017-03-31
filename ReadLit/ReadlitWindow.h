@@ -17,6 +17,7 @@ public:
 
 private:
 	QTabWidget* tabs;
+	QWidget* lastParent;
 
 };
 
