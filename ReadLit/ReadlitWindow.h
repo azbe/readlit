@@ -13,6 +13,7 @@ public:
 	~ReadLitWindow();
 
 	void addTab(QWidget* frame, const QString& label);
+	int countTabs() const;
 
 private:
 	QTabWidget* tabs;
