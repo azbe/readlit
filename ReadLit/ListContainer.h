@@ -14,6 +14,7 @@ class ListContainer : public QWidget
 public:
 	ListContainer(QWidget *parent);
 	ListContainer(const ListContainer& lc);
+	ListContainer& operator =(const ListContainer& lc);
 	~ListContainer();
 
 	void addItem(std::string item, const bool& book = true);

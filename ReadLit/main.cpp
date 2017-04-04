@@ -1,5 +1,6 @@
 #include <stdlib.h>  
-#include <crtdbg.h>  
+#include <crtdbg.h> 
+#include <iostream>
 
 #include <QtWidgets/QApplication>
 
@@ -7,6 +8,7 @@
 #include "Database.h"
 
 #define _CRTDBG_MAP_ALLOC  
+#define DB Database::db()
 
 ReadLitWindow* tabReader()
 {
@@ -47,8 +49,6 @@ int main(int argc, char *argv[])
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
 	QApplication a(argc, argv);
-
-	Database mainDB;
 
 	ReadLitWindow window;
 	ReadLitWindow* reader = tabReader();
