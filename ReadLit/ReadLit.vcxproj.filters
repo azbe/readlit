@@ -61,15 +61,6 @@
     <ClCompile Include="Author.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BookDetailsContainer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_BookDetailsContainer.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_BookDetailsContainer.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="Database.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -82,9 +73,6 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="ListContainer.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="BookDetailsContainer.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
