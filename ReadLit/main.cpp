@@ -50,7 +50,7 @@ ReadLitWindow* tabLocal()
 	
 	ListContainer *authorBooks = new ListContainer(localAuthorsLayoutWidget, ListContainer::NOTHING);
 	localAuthorsLayout->addWidget(authorBooks);
-	
+
 	//DetailsContainer *authorDetails = new DetailsContainer(localAuthorsLayoutWidget, DetailsContainer::AUTHOR);
 	//localAuthorsLayout->addWidget(authorDetails, 0, 2);
 
