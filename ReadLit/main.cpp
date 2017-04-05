@@ -2,91 +2,94 @@
 #include <crtdbg.h> 
 #include <iostream>
 
+#include <QApplication>
+#include <QtCore/QVariant>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
-#include <QBoxLayout.h>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QListWidget>
+#include <QtWidgets/QTabWidget>
+#include <QtWidgets/QWidget>
 
-#include "ReadlitWindow.h"
+#include "QWidget.h"
 #include "Database.h"
 #include "ListContainer.h"
 
 #define _CRTDBG_MAP_ALLOC  
 #define DB Database::getInstance()
 
-ReadLitWindow* tabReader()
+/*
+QWidget* tabReader()
 {
-	ReadLitWindow* reader = new ReadLitWindow;
+	QWidget* reader = new QWidget;
 	return reader;
 }
+*/
 
-ReadLitWindow* tabLocal()
+QWidget* tabLocal()
 {
-	ReadLitWindow *local = new ReadLitWindow;
+	QWidget *local = new QWidget();
 
-	ReadLitWindow *localBooks = new ReadLitWindow; 
-	QWidget *localBooksLayoutWidget = new QWidget(localBooks);
-	localBooksLayoutWidget->setMinimumSize(100, 300);
-	localBooksLayoutWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	localBooksLayoutWidget->setContentsMargins(11, 11, 11, 11);
-	QHBoxLayout *localBooksLayout = new QHBoxLayout(localBooksLayoutWidget);
-	localBooksLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+	QTabWidget *localTabs = new QTabWidget(local);
+	QGridLayout *localLayout = new QGridLayout(local);
 
-	ListContainer *bookNames = new ListContainer(localBooksLayoutWidget, ListContainer::BOOKS);
-	bookNames->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	localBooksLayout->addWidget(bookNames);
+	QWidget *localBooks = new QWidget(localTabs);
+	QWidget *localAuthors = new QWidget(localTabs);
+	//QWidget *localSettings = new QWidget(localTabs);
 
-	//DetailsContainer *bookDetails = new DetailsContainer(Q_NULLPTR, DetailsContainer::BOOK);
-	//localBooksLayout->addWidget(bookDetails, 0, 1);
+	QHBoxLayout *localBooksLayout = new QHBoxLayout(localBooks);
+	ListContainer *bookList = new ListContainer(localBooks, ListContainer::BOOKS);
+	//DetailsContainer *bookDetails = new DetailsContainer(localBooks, DetailsContainer::BOOK);
+	localBooksLayout->addWidget(bookList);
+	//localBooksLayout->addWidget(bookDetails);
 
-	ReadLitWindow *localAuthors = new ReadLitWindow; 
-	QWidget *localAuthorsLayoutWidget = new QWidget(localAuthors);
-	localAuthorsLayoutWidget->setMinimumSize(100, 300);
-	localAuthorsLayoutWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	localAuthorsLayoutWidget->setContentsMargins(11, 11, 11, 11);
-	QHBoxLayout *localAuthorsLayout = new QHBoxLayout(localAuthorsLayoutWidget);
-	localAuthorsLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+	QHBoxLayout *localAuthorsLayout = new QHBoxLayout(localAuthors);
+	ListContainer *authorList = new ListContainer(localAuthors, ListContainer::AUTHORS);
+	ListContainer *authorBookList = new ListContainer(localAuthors, ListContainer::NOTHING);
+	//DetailsContainer *authorDetails = new DetailsContainer(localAuthors, DetailsContainer::AUTHOR);
+	localAuthorsLayout->addWidget(authorList);
+	localAuthorsLayout->addWidget(authorBookList);
+	//localAuthorsLayout->addWidget(authorDetails);
 
-	ListContainer *authorNames = new ListContainer(localAuthorsLayoutWidget, ListContainer::AUTHORS);
-	localAuthorsLayout->addWidget(authorNames);
-	
-	ListContainer *authorBooks = new ListContainer(localAuthorsLayoutWidget, ListContainer::NOTHING);
-	localAuthorsLayout->addWidget(authorBooks);
+	localTabs->addTab(localBooks, "Books");
+	localTabs->addTab(localAuthors, "Authors");
+	//localTabs->addTab(localSettings, "Settings");
 
-	//DetailsContainer *authorDetails = new DetailsContainer(localAuthorsLayoutWidget, DetailsContainer::AUTHOR);
-	//localAuthorsLayout->addWidget(authorDetails, 0, 2);
-
-	ReadLitWindow* localSettings = new ReadLitWindow;
-	
-	local->addTab(localBooks, "Books");
-	local->addTab(localAuthors, "Authors");
-	local->addTab(localSettings, "Local Settings");
+	localLayout->addWidget(localTabs);
+	localTabs->setCurrentIndex(0);
 
 	return local;
 }
 
-ReadLitWindow* tabWorld()
+/*
+QWidget* tabWorld()
 {
-	ReadLitWindow* world = new ReadLitWindow;
-	ReadLitWindow *worldBooks, *worldAuthors, *worldSettings;
-	worldBooks = new ReadLitWindow; worldAuthors = new ReadLitWindow; worldSettings = new ReadLitWindow;
+	QWidget* world = new QWidget;
+	QWidget *worldBooks, *worldAuthors, *worldSettings;
+	worldBooks = new QWidget; worldAuthors = new QWidget; worldSettings = new QWidget;
 	world->addTab(worldBooks, "Books");
 	world->addTab(worldAuthors, "Authors");
 	world->addTab(worldSettings, "World Settings");
 	return world;
 }
 
-ReadLitWindow* tabSettings()
+QWidget* tabSettings()
 {
-	ReadLitWindow* settings = new ReadLitWindow;
+	QWidget* settings = new QWidget;
 	return settings;
 }
+*/
 
-void testDB() //doar de testare
+void dateTestDB() //doar de testare
 {
 	for (int i = 0; i < 100; i++)
 	{
-		char nr[4];
-		itoa(i, nr, 10);
-		DB.addBook(Book(nr, "Autor", "C:\\Users\\Radu\\titlu1.pdf"));
+		char b[3], a[2];
+		char* path = "C:\\Users\\Radu\\titlu.pdf";
+		itoa(i, b, 10);
+		itoa((i / 10), a, 10);
+		DB.addBook(Book(b, a, "C:\\Users\\Radu\\titlu.pdf"));
 	}
 }
 
@@ -96,22 +99,39 @@ int main(int argc, char *argv[])
 
 	QApplication a(argc, argv);
 
-	testDB();
+	//Se populeaza Baza de Date cu date nesemnificative (temporar, doar pentru teste)
+	dateTestDB();
 
-	ReadLitWindow window;
-	ReadLitWindow* reader = tabReader();
-	ReadLitWindow* local = tabLocal();
-	ReadLitWindow* world = tabWorld();
-	ReadLitWindow* settings = tabSettings();
+	//Window-ul principal
+	//In Qt, QWidget este clasa de baza: aproape orice window si fereastra in Qt sunt, in esenta, QWidget-uri
+	QWidget *mainWindow = new QWidget(Q_NULLPTR); 
 
-	window.addTab(reader, "Reader");
-	window.addTab(local, "Local");
-	window.addTab(world, "World");
-	window.addTab(settings, "Settings");
+	//Tab-urile Reader, Local, World si Settings vor intra sub un obiect QTabWidget
+	//QTabWidget "tine" taburile, ele se adauga la el
+	//Taburile sunt descendentii lui QTabWidget, care este la randul lui descendentul window-ului principal (*mainWindow)
+	QTabWidget *mainTabs = new QTabWidget(mainWindow);
+	
+	//Layout-urile sunt asemanatoare cu Swing-ul din Java (laborator PAO)
+	//Ele ordoneaza obiectele intr-un QWidget
+	//E nevoie de un layout si pentru QTabWidget
+	QGridLayout *mainLayout = new QGridLayout(mainWindow);
 
-	window.setMinimumSize(400, 400);
+	//Subtaburile fiecarui tab principal (cele de mai sus)
+	//Se va face referire la fiecare functie pentru a nu "manji" main-ul (mai mult decat e deja)
+	//QWidget* reader = tabReader();
+	QWidget* local = tabLocal();
+	//QWidget* world = tabWorld();
+	//QWidget* settings = tabSettings();
 
-	window.show();
+	//mainTabs->addTab(reader, "Reader");
+	mainTabs->addTab(local, "Local");
+	//mainTabs->addTab(world, "World");
+	//mainTabs->addTab(settings, "Settings");
 
+	mainLayout->addWidget(mainTabs);
+	mainTabs->setCurrentIndex(0);
+
+	//Aici se afiseaza window-ul principal si se porneste aplicatia
+	mainWindow->show();
 	return a.exec();
 }
