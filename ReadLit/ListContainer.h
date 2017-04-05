@@ -3,6 +3,7 @@
 #include <vector>
 
 #include <QWidget>
+#include <QLabel.h>
 
 #include "Book.h"
 
@@ -12,20 +13,18 @@ class ListContainer : public QWidget
 {
 	friend class Mediator;
 public:
-	ListContainer(QWidget *parent);
-	ListContainer(const ListContainer& lc);
-	ListContainer& operator =(const ListContainer& lc);
+	enum containerType { BOOKS, AUTHORS};
+
+	ListContainer(QWidget *parent, const containerType& type);
+	//ListContainer(const ListContainer& lc);
+	//ListContainer& operator =(const ListContainer& lc);
 	~ListContainer();
 
-	void addItem(std::string item, const bool& book = true);
-	void removeItem(const int& index, const bool& book = true);
-
-	std::vector<std::string> getBooks() const;
-	std::vector<std::string> getAuthors() const;
+	std::vector<QString> getItems() const;
 
 private:
-	std::vector<std::string> books;
-	std::vector<std::string> authors;
+	std::vector<QLabel> items;
+	QGridLayout *layout;
 };
 
 #endif //LISTCONTAINER_H

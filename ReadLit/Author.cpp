@@ -1,7 +1,5 @@
 #include "Author.h"
 
-
-
 Author::Author()
 {
 	name = "Warning: author name not set";
@@ -10,7 +8,7 @@ Author::Author()
 	bio = " ";
 }
 
-Author::Author(const std::string& _name, const std::vector<std::string>& _books, const int& _yearBirth, const int& _yearDeath, const std::string& _bio)
+Author::Author(const QString& _name, const std::vector<QString>& _books, const int& _yearBirth, const int& _yearDeath, const QString& _bio)
 {
 	name = _name;
 	books = _books;
@@ -41,7 +39,7 @@ Author& Author::operator = (const Author& a)
 	return *this;
 }
 
-void Author::addBook(const std::string& b)
+void Author::addBook(const QString& b)
 {
 	books.push_back(b);
 }
@@ -51,12 +49,12 @@ void Author::addBook(const Book& b)
 	books.push_back(b.getTitle());
 }
 
-std::string Author::getName() const
+QString Author::getName() const
 {
 	return name;
 }
 
-std::vector<std::string> Author::getBooks() const
+std::vector<QString> Author::getBooks() const
 {
 	return books;
 }
@@ -71,7 +69,7 @@ int Author::getYearDeath() const
 	return yearDeath;
 }
 
-std::string Author::getBio() const
+QString Author::getBio() const
 {
 	return bio;
 }

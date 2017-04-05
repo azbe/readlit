@@ -1,50 +1,62 @@
+#include <QGridLayout.h>
+
 #include "ListContainer.h"
+#include "Database.h"
 
-ListContainer::ListContainer(QWidget* parent)
+#define db Database::getInstance()
+
+ListContainer::ListContainer(QWidget* parent, const containerType& type)
 {
-	setParent(parent);
+	if(parent) setParent(parent);
+
+	switch (type)
+	{
+		case BOOKS:
+		{
+			std::vector<Book> books = db.getBooks();
+			for (Book b : books)
+				items.push_back(QLabel(b.getTitle(), this));
+			break;
+		}
+		case AUTHORS:
+		{
+			std::vector<Author> authors = db.getAuthors();
+			for (Author a : authors)
+				items.push_back(QLabel(a.getName(), this));
+			break;
+		}
+	}
+
+	layout = new QGridLayout(this);
+
+	for (int index = 0; index < items.size(); index++)
+		layout->setRowStretch(index, 1);
 }
 
-void ListContainer::addItem(std::string item, const bool& book)
-{
-	if (book) books.push_back(item);
-	else authors.push_back(item);
-}
-
-void ListContainer::removeItem(const int& index, const bool& book)
-{
-	//TODO EXCEPTIONS!!!
-	if (index < 0 || ((book) ? (index >= books.size()) : (index >= authors.size()))) return;
-	if (book) books.erase(books.begin() + index);
-	else authors.erase(authors.begin() + index);
-}
-
+/*
 ListContainer::ListContainer(const ListContainer& lc)
 {
-	books = lc.getBooks();
-	authors = lc.getAuthors();
+	setParent(lc.parentWidget());
+	items = lc.items;
 }
 
 ListContainer& ListContainer::operator = (const ListContainer& lc)
 {
 	if (this == &lc) return *this;
-
-	books = lc.getBooks();
-	authors = lc.getAuthors();
-	
+	items = lc.items;
 	return *this;
 }
+*/
 
 ListContainer::~ListContainer()
 {
 }
 
-std::vector<std::string> ListContainer::getBooks() const
-{
-	return books;
-}
 
-std::vector<std::string> ListContainer::getAuthors() const
+std::vector<QString> ListContainer::getItems() const
 {
-	return authors;
+	std::vector<QString> it;
+	for (int index = 0; index < items.size(); index++) 
+		it.push_back(items[index].text());
+	return it;
 }

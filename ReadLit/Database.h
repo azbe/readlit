@@ -16,13 +16,10 @@ public:
 	void operator = (Database const&) = delete;
 
 	void addBook(const Book& b);
-	void removeBook(const std::string& bookName); 
+	void removeBook(const QString& bookName); 
 	
-	Book getBook(const std::string& bookName) const;
-	Book getBook(const int& index) const;
-
-	Author getAuthor(const std::string& name) const;
-	Author getAuthor(const int& index) const;
+	Book getBook(const QString& bookName) const;
+	Author getAuthor(const QString& name) const;
 
 	std::vector<Book> getBooks() const;
 	std::vector<Author> getAuthors() const;

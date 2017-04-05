@@ -1,32 +1,32 @@
 #ifndef BOOK_H
 #define BOOK_H
 
-#include <string>
+#include <qstring>
 
 class Book
 {
 	friend class Database;
 public:
 	Book();
-	Book(const std::string& _title, const std::string& _author, const std::string& _filePath, const int& _year = 0, const std::string& _description = " ");
+	Book(const QString& _title, const QString& _author, const QString& _filePath, const int& _year = 0, const QString& _description = " ");
 	Book(const Book& b);
 	Book& operator = (const Book& b);
 	~Book();
 
-	std::string getTitle() const;
-	std::string getAuthor() const;
-	std::string getFilePath() const;
+	QString getTitle() const;
+	QString getAuthor() const;
+	QString getFilePath() const;
 	int getYear() const;
-	std::string getDescription() const;
+	QString getDescription() const;
 
 	bool operator == (const Book& b) const;
 
 private:
-	std::string title;
-	std::string author;
-	std::string filePath;
+	QString title;
+	QString author;
+	QString filePath;
 	int year;
-	std::string description;
+	QString description;
 	//Si altele
 };
 

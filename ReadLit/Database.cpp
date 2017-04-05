@@ -21,7 +21,7 @@ void Database::addBook(const Book& b)
 
 	books.push_back(b);
 
-	bool found = false;
+	found = false;
 	for (auto a : authors)
 	{
 		if (a.name == b.author)
@@ -32,13 +32,13 @@ void Database::addBook(const Book& b)
 	}
 	if (!found)
 	{
-		std::vector<std::string> book;
+		std::vector<QString> book;
 		book.push_back(b.title);
 		authors.push_back(Author(b.author, book));
 	}
 }
 
-void Database::removeBook(const std::string& bookName)
+void Database::removeBook(const QString& bookName)
 {
 	int found = -1;
 	for (int index = 0; index < books.size() && found > -1; index++)
@@ -71,30 +71,20 @@ void Database::removeBook(const std::string& bookName)
 	}
 }
 
-Book Database::getBook(const std::string& bookName) const
+Book Database::getBook(const QString& bookName) const
 {
 	for (auto b : books)
 		if (b.title == bookName)
 			return b;
+	return Book();
 }
 
-Book Database::getBook(const int& index) const
-{
-	if (index < 0 || index >= books.size()) return;
-	return books[index];
-}
-
-Author Database::getAuthor(const std::string& name) const
+Author Database::getAuthor(const QString& name) const
 {
 	for (auto a : authors)
 		if (a.name == name)
 			return a;
-}
-
-Author Database::getAuthor(const int& index) const
-{
-	if (index < 0 || index >= authors.size()) return;
-	return authors[index];
+	return Author();
 }
 
 std::vector<Book> Database::getBooks() const

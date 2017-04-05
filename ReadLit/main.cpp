@@ -3,9 +3,11 @@
 #include <iostream>
 
 #include <QtWidgets/QApplication>
+#include <QGridLayout.h>
 
 #include "ReadlitWindow.h"
 #include "Database.h"
+#include "ListContainer.h"
 
 #define _CRTDBG_MAP_ALLOC  
 #define DB Database::getInstance()
@@ -18,12 +20,44 @@ ReadLitWindow* tabReader()
 
 ReadLitWindow* tabLocal()
 {
-	ReadLitWindow* local = new ReadLitWindow;
-	ReadLitWindow *localBooks, *localAuthors, *localSettings;
-	localBooks = new ReadLitWindow; localAuthors = new ReadLitWindow; localSettings = new ReadLitWindow;
+	ReadLitWindow *local = new ReadLitWindow;
+
+	ReadLitWindow *localBooks = new ReadLitWindow; 
+	QGridLayout *localBooksLayout = new QGridLayout(localBooks);
+
+	ListContainer *bookNames = new ListContainer(Q_NULLPTR, ListContainer::BOOKS);
+	localBooksLayout->addWidget(bookNames, 0, 0, -1, 1);
+	localBooksLayout->setColumnStretch(0, 1);
+
+	//DetailsContainer *bookDetails = new DetailsContainer(Q_NULLPTR, DetailsContainer::BOOK);
+	//localBooksLayout->addWidget(bookDetails, 0, 1, -1, 1);
+	//localBooksLayout->setColumnStretch(1, 1);
+
+	localBooks->setLayout(localBooksLayout);
+
+	ReadLitWindow *localAuthors = new ReadLitWindow; 
+	QGridLayout *localAuthorsLayout = new QGridLayout(localAuthors);
+
+	ListContainer *authorNames = new ListContainer(Q_NULLPTR, ListContainer::AUTHORS);
+	localAuthorsLayout->addWidget(authorNames, 0, 0, -1, 1);
+	localAuthorsLayout->setColumnStretch(0, 1);
+
+	ListContainer *authorBooks = new ListContainer(Q_NULLPTR, ListContainer::BOOKS);
+	localAuthorsLayout->addWidget(authorBooks, 0, 1, -1, 1);
+	localAuthorsLayout->setColumnStretch(1, 1);
+	
+	//DetailsContainer *authorDetails = new DetailsContainer(Q_NULLPTR, DetailsContainer::AUTHOR);
+	//localAuthorsLayout->addWidget(authorDetails, 0, 2, -1, 1);
+	//localBooksLayout->setColumnStretch(2, 1);
+	
+	localAuthors->setLayout(localAuthorsLayout);
+
+	ReadLitWindow* localSettings = new ReadLitWindow;
+
 	local->addTab(localBooks, "Books");
 	local->addTab(localAuthors, "Authors");
 	local->addTab(localSettings, "Local Settings");
+
 	return local;
 }
 
@@ -60,6 +94,8 @@ int main(int argc, char *argv[])
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
 	QApplication a(argc, argv);
+
+	testDB();
 
 	ReadLitWindow window;
 	ReadLitWindow* reader = tabReader();

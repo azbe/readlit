@@ -7,7 +7,7 @@ Book::Book()
 	description = " ";
 }
 
-Book::Book(const std::string& _title, const std::string& _author, const std::string& _filePath, const int& _year, const std::string& _description)
+Book::Book(const QString& _title, const QString& _author, const QString& _filePath, const int& _year, const QString& _description)
 {
 	title = _title;
 	author = _author;
@@ -43,17 +43,17 @@ Book::~Book()
 {
 }
 
-std::string Book::getTitle() const
+QString Book::getTitle() const
 {
 	return title;
 }
 
-std::string Book::getAuthor() const
+QString Book::getAuthor() const
 {
 	return author;
 }
 
-std::string Book::getFilePath() const
+QString Book::getFilePath() const
 {
 	return filePath;
 }
@@ -63,7 +63,7 @@ int Book::getYear() const
 	return year;
 }
 
-std::string Book::getDescription() const
+QString Book::getDescription() const
 {
 	return description;
 }
