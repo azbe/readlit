@@ -13,7 +13,6 @@ public:
 	~ReadLitWindow();
 
 	void addTab(QWidget* frame, const QString& label);
-	void setWidgets(QLayout* mainLayout);
 	int countTabs() const; //returneaza numarul de taburi
 
 private:

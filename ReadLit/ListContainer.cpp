@@ -15,22 +15,22 @@ ListContainer::ListContainer(QWidget* parent, const containerType& type)
 		{
 			std::vector<Book> books = db.getBooks();
 			for (Book b : books)
-				items.push_back(QLabel(b.getTitle(), this));
+				items.push_back(b.getTitle());
 			break;
 		}
 		case AUTHORS:
 		{
 			std::vector<Author> authors = db.getAuthors();
 			for (Author a : authors)
-				items.push_back(QLabel(a.getName(), this));
+				items.push_back(a.getName());
 			break;
 		}
 	}
 
-	layout = new QGridLayout(this);
-
-	for (int index = 0; index < items.size(); index++)
-		layout->setRowStretch(index, 1);
+	for (QString label : items)
+	{
+		addItem(label);
+	}
 }
 
 /*
@@ -55,8 +55,5 @@ ListContainer::~ListContainer()
 
 std::vector<QString> ListContainer::getItems() const
 {
-	std::vector<QString> it;
-	for (int index = 0; index < items.size(); index++) 
-		it.push_back(items[index].text());
-	return it;
+	return items;
 }

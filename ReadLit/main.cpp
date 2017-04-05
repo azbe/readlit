@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include <QtWidgets/QApplication>
-#include <QGridLayout.h>
+#include <QBoxLayout.h>
 
 #include "ReadlitWindow.h"
 #include "Database.h"
@@ -23,37 +23,39 @@ ReadLitWindow* tabLocal()
 	ReadLitWindow *local = new ReadLitWindow;
 
 	ReadLitWindow *localBooks = new ReadLitWindow; 
-	QGridLayout *localBooksLayout = new QGridLayout(localBooks);
+	QWidget *localBooksLayoutWidget = new QWidget(localBooks);
+	localBooksLayoutWidget->setMinimumSize(100, 300);
+	localBooksLayoutWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	localBooksLayoutWidget->setContentsMargins(11, 11, 11, 11);
+	QHBoxLayout *localBooksLayout = new QHBoxLayout(localBooksLayoutWidget);
+	localBooksLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
-	ListContainer *bookNames = new ListContainer(Q_NULLPTR, ListContainer::BOOKS);
-	localBooksLayout->addWidget(bookNames, 0, 0, -1, 1);
-	localBooksLayout->setColumnStretch(0, 1);
+	ListContainer *bookNames = new ListContainer(localBooksLayoutWidget, ListContainer::BOOKS);
+	bookNames->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	localBooksLayout->addWidget(bookNames);
 
 	//DetailsContainer *bookDetails = new DetailsContainer(Q_NULLPTR, DetailsContainer::BOOK);
-	//localBooksLayout->addWidget(bookDetails, 0, 1, -1, 1);
-	//localBooksLayout->setColumnStretch(1, 1);
-
-	localBooks->setLayout(localBooksLayout);
+	//localBooksLayout->addWidget(bookDetails, 0, 1);
 
 	ReadLitWindow *localAuthors = new ReadLitWindow; 
-	QGridLayout *localAuthorsLayout = new QGridLayout(localAuthors);
+	QWidget *localAuthorsLayoutWidget = new QWidget(localAuthors);
+	localAuthorsLayoutWidget->setMinimumSize(100, 300);
+	localAuthorsLayoutWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	localAuthorsLayoutWidget->setContentsMargins(11, 11, 11, 11);
+	QHBoxLayout *localAuthorsLayout = new QHBoxLayout(localAuthorsLayoutWidget);
+	localAuthorsLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
-	ListContainer *authorNames = new ListContainer(Q_NULLPTR, ListContainer::AUTHORS);
-	localAuthorsLayout->addWidget(authorNames, 0, 0, -1, 1);
-	localAuthorsLayout->setColumnStretch(0, 1);
-
-	ListContainer *authorBooks = new ListContainer(Q_NULLPTR, ListContainer::BOOKS);
-	localAuthorsLayout->addWidget(authorBooks, 0, 1, -1, 1);
-	localAuthorsLayout->setColumnStretch(1, 1);
+	ListContainer *authorNames = new ListContainer(localAuthorsLayoutWidget, ListContainer::AUTHORS);
+	localAuthorsLayout->addWidget(authorNames);
 	
-	//DetailsContainer *authorDetails = new DetailsContainer(Q_NULLPTR, DetailsContainer::AUTHOR);
-	//localAuthorsLayout->addWidget(authorDetails, 0, 2, -1, 1);
-	//localBooksLayout->setColumnStretch(2, 1);
+	ListContainer *authorBooks = new ListContainer(localAuthorsLayoutWidget, ListContainer::NOTHING);
+	localAuthorsLayout->addWidget(authorBooks);
 	
-	localAuthors->setLayout(localAuthorsLayout);
+	//DetailsContainer *authorDetails = new DetailsContainer(localAuthorsLayoutWidget, DetailsContainer::AUTHOR);
+	//localAuthorsLayout->addWidget(authorDetails, 0, 2);
 
 	ReadLitWindow* localSettings = new ReadLitWindow;
-
+	
 	local->addTab(localBooks, "Books");
 	local->addTab(localAuthors, "Authors");
 	local->addTab(localSettings, "Local Settings");
@@ -80,13 +82,12 @@ ReadLitWindow* tabSettings()
 
 void testDB() //doar de testare
 {
-	DB.addBook(Book("Titlu1", "Autor1", "C:\\Users\\Radu\\titlu1.pdf"));
-	DB.addBook(Book("Titlu2", "Autor2", "C:\\Users\\Radu\\titlu2.pdf"));
-	DB.addBook(Book("Titlu3", "Autor2", "C:\\Users\\Radu\\titlu3.pdf"));
-	DB.addBook(Book("Titlu4", "Autor1", "C:\\Users\\Radu\\titlu4.pdf"));
-	DB.addBook(Book("Titlu5", "Autor3", "C:\\Users\\Radu\\titlu5.pdf"));
-	DB.addBook(Book("Titlu6", "Autor2", "C:\\Users\\Radu\\titlu6.pdf"));
-	DB.addBook(Book("Titlu7", "Autor1", "C:\\Users\\Radu\\titlu6.pdf"));
+	for (int i = 0; i < 100; i++)
+	{
+		char nr[4];
+		itoa(i, nr, 10);
+		DB.addBook(Book(nr, "Autor", "C:\\Users\\Radu\\titlu1.pdf"));
+	}
 }
 
 int main(int argc, char *argv[])
@@ -102,11 +103,13 @@ int main(int argc, char *argv[])
 	ReadLitWindow* local = tabLocal();
 	ReadLitWindow* world = tabWorld();
 	ReadLitWindow* settings = tabSettings();
-	
+
 	window.addTab(reader, "Reader");
 	window.addTab(local, "Local");
 	window.addTab(world, "World");
 	window.addTab(settings, "Settings");
+
+	window.setMinimumSize(400, 400);
 
 	window.show();
 

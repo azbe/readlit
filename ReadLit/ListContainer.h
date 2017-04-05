@@ -2,18 +2,18 @@
 #define LISTCONTAINER_H
 #include <vector>
 
-#include <QWidget>
+#include <QListWidget>
 #include <QLabel.h>
 
 #include "Book.h"
 
 //Partea din Local cu lista de carti/autori (va cere bazei de date datele)
 
-class ListContainer : public QWidget
+class ListContainer : public QListWidget
 {
 	friend class Mediator;
 public:
-	enum containerType { BOOKS, AUTHORS};
+	enum containerType { BOOKS, AUTHORS, NOTHING};
 
 	ListContainer(QWidget *parent, const containerType& type);
 	//ListContainer(const ListContainer& lc);
@@ -23,8 +23,7 @@ public:
 	std::vector<QString> getItems() const;
 
 private:
-	std::vector<QLabel> items;
-	QGridLayout *layout;
+	std::vector<QString> items;
 };
 
 #endif //LISTCONTAINER_H
