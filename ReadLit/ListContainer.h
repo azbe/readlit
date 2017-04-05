@@ -10,7 +10,7 @@
 
 class ListContainer : public QWidget
 {
-
+	friend class Mediator;
 public:
 	ListContainer(QWidget *parent);
 	ListContainer(const ListContainer& lc);

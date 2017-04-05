@@ -13,7 +13,7 @@ void ListContainer::addItem(std::string item, const bool& book)
 
 void ListContainer::removeItem(const int& index, const bool& book)
 {
-	//TODO: exceptions
+	//TODO EXCEPTIONS!!!
 	if (index < 0 || ((book) ? (index >= books.size()) : (index >= authors.size()))) return;
 	if (book) books.erase(books.begin() + index);
 	else authors.erase(authors.begin() + index);

@@ -8,7 +8,7 @@
 #include "Database.h"
 
 #define _CRTDBG_MAP_ALLOC  
-#define DB Database::db()
+#define DB Database::getInstance()
 
 ReadLitWindow* tabReader()
 {
@@ -42,6 +42,16 @@ ReadLitWindow* tabSettings()
 {
 	ReadLitWindow* settings = new ReadLitWindow;
 	return settings;
+}
+
+void testDB() //doar de testare
+{
+	DB.addBook(Book("Titlu1", "Autor1", "C:\\Users\\Radu\\titlu1.pdf"));
+	DB.addBook(Book("Titlu2", "Autor2", "C:\\Users\\Radu\\titlu2.pdf"));
+	DB.addBook(Book("Titlu3", "Autor2", "C:\\Users\\Radu\\titlu3.pdf"));
+	DB.addBook(Book("Titlu4", "Autor1", "C:\\Users\\Radu\\titlu4.pdf"));
+	DB.addBook(Book("Titlu5", "Autor3", "C:\\Users\\Radu\\titlu5.pdf"));
+	DB.addBook(Book("Titlu6", "Autor2", "C:\\Users\\Radu\\titlu6.pdf"));
 }
 
 int main(int argc, char *argv[])

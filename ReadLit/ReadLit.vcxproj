@@ -79,6 +79,7 @@
     </ClCompile>
     <ClCompile Include="ListContainer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mediator.cpp" />
     <ClCompile Include="ReadlitWindow.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
@@ -112,6 +113,7 @@
     <ClInclude Include="Author.h" />
     <ClInclude Include="Book.h" />
     <ClInclude Include="Database.h" />
+    <ClInclude Include="Mediator.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

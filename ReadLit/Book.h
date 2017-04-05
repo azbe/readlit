@@ -5,6 +5,7 @@
 
 class Book
 {
+	friend class Database;
 public:
 	Book();
 	Book(const std::string& _title, const std::string& _author, const std::string& _filePath, const int& _year = 0, const std::string& _description = " ");
@@ -17,6 +18,8 @@ public:
 	std::string getFilePath() const;
 	int getYear() const;
 	std::string getDescription() const;
+
+	bool operator == (const Book& b) const;
 
 private:
 	std::string title;

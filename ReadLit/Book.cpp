@@ -67,3 +67,9 @@ std::string Book::getDescription() const
 {
 	return description;
 }
+
+bool Book::operator == (const Book& b) const
+{
+	if (title == b.title && author == b.author && filePath == b.filePath && year == b.year && description == b.description) return true;
+	return false;
+}

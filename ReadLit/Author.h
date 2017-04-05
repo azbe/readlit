@@ -8,6 +8,7 @@
 
 class Author
 {
+	friend class Database;
 public:
 	Author();
 	Author(const std::string& _name, const std::vector<std::string>& _books, const int& yearBirth = 0, const int& yearDeath = 0, const std::string& _bio = " ");
@@ -23,6 +24,8 @@ public:
 	int getYearBirth() const;
 	int getYearDeath() const;
 	std::string getBio() const;
+
+	bool operator == (const Author& a) const;
 
 private:
 	std::string name; //Last+First name, nume si prenume

@@ -79,3 +79,9 @@ std::string Author::getBio() const
 Author::~Author()
 {
 }
+
+bool Author::operator == (const Author& a) const
+{
+	if (name == a.name && books == a.books && yearBirth == a.yearBirth && yearDeath == a.yearDeath && bio == a.bio) return true;
+	return false;
+}
