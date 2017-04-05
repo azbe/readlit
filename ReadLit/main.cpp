@@ -52,6 +52,7 @@ void testDB() //doar de testare
 	DB.addBook(Book("Titlu4", "Autor1", "C:\\Users\\Radu\\titlu4.pdf"));
 	DB.addBook(Book("Titlu5", "Autor3", "C:\\Users\\Radu\\titlu5.pdf"));
 	DB.addBook(Book("Titlu6", "Autor2", "C:\\Users\\Radu\\titlu6.pdf"));
+	DB.addBook(Book("Titlu7", "Autor1", "C:\\Users\\Radu\\titlu6.pdf"));
 }
 
 int main(int argc, char *argv[])
