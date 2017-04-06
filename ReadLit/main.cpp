@@ -5,7 +5,7 @@
 #include <QtWidgets/QApplication>
 
 #include "ReadlitWindow.h"
-#include "Database.h"
+#include "Database.h" 
 
 #define _CRTDBG_MAP_ALLOC  
 #define DB Database::getInstance()
@@ -57,7 +57,7 @@ void testDB() //doar de testare
 
 int main(int argc, char *argv[])
 {
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); //shiro
 
 	QApplication a(argc, argv);
 
