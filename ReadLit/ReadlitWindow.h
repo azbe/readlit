@@ -1,6 +1,6 @@
 #ifndef READLITWINDOW_H
 #define READLITWINDOW_H
-
+/*
 #include <QWidget>
 #include <QTabWidget.h>
 
@@ -9,14 +9,23 @@ class ReadLitWindow : public QWidget
 	Q_OBJECT
 
 public:
-	explicit ReadLitWindow(QWidget *parent = 0, int width = 800, int height = 600);
+
+	enum windowType { TABBED, GRID, HORIZONTAL, VERTICAL};
+
+	explicit ReadLitWindow(QWidget *parent = 0, const windowType& type = TABBED);
+	
 	~ReadLitWindow();
 
-	void addTab(QWidget* frame, const QString& label);
+	
 	int countTabs() const; //returneaza numarul de taburi
 
 private:
-	QTabWidget* tabs;
-};
+	const int BASE_WIDTH = 800;
+	const int BASE_HEIGHT = 600;
 
+	QTabWidget	*tabWidget;
+	QLayout	*tabLayout;
+	std::vector<QWidget> widgets;
+};
+*/
 #endif //READLITWINDOW_H

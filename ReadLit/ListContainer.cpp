@@ -3,7 +3,7 @@
 #include "ListContainer.h"
 #include "Database.h"
 
-#define db Database::getInstance()
+#define DB Database::getInstance()
 
 ListContainer::ListContainer(QWidget* parent, const containerType& type)
 {
@@ -13,14 +13,14 @@ ListContainer::ListContainer(QWidget* parent, const containerType& type)
 	{
 		case BOOKS:
 		{
-			std::vector<Book> books = db.getBooks();
+			std::vector<Book> books = DB.getBooks();
 			for (Book b : books)
 				items.push_back(b.getTitle());
 			break;
 		}
 		case AUTHORS:
 		{
-			std::vector<Author> authors = db.getAuthors();
+			std::vector<Author> authors = DB.getAuthors();
 			for (Author a : authors)
 				items.push_back(a.getName());
 			break;

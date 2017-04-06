@@ -1,31 +1,23 @@
+/*
 #include <QGridLayout>
 
 #include "ReadlitWindow.h"
 #include "utils.h"
 
-ReadLitWindow::ReadLitWindow(QWidget *parent, int width, int height) : QWidget(parent)
+ReadLitWindow::ReadLitWindow(QWidget *parent, const windowType& type) : QWidget(parent)
 {
-	resize(width, height);
-	tabs = new QTabWidget;
 
-	QGridLayout *layout = new QGridLayout;
-	layout->addWidget(tabs);
-	setLayout(layout);
 }
 
 ReadLitWindow::~ReadLitWindow()
 {
-		
+	if (tabWidget) delete tabWidget;
+	if (tabLayout) delete tabLayout;
 }
-
-void ReadLitWindow::addTab(QWidget* frame, const QString& label)
-{
-	tabs->addTab(frame, label);
-}
-
 
 int ReadLitWindow::countTabs() const
 {
-	if (tabs != NULL) return tabs->count();
+	if (tabWidget != NULL) return tabWidget->count();
 	return 0;
 }
+*/
