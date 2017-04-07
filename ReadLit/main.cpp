@@ -5,8 +5,6 @@
 #include <QApplication>
 #include <QWidget>
 
-#include "Database.h"
-
 #define _CRTDBG_MAP_ALLOC  
 
 int main(int argc, char *argv[])
