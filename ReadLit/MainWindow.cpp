@@ -3,11 +3,12 @@
 #include "MainWindow.h"
 #include "SubtabBooks.h"
 #include "SubtabAuthors.h"
+#include "Constants.h"
 #include "utils.h"
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
-	resize(BASE_WIDTH, BASE_HEIGHT);
+	resize(UIConstants::MAINWINDOW_DEFAULT_WIDTH, UIConstants::MAINWINDOW_DEFAULT_HEIGHT);
 
 	mainTabs = new QTabWidget(this);
 	mainLayout = new QHBoxLayout(this);

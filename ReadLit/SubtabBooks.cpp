@@ -8,6 +8,7 @@
 #include "DataList.h"
 #include "DataTable.h"
 #include "DataButton.h"
+#include "Constants.h"
 
 SubtabBooks::SubtabBooks(QWidget *parent) : QWidget(parent)
 {
@@ -23,8 +24,7 @@ SubtabBooks::SubtabBooks(QWidget *parent) : QWidget(parent)
 	QLabel *folderPathsLabel = new QLabel("Folder Paths", scanner);
 	QLineEdit *folderPaths = new QLineEdit(scanner);
 	BrowserButton *browserButton = new BrowserButton(scanner);
-	browserButton->setText("...");
-	ScannerButton *scannerButton = new ScannerButton("Scan 'n Save", scanner);
+	ScannerButton *scannerButton = new ScannerButton(scanner);
 	bookWidgetsLayout0->addWidget(folderPathsLabel);
 	bookWidgetsLayout0->addWidget(folderPaths);
 	bookWidgetsLayout0->addWidget(browserButton);
@@ -35,12 +35,12 @@ SubtabBooks::SubtabBooks(QWidget *parent) : QWidget(parent)
 	QLayout *bookWidgetsLayout1 = new QHBoxLayout(books);
 	DataList *bookList = new DataList(books);
 	genericPolicy = new QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	genericPolicy->setHorizontalStretch(2);
+	genericPolicy->setHorizontalStretch(UIConstants::LOCAL_BOOKS_LIST_HORIZONTAL_STRETCH);
 	bookList->setSizePolicy(*genericPolicy);
 	delete genericPolicy;
 	QWidget *dataWidget = new QWidget(books);
 	genericPolicy = new QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-	genericPolicy->setHorizontalStretch(3);
+	genericPolicy->setHorizontalStretch(UIConstants::LOCAL_BOOKS_DETAILS_WIDGET_HORIZONTAL_STRETCH);
 	dataWidget->setSizePolicy(*genericPolicy);
 	delete genericPolicy;
 	QGridLayout *dataWidgetLayout = new QGridLayout(dataWidget);
@@ -57,7 +57,7 @@ SubtabBooks::SubtabBooks(QWidget *parent) : QWidget(parent)
 		}
 		//text += " Book Data";
 		dataButtons[i] = new DataButton(text, books);
-		dataButtons[i]->setMaximumWidth(75);
+		dataButtons[i]->setMaximumWidth(UIConstants::DATA_BUTTON_DEFAULT_MAX_SIZE);
 		dataButtons[i]->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		dataWidgetLayout->addWidget(dataButtons[i], 0, i, 1, 1);
 	}

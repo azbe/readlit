@@ -103,13 +103,18 @@
     <ClInclude Include="Author.h" />
     <ClInclude Include="Book.h" />
     <ClInclude Include="BrowserButton.h" />
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="DataButton.h" />
     <ClInclude Include="DataList.h" />
     <ClInclude Include="DataTable.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="ScannerButton.h" />
     <ClInclude Include="SubtabAuthors.h" />
     <ClInclude Include="SubtabBooks.h" />
     <ClInclude Include="utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ReadLit.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

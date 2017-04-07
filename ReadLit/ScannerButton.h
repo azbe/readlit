@@ -9,6 +9,7 @@ class ScannerButton : public QPushButton
 {
 public:
 	ScannerButton(const QString& text, QWidget *parent = 0);
+	ScannerButton(QWidget *parent = 0);
 	~ScannerButton();
 };
 

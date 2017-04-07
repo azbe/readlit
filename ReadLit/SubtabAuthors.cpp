@@ -1,6 +1,7 @@
 #include "SubtabAuthors.h"
 #include "DataButton.h"
 #include "DataTable.h"
+#include "Constants.h"
 
 SubtabAuthors::SubtabAuthors(QWidget *parent) : QWidget(parent)
 {
@@ -12,13 +13,13 @@ SubtabAuthors::SubtabAuthors(QWidget *parent) : QWidget(parent)
 	authorLayout = new QHBoxLayout(this);
 
 	genericPolicy = new QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	genericPolicy->setHorizontalStretch(1);
+	genericPolicy->setHorizontalStretch(UIConstants::LOCAL_AUTHORS_LIST_HORIZONTAL_STRETCH);
 	authors->setSizePolicy(*genericPolicy);
 	authorBooks->setSizePolicy(*genericPolicy);
 	delete genericPolicy;
 
 	genericPolicy = new QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-	genericPolicy->setHorizontalStretch(2);
+	genericPolicy->setHorizontalStretch(UIConstants::LOCAL_AUTHORS_DETAILS_WIDGET_HORIZONTAL_STRETCH);
 	authorData->setSizePolicy(*genericPolicy);
 	delete genericPolicy;
 	QGridLayout* authorDataLayout = new QGridLayout(authorData);
@@ -35,7 +36,7 @@ SubtabAuthors::SubtabAuthors(QWidget *parent) : QWidget(parent)
 		}
 		//text += " Author Data";
 		dataButtons[i] = new DataButton(text, authorData);
-		dataButtons[i]->setMaximumWidth(75);
+		dataButtons[i]->setMaximumWidth(UIConstants::DATA_BUTTON_DEFAULT_MAX_SIZE);
 		dataButtons[i]->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		authorDataLayout->addWidget(dataButtons[i], 0, i, 1, 1);
 	}

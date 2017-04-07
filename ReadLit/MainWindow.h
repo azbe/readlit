@@ -13,8 +13,6 @@ public:
 	~MainWindow();
 
 private:
-	const int BASE_WIDTH = 800;
-	const int BASE_HEIGHT = 600;
 
 	QTabWidget *mainTabs;
 	QLayout	*mainLayout;
