@@ -11,7 +11,8 @@ public:
 	~SubtabBooks();
 
 private:
-	QWidget *bookWidgets[2];
+	QWidget *scanner;
+	QWidget *books;
 	QLayout *bookLayout;
 };
 

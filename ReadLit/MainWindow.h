@@ -4,8 +4,6 @@
 #include <QWidget>
 #include <QTabWidget.h>
 
-#include "SubtabBooks.h"
-
 class MainWindow : public QWidget
 {
 	Q_OBJECT

@@ -1,6 +1,8 @@
 #include <QGridLayout>
 
 #include "MainWindow.h"
+#include "SubtabBooks.h"
+#include "SubtabAuthors.h"
 #include "utils.h"
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
@@ -21,10 +23,10 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 	QLayout *localLayout = new QHBoxLayout(tabLocal);
 
 	SubtabBooks *books = new SubtabBooks(tabLocal);
-	//SubtabAuthors *authors = new SubtabAuthors(tabLocal);
+	SubtabAuthors *authors = new SubtabAuthors(tabLocal);
 
 	localTabs->addTab(books, "Books");
-	//localTabs->addTab(authors, "Authors");
+	localTabs->addTab(authors, "Authors");
 
 	localTabs->setCurrentIndex(0);
 	localLayout->addWidget(localTabs);
