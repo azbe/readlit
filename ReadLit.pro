@@ -13,30 +13,29 @@ TEMPLATE = app
 
 
 SOURCES += \
-    Author.cpp \
-    Book.cpp \
-    BrowserButton.cpp \
-    DataButton.cpp \
-    DataList.cpp \
-    DataTable.cpp \
-    main.cpp \
-    MainWindow.cpp \
-    ScannerButton.cpp \
-    SubtabAuthors.cpp \
-    SubtabBooks.cpp
+    cpp/Author.cpp \
+    cpp/Book.cpp \
+    cpp/BrowserButton.cpp \
+    cpp/DataButton.cpp \
+    cpp/DataList.cpp \
+    cpp/DataTable.cpp \
+    cpp/main.cpp \
+    cpp/MainWindow.cpp \
+    cpp/ScannerButton.cpp \
+    cpp/SubtabAuthors.cpp \
+    cpp/SubtabBooks.cpp
 
 HEADERS  += \
-    Author.h \
-    Book.h \
-    BrowserButton.h \
-    Constants.h \
-    DataButton.h \
-    DataList.h \
-    DataTable.h \
-    MainWindow.h \
-    resource.h \
-    ScannerButton.h \
-    SubtabAuthors.h \
-    SubtabBooks.h
+    src/Author.h \
+    src/Book.h \
+    src/BrowserButton.h \
+    src/Constants.h \
+    src/DataButton.h \
+    src/DataList.h \
+    src/DataTable.h \
+    src/MainWindow.h \
+    src/ScannerButton.h \
+    src/SubtabAuthors.h \
+    src/SubtabBooks.h
 
 FORMS    += widget.ui
