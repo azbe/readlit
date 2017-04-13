@@ -10,6 +10,7 @@ Reader::Reader(QWidget *parent, const QString& path, const int& firstPage) : QWi
 {
     setContentsMargins(0,0,0,0);
     QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setSpacing(0);
 
     filePath = path;
     book = Poppler::Document::load(filePath);
@@ -20,10 +21,9 @@ Reader::Reader(QWidget *parent, const QString& path, const int& firstPage) : QWi
     layout->addWidget(scrollArea);
 
     imageArea = new QFrame();
-    imageArea->setStyleSheet("border: 3px solid blue");
+    //imageArea->setStyleSheet("border: 3px solid blue");
     imageArea->setContentsMargins(0,0,0,0);
     imageAreaLayout = new QVBoxLayout(imageArea);
-    imageAreaLayout->setSpacing(0);
 
     labels = new QLabel*[ReaderConstants::PRELOAD_PAGES_DEFAULT_NUMBER];
     images = new QImage*[ReaderConstants::PRELOAD_PAGES_DEFAULT_NUMBER];
@@ -32,7 +32,7 @@ Reader::Reader(QWidget *parent, const QString& path, const int& firstPage) : QWi
         labels[index - firstPageIndex] = new QLabel(imageArea);
         images[index - firstPageIndex] = new QImage(getPageImage(index));
         labels[index - firstPageIndex]->setPixmap((QPixmap::fromImage(*images[index - firstPageIndex])));
-        labels[index - firstPageIndex]->setStyleSheet("border: 1px solid red");
+        //labels[index - firstPageIndex]->setStyleSheet("border: 1px solid red");
         imageAreaLayout->addWidget(labels[index - firstPageIndex]);
     }
     scrollArea->setWidget(imageArea);
