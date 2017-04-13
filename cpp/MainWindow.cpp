@@ -4,6 +4,7 @@
 #include "src/SubtabBooks.h"
 #include "src/SubtabAuthors.h"
 #include "src/Constants.h"
+#include "src/Reader.h"
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
@@ -17,7 +18,9 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 	tabLocal = new QWidget(this);
 	tabSettings = new QWidget(this);
 
-	//TO DO: Reader
+    QLayout *readerLayout = new QGridLayout(tabReader);
+    Reader *reader = new Reader(tabReader, "/home/radu/Downloads/Crime_and_Punishment.pdf");
+    readerLayout->addWidget(reader);
 
 	QTabWidget *localTabs = new QTabWidget(tabLocal);
 	QLayout *localLayout = new QHBoxLayout(tabLocal);

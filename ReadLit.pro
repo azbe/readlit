@@ -18,7 +18,8 @@ SOURCES += \
     cpp/MainWindow.cpp \
     cpp/ScannerButton.cpp \
     cpp/SubtabAuthors.cpp \
-    cpp/SubtabBooks.cpp
+    cpp/SubtabBooks.cpp \
+    cpp/Reader.cpp
 
 HEADERS  += \
     src/Author.h \
@@ -31,6 +32,20 @@ HEADERS  += \
     src/MainWindow.h \
     src/ScannerButton.h \
     src/SubtabAuthors.h \
-    src/SubtabBooks.h
+    src/SubtabBooks.h \
+    src/Reader.h
 
 FORMS    += widget.ui
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../usr/lib/x86_64-linux-gnu/release/ -lpoppler-qt5
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../usr/lib/x86_64-linux-gnu/debug/ -lpoppler-qt5
+else:unix: LIBS += -L$$PWD/../../../../usr/lib/x86_64-linux-gnu/ -lpoppler-qt5
+
+INCLUDEPATH += $$PWD/../../../../usr/include/poppler/qt5
+DEPENDPATH += $$PWD/../../../../usr/include/poppler/qt5
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../usr/lib/x86_64-linux-gnu/release/libpoppler-qt5.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../usr/lib/x86_64-linux-gnu/debug/libpoppler-qt5.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../usr/lib/x86_64-linux-gnu/release/poppler-qt5.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../usr/lib/x86_64-linux-gnu/debug/poppler-qt5.lib
+else:unix: PRE_TARGETDEPS += $$PWD/../../../../usr/lib/x86_64-linux-gnu/libpoppler-qt5.a

@@ -1,6 +1,13 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+namespace ReaderConstants
+{
+    const int PRELOAD_PAGES_DEFAULT_NUMBER = 5;
+    const int SCAN_DEFAULT_HORIZONTAL_RES = 300;
+    const int SCAN_DEFAULT_VERTICAL_RES = 300;
+}
+
 namespace UIConstants
 {
 	//Values

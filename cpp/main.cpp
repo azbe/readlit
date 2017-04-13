@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <QWidget>
 
+
 #include "src/MainWindow.h"
 
 #define _CRTDBG_MAP_ALLOC  
