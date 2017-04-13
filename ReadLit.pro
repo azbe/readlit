@@ -19,7 +19,8 @@ SOURCES += \
     cpp/ScannerButton.cpp \
     cpp/SubtabAuthors.cpp \
     cpp/SubtabBooks.cpp \
-    cpp/Reader.cpp
+    cpp/Reader.cpp \
+    cpp/VerticalScrollArea.cpp
 
 HEADERS  += \
     src/Author.h \
@@ -33,7 +34,8 @@ HEADERS  += \
     src/ScannerButton.h \
     src/SubtabAuthors.h \
     src/SubtabBooks.h \
-    src/Reader.h
+    src/Reader.h \
+    src/VerticalScrollArea.h
 
 FORMS    += widget.ui
 

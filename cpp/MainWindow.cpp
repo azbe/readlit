@@ -18,9 +18,11 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 	tabLocal = new QWidget(this);
 	tabSettings = new QWidget(this);
 
-    QLayout *readerLayout = new QGridLayout(tabReader);
+    QGridLayout *readerLayout = new QGridLayout(tabReader);
     Reader *reader = new Reader(tabReader, "/home/radu/Downloads/Crime_and_Punishment.pdf");
-    readerLayout->addWidget(reader);
+    readerLayout->addWidget(reader, 0, 0, 1, 1);
+    //QListWidget *listWidget = new QListWidget(tabReader);
+    //readerLayout->addWidget(listWidget, 0, 1, 1, 1);
 
 	QTabWidget *localTabs = new QTabWidget(tabLocal);
 	QLayout *localLayout = new QHBoxLayout(tabLocal);

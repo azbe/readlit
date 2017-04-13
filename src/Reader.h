@@ -5,7 +5,10 @@
 #include <QScrollArea>
 #include <QLabel>
 #include <QFrame>
+#include <QEvent>
 #include <poppler/qt5/poppler-qt5.h>
+
+#include "src/VerticalScrollArea.h"
 
 class Reader : public QWidget
 {
@@ -16,15 +19,19 @@ class Reader : public QWidget
 
     QImage getPageImage(const int& index) const;
 
+    protected:
+    bool event(QEvent *event);
+
     private:
     QString filePath;
     Poppler::Document *book;
     int firstPageIndex;
 
-    QScrollArea *scrollArea;
+    VerticalScrollArea *scrollArea;
     QFrame *imageArea;
     QLayout *imageAreaLayout;
     QLabel **labels;
+    QImage **images;
 };
 
 #endif // READER_H
