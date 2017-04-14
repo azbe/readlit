@@ -1,5 +1,3 @@
-#include <string>
-
 #include <QVBoxLayout>
 #include <QPixmap>
 
@@ -17,12 +15,12 @@ Reader::Reader(QWidget *parent, const QString& path, const int& firstPage) : QWi
     if (!book); //TO DO: erori
     firstPageIndex = firstPage;
 
-    scrollArea = new VerticalScrollArea(this);
+    scrollArea = new QScrollArea(this);
     layout->addWidget(scrollArea);
 
     imageArea = new QFrame();
     //imageArea->setStyleSheet("border: 3px solid blue");
-    imageArea->setContentsMargins(0,0,0,0);
+    imageArea->setContentsMargins(-6,-6,-6,-6);
     imageAreaLayout = new QVBoxLayout(imageArea);
 
     labels = new QLabel*[ReaderConstants::PRELOAD_PAGES_DEFAULT_NUMBER];
@@ -31,9 +29,11 @@ Reader::Reader(QWidget *parent, const QString& path, const int& firstPage) : QWi
     {
         labels[index - firstPageIndex] = new QLabel(imageArea);
         images[index - firstPageIndex] = new QImage(getPageImage(index));
+        labels[index - firstPageIndex]->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
         labels[index - firstPageIndex]->setPixmap((QPixmap::fromImage(*images[index - firstPageIndex])));
         //labels[index - firstPageIndex]->setStyleSheet("border: 1px solid red");
-        imageAreaLayout->addWidget(labels[index - firstPageIndex]);
+        labels[index - firstPageIndex]->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+        imageAreaLayout->addWidget(labels[index - firstPageIndex], 0, Qt::AlignTop);
     }
     scrollArea->setWidget(imageArea);
 }
@@ -74,9 +74,11 @@ bool Reader::event(QEvent *event)
     if (event->type() == QEvent::Resize)
     {
         QSize newSize = this->size();
+        scrollArea->resize(newSize);
+        imageArea->resize(newSize.width()-16, imageArea->height());
         for (int index = 0; index < ReaderConstants::PRELOAD_PAGES_DEFAULT_NUMBER; index++)
-            labels[index]->setPixmap(QPixmap::fromImage(*images[index]).scaledToWidth(0.9 * newSize.width(), Qt::SmoothTransformation));
-            //labels[index]->setPixmap(QPixmap::fromImage(*images[index]).scaled(newSize.width(), newSize.height(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            labels[index]->setPixmap(QPixmap::fromImage(*images[index]).scaledToWidth(labels[index]->width(), Qt::SmoothTransformation));
+        imageArea->resize(imageArea->width(), ReaderConstants::PRELOAD_PAGES_DEFAULT_NUMBER * (labels[0]->sizeHint().height() + imageAreaLayout->spacing()) + 30);
     }
     return QWidget::event(event);
 }

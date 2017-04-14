@@ -19,10 +19,10 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 	tabSettings = new QWidget(this);
 
     QGridLayout *readerLayout = new QGridLayout(tabReader);
-    QListWidget *listWidget = new QListWidget(tabReader); //Doar de test, nu va fi un listwidget
+    QWidget *readerExtras = new QListWidget(tabReader);
     Reader *reader = new Reader(tabReader, "/home/radu/Downloads/Crime_and_Punishment.pdf");
-    readerLayout->addWidget(listWidget, 0, 0, 1, 1);
-    readerLayout->addWidget(reader, 0, 1, 1, 1);
+    readerLayout->addWidget(readerExtras, 0, 0, 1, 2);
+    readerLayout->addWidget(reader, 0, 2, 1, 1);
 
 	QTabWidget *localTabs = new QTabWidget(tabLocal);
 	QLayout *localLayout = new QHBoxLayout(tabLocal);

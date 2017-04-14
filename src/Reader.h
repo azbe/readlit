@@ -6,9 +6,8 @@
 #include <QLabel>
 #include <QFrame>
 #include <QEvent>
+#include <QLayout>
 #include <poppler/qt5/poppler-qt5.h>
-
-#include "src/VerticalScrollArea.h"
 
 class Reader : public QWidget
 {
@@ -27,9 +26,9 @@ class Reader : public QWidget
     Poppler::Document *book;
     int firstPageIndex;
 
-    VerticalScrollArea *scrollArea;
+    QScrollArea *scrollArea;
     QFrame *imageArea;
-    QLayout *imageAreaLayout;
+    QVBoxLayout *imageAreaLayout;
     QLabel **labels;
     QImage **images;
 };
