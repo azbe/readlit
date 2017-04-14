@@ -3,9 +3,9 @@
 
 namespace ReaderConstants
 {
-    const int PRELOAD_PAGES_DEFAULT_NUMBER = 5;
-    const int SCAN_DEFAULT_HORIZONTAL_RES = 300;
-    const int SCAN_DEFAULT_VERTICAL_RES = 300;
+    const double PAGE_DEFAULT_ASPECT_RATIO = 1.315;
+    const int SCAN_DEFAULT_HORIZONTAL_RES = 600;
+    const int SCAN_DEFAULT_VERTICAL_RES = 600;
 }
 
 namespace UIConstants

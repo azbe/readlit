@@ -15,7 +15,7 @@ public:
 private:
 
 	QTabWidget *mainTabs;
-	QLayout	*mainLayout;
+    QLayout	*mainLayout;
 };
 
 #endif //MAINWINDOW_H
