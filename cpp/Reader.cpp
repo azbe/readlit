@@ -11,7 +11,6 @@ Reader::Reader(QWidget *parent, const QString& path, const int& startingPage) : 
     book = Poppler::Document::load(path);
     if(book); //TO DO: erori
 
-    QImage image = getPageImage(0);
     pageAspectRatio = ReaderConstants::PAGE_DEFAULT_ASPECT_RATIO;
     updatePageCount();
 
@@ -47,6 +46,28 @@ Reader::Reader(QWidget *parent, const QString& path, const int& startingPage) : 
 Reader::~Reader()
 {
     if(scrollArea) delete scrollArea;
+    if(book) delete book;
+}
+
+void Reader::changeBook(const QString &newPath)
+{
+    for (int index = 0; index < pageCount; index++)
+    {
+        pages[index]->clear();
+        isActualized[index] = false;
+    }
+
+    if (book) delete book;
+    book = Poppler::Document::load(newPath);
+
+    updatePageCount();
+    scrollBar->setValue(scrollBar->minimum());
+    scrollBar->setMaximum(pageCount);
+    lastScrollBarValue = 0;
+    isMouseScrolling = false;
+    updateCurrentPage();
+
+    resize(size());
 }
 
 QImage Reader::getPageImage(const int& index) const

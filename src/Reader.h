@@ -17,14 +17,15 @@ class Reader : public QWidget
 
     private:
     void actualizeView(int page);
+    QImage getPageImage(const int& index) const;
+    void updatePageCount();
+    void updateCurrentPage();
 
     public:
     explicit Reader(QWidget *parent, const QString& path, const int& startingPage = 0);
     ~Reader();
 
-    QImage getPageImage(const int& index) const;
-    void updatePageCount();
-    void updateCurrentPage();
+    void changeBook(const QString& newPath);
 
     private:
     Poppler::Document *book;
