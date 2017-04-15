@@ -18,6 +18,7 @@ class Reader : public QWidget
     private:
     void actualizeView(int page);
     QImage getPageImage(const int& index) const;
+    double getScrollBarPercent() const;
     void updatePageCount();
     void updateCurrentPage();
 
@@ -39,7 +40,7 @@ class Reader : public QWidget
     double pageAspectRatio;
     int pageCount;
     int currentPage;
-    int lastScrollBarValue;
+    double lastScrollBarValue;
     bool isMouseScrolling;
 
     int resizeTimerId = 0;
@@ -49,7 +50,7 @@ class Reader : public QWidget
     void timerEvent(QTimerEvent *te);
 
     private slots:
-    void scrollBarValueChanged(int value);
+    void scrollBarValueChanged();
     void scrollBarPressed();
     void scrollBarReleased();
     void handleImage(QImage image, int pagenum);

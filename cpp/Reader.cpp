@@ -15,13 +15,14 @@ Reader::Reader(QWidget *parent, const QString& path, const int& startingPage) : 
     updatePageCount();
 
     scrollArea = new QScrollArea(this);
+    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     scrollBar = scrollArea->verticalScrollBar();
     scrollBar->setMaximum(pageCount);
     lastScrollBarValue = 0;
     isMouseScrolling = false;
     QObject::connect(scrollBar, SIGNAL(sliderPressed()), this, SLOT(scrollBarPressed()));
     QObject::connect(scrollBar, SIGNAL(sliderReleased()), this, SLOT(scrollBarReleased()));
-    QObject::connect(scrollBar, SIGNAL(valueChanged(int)), this, SLOT(scrollBarValueChanged(int)));
+    QObject::connect(scrollBar, SIGNAL(valueChanged(int)), this, SLOT(scrollBarValueChanged()));
 
     updateCurrentPage();
     pageArea = new QFrame(scrollArea);
@@ -92,51 +93,54 @@ void Reader::updatePageCount()
 
 void Reader::updateCurrentPage()
 {
-    currentPage = scrollBar->value()/(1.0 * scrollBar->maximum() - scrollBar->minimum()) * pageCount;
+    currentPage = (scrollBar->value() - scrollBar->minimum())/(1.0 * scrollBar->maximum() - scrollBar->minimum()) * pageCount;
     if (currentPage == pageCount) --currentPage;
+}
+
+double Reader::getScrollBarPercent() const
+{
+    return (1.0*scrollBar->value() - scrollBar->minimum())/(scrollBar->maximum() - scrollBar->minimum());
 }
 
 bool Reader::event(QEvent *event)
 {
     if (event->type() == QEvent::Resize)
     {
+        isMouseScrolling = true;
         newSize = size();
         if(resizeTimerId)
         {
             killTimer(resizeTimerId);
             resizeTimerId = 0;
         }
-        resizeTimerId = startTimer(500);
+        resizeTimerId = startTimer(200);
     }
     return QWidget::event(event);
 }
 
 void Reader::timerEvent(QTimerEvent *te)
 {
-    scrollArea->resize(newSize);
-    pageArea->resize(newSize.width() - 15, pageCount * pageAspectRatio * (newSize.width() - 15));
+    if(te->timerId() == resizeTimerId)
+    {
+        scrollArea->resize(newSize);
+        pageArea->resize(newSize.width() - 15, pageCount * pageAspectRatio * (newSize.width() - 15));
 
-    for (int index = 0; index < pageCount; index++)
-    {
-        pages[index]->clear();
-        isActualized[index] = false;
-    }
-    updateCurrentPage();
-    if (currentPage > 0)
-    {
-        actualizeView(currentPage-1);
-        isActualized[currentPage-1] = true;
-    }
-    actualizeView(currentPage);
-    isActualized[currentPage] = true;
-    if (currentPage < pageCount - 1)
-    {
-        actualizeView(currentPage+1);
-        isActualized[currentPage+1] = true;
-    }
+        for (int index = 0; index < pageCount; index++)
+        {
+            pages[index]->clear();
+            isActualized[index] = false;
+        }
+        scrollBar->setValue(lastScrollBarValue * scrollBar->maximum());
+        isMouseScrolling = false;
+        startTimer(1);
 
-    killTimer(te->timerId());
-    resizeTimerId = 0;
+        killTimer(te->timerId());
+        resizeTimerId = 0;
+    }
+    else
+    {
+        scrollBar->valueChanged(0);
+    }
 }
 
 void Reader::actualizeView(int page)
@@ -152,31 +156,27 @@ void Reader::actualizeView(int page)
     imageLoadingThread->start();
 }
 
-void Reader::scrollBarValueChanged(int value)
+void Reader::scrollBarValueChanged()
 {
     if (isMouseScrolling) return;
-    int oldPage = currentPage;
+    //int oldPage = currentPage;
     updateCurrentPage();
-    if (oldPage != currentPage)
+    if (!isActualized[currentPage])
     {
-        if (scrollBar->value() < lastScrollBarValue && currentPage > 0 && !isActualized[currentPage-1])
-        {
-            actualizeView(currentPage-1);
-            isActualized[currentPage-1] = true;
-        }
-        if (!isActualized[currentPage])
-        {
-            actualizeView(currentPage);
-            isActualized[currentPage] = true;
-        }
-        if (scrollBar->value() > lastScrollBarValue && currentPage < pageCount - 1 && !isActualized[currentPage+1])
-        {
-            actualizeView(currentPage+1);
-            isActualized[currentPage+1] = true;
-        }
-        lastScrollBarValue = scrollBar->value();
+        actualizeView(currentPage);
+        isActualized[currentPage] = true;
     }
-
+    if (currentPage > 0 && !isActualized[currentPage-1] && getScrollBarPercent() < lastScrollBarValue)
+    {
+        actualizeView(currentPage-1);
+        isActualized[currentPage-1] = true;
+    }
+    if (currentPage < pageCount - 1 && !isActualized[currentPage+1] && getScrollBarPercent() > lastScrollBarValue)
+    {
+        actualizeView(currentPage+1);
+        isActualized[currentPage+1] = true;
+    }
+    lastScrollBarValue = getScrollBarPercent();
 }
 
 void Reader::scrollBarPressed()
@@ -186,6 +186,7 @@ void Reader::scrollBarPressed()
 
 void Reader::scrollBarReleased()
 {
+    lastScrollBarValue = getScrollBarPercent();
     updateCurrentPage();
     if (currentPage > 0)
     {
