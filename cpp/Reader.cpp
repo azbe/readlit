@@ -132,7 +132,7 @@ void Reader::timerEvent(QTimerEvent *te)
         }
         scrollBar->setValue(lastScrollBarValue * scrollBar->maximum());
         isMouseScrolling = false;
-        startTimer(1);
+        startTimer(100);
 
         killTimer(te->timerId());
         resizeTimerId = 0;
