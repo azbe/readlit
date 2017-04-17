@@ -13,6 +13,7 @@ Reader::Reader(QWidget *parent, const QString& path, const int& startingPage) : 
 
     Poppler::Page *page = book->page(0);
     pageAspectRatio = (600 * (page->pageSizeF().height() / 72)) / (600 * (page->pageSizeF().width() / 72));
+    delete page;
     updatePageCount();
 
     scrollArea = new QScrollArea(this);
@@ -62,7 +63,11 @@ void Reader::changeBook(const QString &newPath)
     if (book) delete book;
     book = Poppler::Document::load(newPath);
 
+    Poppler::Page *page = book->page(0);
+    pageAspectRatio = (600 * (page->pageSizeF().height() / 72)) / (600 * (page->pageSizeF().width() / 72));
+    delete page;
     updatePageCount();
+
     scrollBar->setValue(scrollBar->minimum());
     scrollBar->setMaximum(pageCount);
     lastScrollBarValue = 0;
