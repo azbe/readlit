@@ -26,20 +26,19 @@ class Reader : public QWidget
     explicit Reader(QWidget *parent, const QString& path, const int& startingPage = 0);
     ~Reader();
 
-    void changeBook(const QString& newPath);
-
     private:
     Poppler::Document *book;
 
     QScrollArea *scrollArea;
     QScrollBar *scrollBar;
     QFrame *pageArea;
+    QVBoxLayout *pageAreaLayout;
     QLabel **pages;
     bool *isActualized;
 
     double pageAspectRatio;
-    int pageCount;
-    int currentPage;
+    unsigned int pageCount;
+    unsigned int currentPage;
     double lastScrollBarValue;
     bool isMouseScrolling;
 

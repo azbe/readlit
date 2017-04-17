@@ -6,13 +6,41 @@
 
 #include "src/ImageLoader.h"
 
+/*
+Reader::Reader(QWidget *parent)
+{
+    book = 0;
+    pages = 0;
+    isActualized = 0;
+
+    scrollArea = new QScrollArea(this);
+    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    scrollBar = scrollArea->verticalScrollBar();
+    lastScrollBarValue = 0;
+    isMouseScrolling = false;
+    QObject::connect(scrollBar, SIGNAL(sliderPressed()), this, SLOT(scrollBarPressed()));
+    QObject::connect(scrollBar, SIGNAL(sliderReleased()), this, SLOT(scrollBarReleased()));
+    QObject::connect(scrollBar, SIGNAL(valueChanged(int)), this, SLOT(scrollBarValueChanged()));
+
+    pageArea = new QFrame(scrollArea);
+    resizeTimerId = 0;
+    //pageArea->setStyleSheet("border: 3px solid blue");
+    pageAreaLayout = new QVBoxLayout(pageArea);
+    pageCount = 0;
+    currentPage = 0;
+    pageAspectRatio = 0;
+
+    scrollArea->setWidget(pageArea);
+}
+*/
+
 Reader::Reader(QWidget *parent, const QString& path, const int& startingPage) : QWidget(parent)
 {
     book = Poppler::Document::load(path);
     if(book); //TO DO: erori
 
     Poppler::Page *page = book->page(0);
-    pageAspectRatio = (600 * (page->pageSizeF().height() / 72)) / (600 * (page->pageSizeF().width() / 72));
+    pageAspectRatio = (ReaderConstants::SCAN_DEFAULT_VERTICAL_RES * (page->pageSizeF().height() / 72)) / (ReaderConstants::SCAN_DEFAULT_HORIZONTAL_RES * (page->pageSizeF().width() / 72));
     delete page;
     updatePageCount();
 
@@ -30,7 +58,7 @@ Reader::Reader(QWidget *parent, const QString& path, const int& startingPage) : 
     pageArea = new QFrame(scrollArea);
     resizeTimerId = 0;
     //pageArea->setStyleSheet("border: 3px solid blue");
-    QVBoxLayout *pageAreaLayout = new QVBoxLayout(pageArea);
+    pageAreaLayout = new QVBoxLayout(pageArea);
 
     pages = new QLabel*[pageCount];
     isActualized = new bool[pageCount];
@@ -48,10 +76,22 @@ Reader::Reader(QWidget *parent, const QString& path, const int& startingPage) : 
 
 Reader::~Reader()
 {
+    if(pages)
+    {
+        for (int index = 0; index < pageCount; index++)
+            if (pages[index])
+                delete pages[index];
+        delete[] pages;
+        delete[] isActualized;
+    }
+    if(pageAreaLayout) delete pageAreaLayout;
+    if(pageArea) delete pageArea;
+    if(scrollBar) delete scrollBar;
     if(scrollArea) delete scrollArea;
     if(book) delete book;
 }
 
+/*
 void Reader::changeBook(const QString &newPath)
 {
     for (int index = 0; index < pageCount; index++)
@@ -63,19 +103,41 @@ void Reader::changeBook(const QString &newPath)
     if (book) delete book;
     book = Poppler::Document::load(newPath);
 
+    if (pages)
+    {
+        for (int index = 0; index < pageCount; index++)
+            delete pages[index];
+        delete[] pages;
+        delete[] isActualized;
+    }
+
     Poppler::Page *page = book->page(0);
-    pageAspectRatio = (600 * (page->pageSizeF().height() / 72)) / (600 * (page->pageSizeF().width() / 72));
+    pageAspectRatio = (ReaderConstants::SCAN_DEFAULT_VERTICAL_RES * (page->pageSizeF().height() / 72)) / (ReaderConstants::SCAN_DEFAULT_HORIZONTAL_RES * (page->pageSizeF().width() / 72));
     delete page;
     updatePageCount();
 
     scrollBar->setValue(scrollBar->minimum());
-    scrollBar->setMaximum(pageCount);
     lastScrollBarValue = 0;
     isMouseScrolling = false;
     updateCurrentPage();
+    delete pageAreaLayout;
+    pageAreaLayout = new QVBoxLayout(pageArea);
 
+    pages = new QLabel*[pageCount];
+    isActualized = new bool[pageCount];
+    for (int index = 0; index < pageCount; index++)
+    {
+        pages[index] = new QLabel(pageArea);
+        //pages[index]->setStyleSheet("border: 1px solid red");
+        pageAreaLayout->addWidget(pages[index]);
+
+        isActualized[index] = false;
+    }
+
+    updateCurrentPage();
     resize(size());
 }
+*/
 
 QImage Reader::getPageImage(const int& index) const
 {
@@ -91,14 +153,23 @@ QImage Reader::getPageImage(const int& index) const
 void Reader::updatePageCount()
 {
     int index;
+    Poppler::Page *page;
     for(index = 0;; index++)
-        if (!(book->page(index)))
+    {
+        page = book->page(index);
+        if (!page)
+        {
+            delete page;
             break;
+        }
+        delete page;
+    }
     pageCount = index;
 }
 
 void Reader::updateCurrentPage()
 {
+    int a[3] = {scrollBar->minimum(), scrollBar->value(), scrollBar->maximum()};
     currentPage = (scrollBar->value() - scrollBar->minimum())/(1.0 * scrollBar->maximum() - scrollBar->minimum()) * pageCount;
     if (currentPage == pageCount) --currentPage;
 }
@@ -165,7 +236,6 @@ void Reader::actualizeView(int page)
 void Reader::scrollBarValueChanged()
 {
     if (isMouseScrolling) return;
-    //int oldPage = currentPage;
     updateCurrentPage();
     if (!isActualized[currentPage])
     {

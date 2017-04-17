@@ -19,10 +19,10 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 	tabSettings = new QWidget(this);
 
     QGridLayout *readerLayout = new QGridLayout(tabReader);
-    //QWidget *readerExtras = new QListWidget(tabReader);
+    QWidget *readerExtras = new QWidget(tabReader);
     Reader *reader = new Reader(tabReader, "/home/radu/Downloads/The_Brothers_Karamazov.pdf");
-    //readerLayout->addWidget(readerExtras, 0, 0, 1, 2);
-    readerLayout->addWidget(reader, 0, 0, 1, 1);
+    readerLayout->addWidget(readerExtras, 0, 0, 1, 1);
+    readerLayout->addWidget(reader, 0, 1, 1, 3);
 
 	QTabWidget *localTabs = new QTabWidget(tabLocal);
 	QLayout *localLayout = new QHBoxLayout(tabLocal);
