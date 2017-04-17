@@ -11,7 +11,8 @@ Reader::Reader(QWidget *parent, const QString& path, const int& startingPage) : 
     book = Poppler::Document::load(path);
     if(book); //TO DO: erori
 
-    pageAspectRatio = ReaderConstants::PAGE_DEFAULT_ASPECT_RATIO;
+    Poppler::Page *page = book->page(0);
+    pageAspectRatio = (600 * (page->pageSizeF().height() / 72)) / (600 * (page->pageSizeF().width() / 72));
     updatePageCount();
 
     scrollArea = new QScrollArea(this);
