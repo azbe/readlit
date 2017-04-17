@@ -2,6 +2,15 @@
 #define AUTHOR_H
 
 #include <QObject>
+#include <QDebug>
+#include <QString>
+#include <QVector>
+#include <QJsonObject>
+#include <QJsonArray>
+
+#include <vector>
+
+#include "src/Book.h"
 
 class Book;
 class QJsonArray;

@@ -2,19 +2,19 @@
 #define BOOK_H
 
 #include <QObject>
-
+#include <QString>
+#include <QJsonObject>
 /*
  *                                          ---Refactorizare---
  * Pentru optimizare transforma toate valorile in pointeri deoarece mapa din baza de date construieste obiectul
  * cu constructorul definit
 */
-class QString;
 
 class Book
 {
 public:
     Book();
-    Book(const QString& _filePath, const QString& _title, const QString& _author, const int& _year, const QString& _description);
+    Book(const QString& _filePath, const QString& _title = "Title", const QString& _author = "Author", const int& _year = 0, const QString& _description = "Description");
     Book(const Book& b);
     Book& operator = (const Book& b);
     ~Book();
@@ -29,6 +29,8 @@ public:
 
     void write(QJsonObject &json) ;
     void read(const QJsonObject &json);
+
+    bool exists() const;
 private:
     QString *title = nullptr;
     QString *author = nullptr;

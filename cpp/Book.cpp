@@ -1,8 +1,5 @@
 #include "src/Book.h"
 
-#include <QString>
-#include <QJsonObject>
-
 /*
  * bugs:
  * -variabilele initializate nu functioneaza
@@ -42,11 +39,12 @@ Book& Book::operator = (const Book& b)
 {
     if (this == &b) return *this;
 
-    title = b.title;
-    author = b.author;
-    filePath = b.filePath;
-    year = b.year;
-    description = b.description;
+    title = new QString(*b.title);
+    author = new QString(*b.author);
+    filePath = new QString(*b.filePath);
+    year = new int(*b.year);
+    description = new QString(*b.description);
+    _exist = b._exist;
 
     return *this;
 }
@@ -108,5 +106,10 @@ void Book::read(const QJsonObject &json)
     filePath = new QString(json["filePath"].toString());
     year = new int(json["year"].toInt());
     description = new QString(json["description"].toString());
+}
+
+bool Book::exists() const
+{
+    return _exist;
 }
 

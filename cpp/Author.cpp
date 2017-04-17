@@ -1,14 +1,4 @@
 #include "src/Author.h"
-#include "src/Book.h"
-
-#include <QDebug>
-#include <QString>
-#include <QVector>
-#include <QJsonObject>
-#include <QJsonArray>
-
-#include <iostream>
-#include <vector>
 
 /*
 * bugs:
@@ -43,6 +33,20 @@ Author::Author(const Author & a)
     yearDeath = new int(*a.yearDeath);
     bio = new QString(*a.bio);
     _exist = a._exist;
+}
+
+Author& Author::operator =(const Author &a)
+{
+    if (this == &a) return *this;
+
+    name = new QString(*a.name);
+    books = new std::vector<QString>(*a.books);
+    yearBirth = new int(*a.yearBirth);
+    yearDeath = new int(*a.yearDeath);
+    bio = new QString(*a.bio);
+    _exist = a._exist;
+
+    return *this;
 }
 
 bool Author::operator ==(const Author &a) const

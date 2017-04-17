@@ -1,24 +1,11 @@
 #include "src/Database.h"
-#include "src/Book.h"
-#include "src/Author.h"
-
-#include <QDebug>
-#include <QMap>
-#include <QFile>
-#include <QString>
-#include <QJsonObject>
-#include <QJsonArray>
-#include <QJsonDocument>
-
-#include <iostream>
-#include <map>
 
 DataBase::DataBase()
 {
 
 }
 
-bool DataBase::addBook(const Book &NewBook)
+bool DataBase::addBook(const Book& NewBook)
 {
     if(books.count(NewBook.getFilePath()) != 0)
     {

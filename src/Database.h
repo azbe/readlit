@@ -2,19 +2,25 @@
 #define DATABASE_H
 
 #include <QObject>
+#include <QDebug>
+#include <QMap>
+#include <QFile>
+#include <QString>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonDocument>
 
-class Book;
-class Author;
-class QString;
-class QJsonObject;
+#include <map>
 
+#include "src/Book.h"
+#include "src/Author.h"
 
 class DataBase
 {
 public:
     DataBase();
 
-    bool addBook(const Book & NewBook);
+    bool addBook(const Book &NewBook);
     bool deleteBook(const QString & pathID);
     bool addAuthor(Author _author);
     bool deleteAuthor(const QString & name);

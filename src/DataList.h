@@ -8,7 +8,7 @@ class DataList : public QListWidget
 {
 public:
 	DataList(QWidget *parent);
-	~DataList();
+    ~DataList();
 };
 
 #endif //DATALIST_H
