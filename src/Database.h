@@ -1,28 +1,35 @@
-#pragma once
+#ifndef DATABASE_H
+#define DATABASE_H
 
 #include <QObject>
 
-class QString;
-class Author;
 class Book;
+class Author;
+class QString;
 class QJsonObject;
-class QJsonArray;
-class QJsonDocument;
+
 
 class DataBase
 {
 public:
-    DataBase(const QString &filename);
-    ~DataBase();
-
     DataBase();
-    QString getFileName();
-    Author getAuthor(const QString& authorName);
-    Book getBook(const QString& filePath);
 
-    bool addNewBook(const Book &book);
-    bool addNewAuthor(const Author &author);
+    bool addBook(const Book & NewBook);
+    bool deleteBook(const QString & pathID);
+    bool addAuthor(Author _author);
+    bool deleteAuthor(const QString & name);
+    Book getBook(const QString &PathID);
+    Author getAuthor(const QString &name);
 
+
+    void save(const QString & fileName);
+    void load(const QString & fileName);
 private:
-    QString *filename;
+    void write(QJsonObject &json);
+    void read(const QJsonObject &JsonObj);
+
+    std::map<QString, Book> books;
+    std::map<QString, Author> authors;
 };
+
+#endif // DATABASE_H

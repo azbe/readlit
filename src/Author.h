@@ -11,7 +11,11 @@ class Author
 {
 public:
     Author();
-    explicit Author(const QString & name, std::vector<QString> books, const int & yearBirth, const int & yearDeath, const QString & bio);
+    explicit Author(const QString & name,
+                    std::vector<QString> books = std::vector<QString>(),
+                    const int & yearBirth = 0,
+                    const int & yearDeath = 0,
+                    const QString & bio = "");
     Author(const Author & a);
     Author& operator = (const Author & a);
     bool operator ==(const Author &a) const;
@@ -24,19 +28,21 @@ public:
     int getYearBirth();
     int getYearDeath();
 
-    bool addBook(const QString & book)
-    {
+    bool addBook(const QString & book);
+    bool exist();
 
-        books.push_back(book);
-        return true;
-    }
+    void write(QJsonObject &json) const;
+    void read(const QJsonObject & json);
+
+    //debug
 
 private:
-    QString name;
-    std::vector<QString> books;//Oriunde avem carti, optimizam eficienta pastrand doar titlul si cautand cartea in baza de date
-    int yearBirth;
-    int yearDeath;
-    QString bio;
+    QString *name;
+    std::vector<QString> *books;//Oriunde avem carti, optimizam eficienta pastrand doar titlul si cautand cartea in baza de date
+    int *yearBirth;
+    int *yearDeath;
+    QString *bio;
+    bool _exist;
 };
 
 #endif // AUTHOR_H

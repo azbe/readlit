@@ -30,11 +30,12 @@ public:
     void write(QJsonObject &json) ;
     void read(const QJsonObject &json);
 private:
-    QString title;
-    QString author;
-    QString filePath;
-    int year;
-    QString description;
+    QString *title = nullptr;
+    QString *author = nullptr;
+    QString *filePath = nullptr;
+    int *year = nullptr;
+    QString *description = nullptr;
+    bool _exist;
 };
 
 #endif //BOOK_H
