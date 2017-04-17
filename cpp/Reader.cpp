@@ -12,7 +12,7 @@ Reader::Reader(QWidget *parent, const QString& path, const int& startingPage) : 
     if(book); //TO DO: erori
 
     Poppler::Page *page = book->page(0);
-    pageAspectRatio = (600 * (page->pageSizeF().height() / 72)) / (600 * (page->pageSizeF().width() / 72));
+    pageAspectRatio = (ReaderConstants::SCAN_DEFAULT_VERTICAL_RES * (page->pageSizeF().height() / 72)) / (ReaderConstants::SCAN_DEFAULT_HORIZONTAL_RES * (page->pageSizeF().width() / 72));
     delete page;
     updatePageCount();
 
@@ -64,7 +64,7 @@ void Reader::changeBook(const QString &newPath)
     book = Poppler::Document::load(newPath);
 
     Poppler::Page *page = book->page(0);
-    pageAspectRatio = (600 * (page->pageSizeF().height() / 72)) / (600 * (page->pageSizeF().width() / 72));
+    pageAspectRatio = (ReaderConstants::SCAN_DEFAULT_VERTICAL_RES * (page->pageSizeF().height() / 72)) / (ReaderConstants::SCAN_DEFAULT_HORIZONTAL_RES * (page->pageSizeF().width() / 72));
     delete page;
     updatePageCount();
 
