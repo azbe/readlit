@@ -1,6 +1,13 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+namespace ReaderConstants
+{
+    const double PAGE_DEFAULT_ASPECT_RATIO = 1.315;
+    const int SCAN_DEFAULT_HORIZONTAL_RES = 600;
+    const int SCAN_DEFAULT_VERTICAL_RES = 600;
+}
+
 namespace UIConstants
 {
 	//Values
