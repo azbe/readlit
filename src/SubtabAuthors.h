@@ -20,6 +20,7 @@ public:
 
 public slots:
     void newScan();
+    void updateAuthorBooks(QListWidgetItem *item);
 
 private:
     DataBase *database;

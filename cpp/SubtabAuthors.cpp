@@ -12,9 +12,12 @@ SubtabAuthors::SubtabAuthors(QWidget *parent, DataBase& database) : QWidget(pare
 
 	genericPolicy = new QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	genericPolicy->setHorizontalStretch(UIConstants::LOCAL_AUTHORS_LIST_HORIZONTAL_STRETCH);
+    authorList->addItems(this->database->getAuthorNames());
     authorList->setSizePolicy(*genericPolicy);
     authorList->setSortingEnabled(true);
-	authorBooks->setSizePolicy(*genericPolicy);
+    connect(authorList, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), this, SLOT(updateAuthorBooks(QListWidgetItem*)));
+    authorBooks->setSizePolicy(*genericPolicy);
+    authorBooks->setSortingEnabled(true);
 	delete genericPolicy;
 
 	genericPolicy = new QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
@@ -39,6 +42,7 @@ SubtabAuthors::SubtabAuthors(QWidget *parent, DataBase& database) : QWidget(pare
 		authorDataLayout->addWidget(dataButtons[i], 0, i, 1, 1);
 	}
     authorDataTable = new DataTable(authorData);
+    //connect(authorList, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), authorDataTable, updateAuthorData(QListWidgetItem*));
 	authorDataLayout->addWidget(authorDataTable, 1, 0, 1, 5);
 	authorDataLayout->setContentsMargins(0, 0, 0, 0);
 
@@ -63,4 +67,11 @@ void SubtabAuthors::newScan()
     QStringList authors = database->getAuthorNames();
     authorList->clear();
     authorList->addItems(authors);
+}
+
+void SubtabAuthors::updateAuthorBooks(QListWidgetItem *item)
+{
+    QStringList books = database->getBookTitles();
+    authorBooks->clear();
+    authorBooks->addItems(books);
 }

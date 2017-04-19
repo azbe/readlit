@@ -29,6 +29,7 @@ SubtabBooks::SubtabBooks(QWidget *parent, DataBase& database) : QWidget(parent)
 	books->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     bookWidgetsLayout1 = new QHBoxLayout(books);
     bookList = new DataList(books);
+    bookList->addItems(this->database->getBookTitles());
 	genericPolicy = new QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	genericPolicy->setHorizontalStretch(UIConstants::LOCAL_BOOKS_LIST_HORIZONTAL_STRETCH);
 	bookList->setSizePolicy(*genericPolicy);
