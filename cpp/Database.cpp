@@ -50,20 +50,11 @@ bool DataBase::deleteAuthor(const QString &name)
 
 Book DataBase::getBook(const QString &PathID)
 {
-    try
+    if(books.count(PathID) == 0)
     {
-        if(books.count(PathID) == 0)
-        {
-            throw "Book not found";
-        }
-        return books[PathID];
-    }catch(char *exception)
-    {
-        //qWarning(exception);
-        //todo eroare extragere carte
-        qDebug() << exception;
+        return Book();
     }
-    return Book();
+    return books[PathID];
 }
 
 Author DataBase::getAuthor(const QString &name)

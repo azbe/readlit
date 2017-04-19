@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 
     QGridLayout *readerLayout = new QGridLayout(tabReader);
     QWidget *readerExtras = new QWidget(tabReader);
-    Reader *reader = new Reader(tabReader, "/home/radu/Downloads/1.pdf");
+    Reader *reader = new Reader(tabReader, "/home/alin/Downloads/1.pdf");
     readerLayout->addWidget(readerExtras, 0, 0, 1, 1);
     readerLayout->addWidget(reader, 0, 1, 1, 3);
 
@@ -33,11 +33,6 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
     database.addBook(Book("3.pdf","KEK", "/pol/"));
     database.addBook(Book("4.pdf","a", "A"));
     database.addBook(Book("5.pdf","B", "8"));
-    database.addBook(Book("6.pdf","Konosuba 1", "Ching Chong"));
-    database.addBook(Book("7.pdf","Konosuba 2", "Ching Chong"));
-    database.addBook(Book("8.pdf","Konosuba 3", "Ching Chong"));
-    database.addBook(Book("9.pdf","Konosuba 4", "Ching Chong"));
-
     SubtabBooks *books = new SubtabBooks(tabLocal, database);
     SubtabAuthors *authors = new SubtabAuthors(tabLocal, database);
 

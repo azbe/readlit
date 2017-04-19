@@ -78,10 +78,6 @@ SubtabBooks::SubtabBooks(QWidget *parent, DataBase& database) : QWidget(parent)
     bookList->addItem(database.getBook("3.pdf").getTitle());
     bookList->addItem(database.getBook("4.pdf").getTitle());
     bookList->addItem(database.getBook("5.pdf").getTitle());
-    bookList->addItem(database.getBook("6.pdf").getTitle());
-    bookList->addItem(database.getBook("7.pdf").getTitle());
-    bookList->addItem(database.getBook("8.pdf").getTitle());
-    bookList->addItem(database.getBook("9.pdf").getTitle());
 }
 
 SubtabBooks::~SubtabBooks()

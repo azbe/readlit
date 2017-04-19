@@ -32,11 +32,11 @@ public:
 
     bool exists() const;
 private:
-    QString *title = nullptr;
-    QString *author = nullptr;
-    QString *filePath = nullptr;
-    int *year = nullptr;
-    QString *description = nullptr;
+    QString *title;
+    QString *author;
+    QString *filePath;
+    int *year;
+    QString *description;
     bool _exist;
 };
 

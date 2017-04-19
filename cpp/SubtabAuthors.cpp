@@ -55,10 +55,6 @@ SubtabAuthors::SubtabAuthors(QWidget *parent, DataBase& database) : QWidget(pare
     authors->addItem(database.getBook("3.pdf").getAuthor());
     authors->addItem(database.getBook("4.pdf").getAuthor());
     authors->addItem(database.getBook("5.pdf").getAuthor());
-    authors->addItem(database.getBook("6.pdf").getAuthor());
-    authors->addItem(database.getBook("7.pdf").getAuthor());
-    authors->addItem(database.getBook("8.pdf").getAuthor());
-    authors->addItem(database.getBook("9.pdf").getAuthor());
 }
 
 SubtabAuthors::~SubtabAuthors()
