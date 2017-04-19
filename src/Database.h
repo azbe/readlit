@@ -27,9 +27,10 @@ public:
     bool findBook(const QString &PathID);
     Book getBook(const QString &PathID);
     QStringList getBookTitles();
+    bool findAuthor(const QString &name);
     Author getAuthor(const QString &name);
     QStringList getAuthorNames();
-
+    bool addBookToAuthor(const QString& title, const QString& name);
 
     void save(const QString & fileName);
     void load(const QString & fileName);

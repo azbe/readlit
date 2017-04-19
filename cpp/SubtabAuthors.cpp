@@ -1,21 +1,19 @@
 #include "src/SubtabAuthors.h"
-#include "src/DataButton.h"
-#include "src/DataTable.h"
-#include "src/Constants.h"
 
 SubtabAuthors::SubtabAuthors(QWidget *parent, DataBase& database) : QWidget(parent)
 {
+    this->database = &database;
 	QSizePolicy *genericPolicy;
 
-	authors = new DataList(this);
+    authorList = new DataList(this);
 	authorBooks = new DataList(this);
 	authorData = new QWidget(this);
 	authorLayout = new QHBoxLayout(this);
 
 	genericPolicy = new QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	genericPolicy->setHorizontalStretch(UIConstants::LOCAL_AUTHORS_LIST_HORIZONTAL_STRETCH);
-	authors->setSizePolicy(*genericPolicy);
-    authors->setSortingEnabled(true);
+    authorList->setSizePolicy(*genericPolicy);
+    authorList->setSortingEnabled(true);
 	authorBooks->setSizePolicy(*genericPolicy);
 	delete genericPolicy;
 
@@ -23,8 +21,7 @@ SubtabAuthors::SubtabAuthors(QWidget *parent, DataBase& database) : QWidget(pare
 	genericPolicy->setHorizontalStretch(UIConstants::LOCAL_AUTHORS_DETAILS_WIDGET_HORIZONTAL_STRETCH);
 	authorData->setSizePolicy(*genericPolicy);
 	delete genericPolicy;
-	QGridLayout* authorDataLayout = new QGridLayout(authorData);
-	DataButton *dataButtons[4];
+    authorDataLayout = new QGridLayout(authorData);
 	for (int i = 0; i < 4; i++)
 	{
 		QString text;
@@ -41,19 +38,29 @@ SubtabAuthors::SubtabAuthors(QWidget *parent, DataBase& database) : QWidget(pare
 		dataButtons[i]->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		authorDataLayout->addWidget(dataButtons[i], 0, i, 1, 1);
 	}
-	DataTable *authorDataTable = new DataTable(authorData);
+    authorDataTable = new DataTable(authorData);
 	authorDataLayout->addWidget(authorDataTable, 1, 0, 1, 5);
 	authorDataLayout->setContentsMargins(0, 0, 0, 0);
 
-	authorLayout->addWidget(authors);
+    authorLayout->addWidget(authorList);
 	authorLayout->addWidget(authorBooks);
     authorLayout->addWidget(authorData);
 }
 
 SubtabAuthors::~SubtabAuthors()
 {
-	if (authors) delete authors;
-	if (authorBooks) delete authorBooks;
-	if (authorData) delete authorData;
-	if (authorLayout) delete authorLayout;
+    delete authorDataTable;
+    for (int i = 0; i < 4; i++) delete dataButtons[i];
+    delete authorDataLayout;
+    delete authorData;
+    delete authorBooks;
+    delete authorList;
+    delete authorLayout;
+}
+
+void SubtabAuthors::newScan()
+{
+    QStringList authors = database->getAuthorNames();
+    authorList->clear();
+    authorList->addItems(authors);
 }

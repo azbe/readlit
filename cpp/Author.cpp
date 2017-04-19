@@ -120,6 +120,7 @@ void Author::write(QJsonObject &json) const
 void Author::read(const QJsonObject &json)
 {
     name = new QString(json["name"].toString());
+    books = new std::vector<QString>();
     QJsonArray booksJsonArray = json["AuthorBooks"].toArray();
     for(int index = 0; index < booksJsonArray.size(); index++)
     {

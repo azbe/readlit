@@ -24,7 +24,7 @@ public:
                     std::vector<QString> books = std::vector<QString>(),
                     const int & yearBirth = 0,
                     const int & yearDeath = 0,
-                    const QString & bio = "");
+                    const QString & bio = "n/a");
     Author(const Author & a);
     Author& operator = (const Author & a);
     bool operator ==(const Author &a) const;

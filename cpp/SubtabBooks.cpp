@@ -93,6 +93,7 @@ void SubtabBooks::getBookpaths(QStringList bookPaths)
             database->addBook(Book(bookPaths.value(index), bookPaths.value(index)));
     }
     updateBookList();
+    emit updateAuthors();
 }
 
 void SubtabBooks::updateBookList()

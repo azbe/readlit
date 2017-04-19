@@ -24,6 +24,9 @@ public:
 
     void updateBookList();
 
+    signals:
+    void updateAuthors();
+
     private slots:
     void getBookpaths(QStringList bookPaths);
 

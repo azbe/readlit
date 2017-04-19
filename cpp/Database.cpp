@@ -14,6 +14,13 @@ bool DataBase::addBook(const Book& NewBook)
         return false;
     }
     books.insert(std::pair<QString, Book>(NewBook.getFilePath(), NewBook));
+    if (findAuthor(NewBook.getAuthor()))
+        addBookToAuthor(NewBook.getTitle(), NewBook.getAuthor());
+    else
+    {
+        addAuthor(Author(NewBook.getAuthor()));
+        addBookToAuthor(NewBook.getTitle(), NewBook.getAuthor());
+    }
     return true;
 }
 
@@ -71,6 +78,12 @@ QStringList DataBase::getBookTitles()
     return bookTitles;
 }
 
+bool DataBase::findAuthor(const QString& name)
+{
+    if(authors.count(name) == 0) return false;
+    return true;
+}
+
 Author DataBase::getAuthor(const QString &name)
 {
     if(authors.count(name) == 0)
@@ -84,9 +97,14 @@ Author DataBase::getAuthor(const QString &name)
 QStringList DataBase::getAuthorNames()
 {
     QStringList authorNames;
-    for (auto const& author : authors)
+    for (auto const &author : authors)
         authorNames.append(author.second.getName());
     return authorNames;
+}
+
+bool DataBase::addBookToAuthor(const QString &title, const QString &name)
+{
+    authors[name].addBook(title);
 }
 
 void DataBase::write(QJsonObject &json)
@@ -114,16 +132,6 @@ void DataBase::write(QJsonObject &json)
 
 void DataBase::read(const QJsonObject &JsonObj)
 {
-    books.clear();
-    QJsonArray booksArray = JsonObj["books"].toArray();
-    for(int index = 0; index < booksArray.size(); index++)
-    {
-        QJsonObject bookObject = booksArray[index].toObject();
-        Book book;
-        book.read(bookObject);
-        books.insert(std::pair<QString, Book>(book.getFilePath(), book));
-    }
-
     authors.clear();
     QJsonArray authorsArray = JsonObj["authors"].toArray();
     for(int index = 0; index < authorsArray.size(); index++)
@@ -132,6 +140,16 @@ void DataBase::read(const QJsonObject &JsonObj)
         Author _author;
         _author.read(authorObject);
         authors.insert(std::pair<QString, Author>(_author.getName(), _author));
+    }
+
+    books.clear();
+    QJsonArray booksArray = JsonObj["books"].toArray();
+    for(int index = 0; index < booksArray.size(); index++)
+    {
+        QJsonObject bookObject = booksArray[index].toObject();
+        Book book;
+        book.read(bookObject);
+        books.insert(std::pair<QString, Book>(book.getFilePath(), book));
     }
 }
 

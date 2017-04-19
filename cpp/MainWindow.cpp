@@ -9,6 +9,7 @@
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
 	resize(UIConstants::MAINWINDOW_DEFAULT_WIDTH, UIConstants::MAINWINDOW_DEFAULT_HEIGHT);
+    database.load("database.json");
 
 	mainTabs = new QTabWidget(this);
 	mainLayout = new QHBoxLayout(this);
@@ -29,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 
     SubtabBooks *books = new SubtabBooks(tabLocal, database);
     SubtabAuthors *authors = new SubtabAuthors(tabLocal, database);
+    connect(books, SIGNAL(updateAuthors()), authors, SLOT(newScan()));
 
 	localTabs->addTab(books, "Books");
 	localTabs->addTab(authors, "Authors");
@@ -50,4 +52,5 @@ MainWindow::~MainWindow()
 {
     if (mainLayout) delete mainLayout;
     if (mainTabs) delete mainTabs;
+    database.save("database.json");
 }

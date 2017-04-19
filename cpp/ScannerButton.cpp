@@ -32,17 +32,17 @@ QStringList ScannerButton::getBooksInFolder(QString folderPath)
     dir.setNameFilters(QStringList("*.pdf"));
     dir.setFilter(QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks);
     QStringList fileList = dir.entryList();
-    for (int index = 0; index < fileList.count(); ++index)
-    {
-        filePaths.append(fileList[index]);
-    }
+    for (int index = 0; index < fileList.size(); ++index)
+        filePaths.append(QString("%1/%2").arg(folderPath).arg(fileList[index]));
 
     dir.setFilter(QDir::AllDirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
     QStringList dirList = dir.entryList();
     for (int index = 0; index < dirList.size(); ++index)
     {
         QString newPath = QString("%1/%2").arg(dir.absolutePath()).arg(dirList.at(index));
-        filePaths.append(getBooksInFolder(newPath));
+        QStringList newBooks = getBooksInFolder(newPath);
+        for (int index1 = 0; index1  < newBooks.size(); index1++)
+            filePaths.append(newBooks.value(index1));
     }
 
     return filePaths;
