@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 
     QGridLayout *readerLayout = new QGridLayout(tabReader);
     QWidget *readerExtras = new QWidget(tabReader);
-    Reader *reader = new Reader(tabReader, "/home/radu/Downloads/The_Brothers_Karamazov.pdf");
+    Reader *reader = new Reader(tabReader, "/home/gabriel/Downloads/Crime and Punishment.pdf");
     readerLayout->addWidget(readerExtras, 0, 0, 1, 1);
     readerLayout->addWidget(reader, 0, 1, 1, 3);
 
