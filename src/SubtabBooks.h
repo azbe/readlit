@@ -4,10 +4,12 @@
 #include <QWidget>
 #include <QLayout>
 
+#include "src/Database.h"
+
 class SubtabBooks : public QWidget
 {
 public:
-	SubtabBooks(QWidget *parent);
+    SubtabBooks(QWidget *parent, DataBase &database);
 	~SubtabBooks();
 
 private:
