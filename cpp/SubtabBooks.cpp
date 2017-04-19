@@ -3,28 +3,23 @@
 #include <QLabel>
 #include <QLineEdit>
 
-#include "src/BrowserButton.h"
-#include "src/ScannerButton.h"
-#include "src/DataList.h"
-#include "src/DataTable.h"
-#include "src/DataButton.h"
-#include "src/Constants.h"
-
 SubtabBooks::SubtabBooks(QWidget *parent, DataBase& database) : QWidget(parent)
 {
 	QSizePolicy *genericPolicy;
 
+    this->database = &database;
 	scanner = new QWidget(this);
 	books = new QWidget(this);
 	bookLayout = new QVBoxLayout(this);
 
 	scanner->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	scanner->setFixedHeight(41);
-	QLayout *bookWidgetsLayout0 = new QHBoxLayout(scanner);
-	QLabel *folderPathsLabel = new QLabel("Folder Paths", scanner);
-	QLineEdit *folderPaths = new QLineEdit(scanner);
-	BrowserButton *browserButton = new BrowserButton(scanner);
-	ScannerButton *scannerButton = new ScannerButton(scanner);
+    bookWidgetsLayout0 = new QHBoxLayout(scanner);
+    folderPathsLabel = new QLabel("Folder Paths", scanner);
+    folderPaths = new QLineEdit(scanner);
+    browserButton = new BrowserButton(scanner);
+    scannerButton = new ScannerButton(scanner, folderPaths);
+    connect(scannerButton, SIGNAL(sendBookPaths(QStringList)), this, SLOT(getBookpaths(QStringList)));
 	bookWidgetsLayout0->addWidget(folderPathsLabel);
 	bookWidgetsLayout0->addWidget(folderPaths);
 	bookWidgetsLayout0->addWidget(browserButton);
@@ -32,20 +27,19 @@ SubtabBooks::SubtabBooks(QWidget *parent, DataBase& database) : QWidget(parent)
 	bookWidgetsLayout0->setContentsMargins(0, 0, 0, 0);
 
 	books->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-	QLayout *bookWidgetsLayout1 = new QHBoxLayout(books);
-	DataList *bookList = new DataList(books);
+    bookWidgetsLayout1 = new QHBoxLayout(books);
+    bookList = new DataList(books);
 	genericPolicy = new QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	genericPolicy->setHorizontalStretch(UIConstants::LOCAL_BOOKS_LIST_HORIZONTAL_STRETCH);
 	bookList->setSizePolicy(*genericPolicy);
     bookList->setSortingEnabled(true);
 	delete genericPolicy;
-	QWidget *dataWidget = new QWidget(books);
+    dataWidget = new QWidget(books);
 	genericPolicy = new QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 	genericPolicy->setHorizontalStretch(UIConstants::LOCAL_BOOKS_DETAILS_WIDGET_HORIZONTAL_STRETCH);
 	dataWidget->setSizePolicy(*genericPolicy);
 	delete genericPolicy;
-	QGridLayout *dataWidgetLayout = new QGridLayout(dataWidget);
-	DataButton *dataButtons[4];
+    dataWidgetLayout = new QGridLayout(dataWidget);
 	for (int i = 0; i < 4; i++)
 	{
 		QString text;
@@ -62,7 +56,7 @@ SubtabBooks::SubtabBooks(QWidget *parent, DataBase& database) : QWidget(parent)
 		dataButtons[i]->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		dataWidgetLayout->addWidget(dataButtons[i], 0, i, 1, 1);
 	}
-	DataTable *bookData = new DataTable(books);
+    bookData = new DataTable(books);
 	dataWidgetLayout->addWidget(bookData, 1, 0, 1, 5);
 	dataWidgetLayout->setContentsMargins(0, 0, 0, 0);
 	bookWidgetsLayout1->addWidget(bookList);
@@ -70,19 +64,40 @@ SubtabBooks::SubtabBooks(QWidget *parent, DataBase& database) : QWidget(parent)
 	bookWidgetsLayout1->setContentsMargins(0, 0, 0, 0);
 
 	bookLayout->addWidget(scanner);
-	bookLayout->addWidget(books);
-
-    bookList->addItem(database.getBook("0.pdf").getTitle());
-    bookList->addItem(database.getBook("1.pdf").getTitle());
-    bookList->addItem(database.getBook("2.pdf").getTitle());
-    bookList->addItem(database.getBook("3.pdf").getTitle());
-    bookList->addItem(database.getBook("4.pdf").getTitle());
-    bookList->addItem(database.getBook("5.pdf").getTitle());
+    bookLayout->addWidget(books);
 }
 
 SubtabBooks::~SubtabBooks()
 {
-    if (books) delete books;
-    if (bookLayout) delete bookLayout;
-    if (scanner) delete scanner;
+    delete bookData;
+    for (int i = 0; i < 4; i++) dataButtons[i];
+    delete dataWidgetLayout;
+    delete dataWidget;
+    delete bookList;
+    delete bookWidgetsLayout1;
+    delete books;
+    delete scannerButton;
+    delete browserButton;
+    delete folderPaths;
+    delete folderPathsLabel;
+    delete bookWidgetsLayout0;
+    delete scanner;
+    delete bookLayout;
+}
+
+void SubtabBooks::getBookpaths(QStringList bookPaths)
+{
+    for (int index = 0; index < bookPaths.size(); index++)
+    {
+        if (!database->findBook(bookPaths.value(index)))
+            database->addBook(Book(bookPaths.value(index), bookPaths.value(index)));
+    }
+    updateBookList();
+}
+
+void SubtabBooks::updateBookList()
+{
+    QStringList books = database->getBookTitles();
+    bookList->clear();
+    bookList->addItems(books);
 }

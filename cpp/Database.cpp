@@ -48,6 +48,12 @@ bool DataBase::deleteAuthor(const QString &name)
     return true;
 }
 
+bool DataBase::findBook(const QString &PathID)
+{
+    if (books.count(PathID) == 0) return false;
+    return true;
+}
+
 Book DataBase::getBook(const QString &PathID)
 {
     if(books.count(PathID) == 0)
@@ -55,6 +61,14 @@ Book DataBase::getBook(const QString &PathID)
         return Book();
     }
     return books[PathID];
+}
+
+QStringList DataBase::getBookTitles()
+{
+    QStringList bookTitles;
+    for (auto const &book : books)
+        bookTitles.append(book.second.getTitle());
+    return bookTitles;
 }
 
 Author DataBase::getAuthor(const QString &name)
@@ -65,6 +79,14 @@ Author DataBase::getAuthor(const QString &name)
         return Author();
     }
     return authors[name];
+}
+
+QStringList DataBase::getAuthorNames()
+{
+    QStringList authorNames;
+    for (auto const& author : authors)
+        authorNames.append(author.second.getName());
+    return authorNames;
 }
 
 void DataBase::write(QJsonObject &json)

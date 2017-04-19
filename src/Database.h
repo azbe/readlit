@@ -24,8 +24,11 @@ public:
     bool deleteBook(const QString & pathID);
     bool addAuthor(Author _author);
     bool deleteAuthor(const QString & name);
+    bool findBook(const QString &PathID);
     Book getBook(const QString &PathID);
+    QStringList getBookTitles();
     Author getAuthor(const QString &name);
+    QStringList getAuthorNames();
 
 
     void save(const QString & fileName);

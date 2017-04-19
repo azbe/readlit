@@ -4,13 +4,26 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QString>
+#include <QMouseEvent>
+#include <QLineEdit>
 
 class ScannerButton : public QPushButton
 {
+    Q_OBJECT
+
 public:
-	ScannerButton(const QString& text, QWidget *parent = 0);
-	ScannerButton(QWidget *parent = 0);
+
+    ScannerButton(QWidget *parent, QLineEdit *folderPaths);
 	~ScannerButton();
+
+    void mousePressEvent(QMouseEvent *event);
+    QStringList getBooksInFolder(QString folderPath);
+
+private:
+    QLineEdit *folderPaths;
+
+    signals:
+    void sendBookPaths(QStringList bookPaths);
 };
 
 #endif //SCANNERBUTTON_H

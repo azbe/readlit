@@ -31,11 +31,11 @@ public:
 
     ~Author();
 
-    QString getName();
-    QString getBio();
-    std::vector<QString> getVector();
-    int getYearBirth();
-    int getYearDeath();
+    QString getName() const;
+    QString getBio() const;
+    std::vector<QString> getVector() const;
+    int getYearBirth() const;
+    int getYearDeath() const;
 
     bool addBook(const QString & book);
     bool exist();

@@ -65,27 +65,27 @@ Author::~Author()
     delete bio;
 }
 
-QString Author::getName()
+QString Author::getName() const
 {
     return *name;
 }
 
-QString Author::getBio()
+QString Author::getBio() const
 {
     return *bio;
 }
 
-std::vector<QString> Author::getVector()
+std::vector<QString> Author::getVector() const
 {
     return *books;
 }
 
-int Author::getYearBirth()
+int Author::getYearBirth() const
 {
     return *yearBirth;
 }
 
-int Author::getYearDeath()
+int Author::getYearDeath() const
 {
     return *yearBirth;
 }

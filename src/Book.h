@@ -14,7 +14,7 @@ class Book
 {
 public:
     Book();
-    Book(const QString& _filePath, const QString& _title = "Title", const QString& _author = "Author", const int& _year = 0, const QString& _description = "Description");
+    Book(const QString& _filePath, const QString& _title = "n/a", const QString& _author = "n/a", const int& _year = 0, const QString& _description = "n/a");
     Book(const Book& b);
     Book& operator = (const Book& b);
     ~Book();
