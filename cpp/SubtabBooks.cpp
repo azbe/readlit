@@ -10,7 +10,7 @@
 #include "src/DataButton.h"
 #include "src/Constants.h"
 
-SubtabBooks::SubtabBooks(QWidget *parent) : QWidget(parent)
+SubtabBooks::SubtabBooks(QWidget *parent, DataBase& database) : QWidget(parent)
 {
 	QSizePolicy *genericPolicy;
 
@@ -37,6 +37,7 @@ SubtabBooks::SubtabBooks(QWidget *parent) : QWidget(parent)
 	genericPolicy = new QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	genericPolicy->setHorizontalStretch(UIConstants::LOCAL_BOOKS_LIST_HORIZONTAL_STRETCH);
 	bookList->setSizePolicy(*genericPolicy);
+    bookList->setSortingEnabled(true);
 	delete genericPolicy;
 	QWidget *dataWidget = new QWidget(books);
 	genericPolicy = new QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
@@ -70,11 +71,18 @@ SubtabBooks::SubtabBooks(QWidget *parent) : QWidget(parent)
 
 	bookLayout->addWidget(scanner);
 	bookLayout->addWidget(books);
+
+    bookList->addItem(database.getBook("0.pdf").getTitle());
+    bookList->addItem(database.getBook("1.pdf").getTitle());
+    bookList->addItem(database.getBook("2.pdf").getTitle());
+    bookList->addItem(database.getBook("3.pdf").getTitle());
+    bookList->addItem(database.getBook("4.pdf").getTitle());
+    bookList->addItem(database.getBook("5.pdf").getTitle());
 }
 
 SubtabBooks::~SubtabBooks()
 {
-	if (scanner) delete scanner;
-	if (books) delete books;
-	if (bookLayout) delete bookLayout;
+    if (books) delete books;
+    if (bookLayout) delete bookLayout;
+    if (scanner) delete scanner;
 }

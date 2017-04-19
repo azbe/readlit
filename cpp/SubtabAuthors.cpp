@@ -3,7 +3,7 @@
 #include "src/DataTable.h"
 #include "src/Constants.h"
 
-SubtabAuthors::SubtabAuthors(QWidget *parent) : QWidget(parent)
+SubtabAuthors::SubtabAuthors(QWidget *parent, DataBase& database) : QWidget(parent)
 {
 	QSizePolicy *genericPolicy;
 
@@ -15,6 +15,7 @@ SubtabAuthors::SubtabAuthors(QWidget *parent) : QWidget(parent)
 	genericPolicy = new QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	genericPolicy->setHorizontalStretch(UIConstants::LOCAL_AUTHORS_LIST_HORIZONTAL_STRETCH);
 	authors->setSizePolicy(*genericPolicy);
+    authors->setSortingEnabled(true);
 	authorBooks->setSizePolicy(*genericPolicy);
 	delete genericPolicy;
 
@@ -47,8 +48,14 @@ SubtabAuthors::SubtabAuthors(QWidget *parent) : QWidget(parent)
 	authorLayout->addWidget(authors);
 	authorLayout->addWidget(authorBooks);
 	authorLayout->addWidget(authorData);
-}
 
+    authors->addItem(database.getBook("0.pdf").getAuthor());
+    authors->addItem(database.getBook("1.pdf").getAuthor());
+    authors->addItem(database.getBook("2.pdf").getAuthor());
+    authors->addItem(database.getBook("3.pdf").getAuthor());
+    authors->addItem(database.getBook("4.pdf").getAuthor());
+    authors->addItem(database.getBook("5.pdf").getAuthor());
+}
 
 SubtabAuthors::~SubtabAuthors()
 {

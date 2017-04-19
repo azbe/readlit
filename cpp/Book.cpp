@@ -1,75 +1,115 @@
 #include "src/Book.h"
 
-Book::Book()
+/*
+ * bugs:
+ * -variabilele initializate nu functioneaza
+ * -variabilele sunt statice asa ca performanta nu e optima, mai ales cand foloseste constructorul predefinit in maps
+ */
+
+Book::Book() /*adaugat pentru functionalizarea cu mape si vectori */
 {
-	title = "Warning: book title not set";
-	year = 0;
-	description = " ";
+    _exist = false;
 }
 
-Book::Book(const QString& _title, const QString& _author, const QString& _filePath, const int& _year, const QString& _description)
+Book::Book(const QString& _filePath,
+           const QString& _title,
+           const QString& _author,
+           const int& _year,
+           const QString& _description)
 {
-	title = _title;
-	author = _author;
-	filePath = _filePath;
-	year = _year;
-	description = _description;
+    title = new QString(_title);
+    author = new QString(_author);
+    filePath = new QString(_filePath);
+    year = new int(_year);
+    description = new QString(_description);
+    _exist = true;
 }
 
 Book::Book(const Book& b)
 {
-	title = b.title;
-	author = b.author;
-	filePath = b.filePath;
-	year = b.year;
-	description = b.description;
+    title = new QString(*b.title);
+    author = new QString(*b.author);
+    filePath = new QString(*b.filePath);
+    year = new int(*b.year);
+    description = new QString(*b.description);
 }
 
+//de refactorizat
 Book& Book::operator = (const Book& b)
 {
-	if (this == &b) return *this;
+    if (this == &b) return *this;
 
-	title = b.title;
-	author = b.author;
-	filePath = b.filePath;
-	year = b.year;
-	description = b.description;
+    title = new QString(*b.title);
+    author = new QString(*b.author);
+    filePath = new QString(*b.filePath);
+    year = new int(*b.year);
+    description = new QString(*b.description);
+    _exist = b._exist;
 
-	return *this;
+    return *this;
 }
 
 
 Book::~Book()
 {
+    delete title;
+    delete author;
+    delete filePath;
+    delete year;
+    delete description;
 }
 
 QString Book::getTitle() const
 {
-	return title;
+    return *title;
 }
 
 QString Book::getAuthor() const
 {
-	return author;
+    return *author;
 }
 
 QString Book::getFilePath() const
 {
-	return filePath;
+    return *filePath;
 }
 
 int Book::getYear() const
 {
-	return year;
+    return *year;
 }
 
 QString Book::getDescription() const
 {
-	return description;
+    return *description;
 }
 
 bool Book::operator == (const Book& b) const
 {
-	if (title == b.title && author == b.author && filePath == b.filePath && year == b.year && description == b.description) return true;
-	return false;
+    if (*filePath == *b.filePath) return true;
+    return false;
 }
+
+void Book::write(QJsonObject &json)
+{
+    json["title"] = *title;
+    json["author"] = *author;
+    json["filePath"] = *filePath;
+    json["year"] = *year;
+    json["description"] = *description;
+}
+
+void Book::read(const QJsonObject &json)
+{
+    title = new QString(json["title"].toString());
+    author = new QString(json["author"].toString());
+    filePath = new QString(json["filePath"].toString());
+    year = new int(json["year"].toInt());
+    description = new QString(json["description"].toString());
+}
+
+bool Book::exists() const
+{
+    return _exist;
+}
+

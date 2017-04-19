@@ -1,85 +1,134 @@
 #include "src/Author.h"
 
+/*
+* bugs:
+* -variabilele initializate nu functioneaza
+*/
 Author::Author()
 {
-	name = "Warning: author name not set";
-	yearBirth = 0;
-	yearDeath = 0;
-	bio = " ";
+    _exist = false;
 }
 
-Author::Author(const QString& _name, const std::vector<QString>& _books, const int& _yearBirth, const int& _yearDeath, const QString& _bio)
+
+
+Author::Author(const QString &name,
+               std::vector<QString> books,
+               const int &yearBirth,
+               const int &yearDeath,
+               const QString &bio)
 {
-	name = _name;
-	books = _books;
-	yearBirth = _yearBirth;
-	yearDeath = _yearDeath;
-	bio = _bio;
+    this->name = new QString(name);
+    this->books = new std::vector<QString>(books);
+    this->yearBirth = new int(yearBirth);
+    this->yearDeath = new int(yearDeath);
+    this->bio = new QString(bio);
+    this->_exist = true;
 }
 
-Author::Author(const Author& a)
+Author::Author(const Author & a)
 {
-	name = a.name;
-	books = a.books;
-	yearBirth = a.yearBirth;
-	yearDeath = a.yearDeath;
-	bio = a.bio;
+    name = new QString(*a.name);
+    books = new std::vector<QString>(*a.books);
+    yearBirth = new int(*a.yearBirth);
+    yearDeath = new int(*a.yearDeath);
+    bio = new QString(*a.bio);
+    _exist = a._exist;
 }
 
-Author& Author::operator = (const Author& a)
+Author& Author::operator =(const Author &a)
 {
-	if (this == &a) return *this;
+    if (this == &a) return *this;
 
-	name = a.name;
-	books = a.books;
-	yearBirth = a.yearBirth;
-	yearDeath = a.yearDeath;
-	bio = a.bio;
+    name = new QString(*a.name);
+    books = new std::vector<QString>(*a.books);
+    yearBirth = new int(*a.yearBirth);
+    yearDeath = new int(*a.yearDeath);
+    bio = new QString(*a.bio);
+    _exist = a._exist;
 
-	return *this;
+    return *this;
 }
 
-void Author::addBook(const QString& b)
+bool Author::operator ==(const Author &a) const
 {
-	books.push_back(b);
-}
-
-void Author::addBook(const Book& b)
-{
-	books.push_back(b.getTitle());
-}
-
-QString Author::getName() const
-{
-	return name;
-}
-
-std::vector<QString> Author::getBooks() const
-{
-	return books;
-}
-
-int Author::getYearBirth() const
-{
-	return yearBirth;
-}
-
-int Author::getYearDeath() const
-{
-	return yearDeath;
-}
-
-QString Author::getBio() const
-{
-	return bio;
+    if(*name == *a.name)
+        return true;
+    return false;
 }
 
 Author::~Author()
 {
+    delete name;
+    delete books;
+    delete yearBirth;
+    delete yearDeath;
+    delete bio;
 }
 
-bool Author::operator == (const Author& a) const
+QString Author::getName()
 {
-	if (name == a.name && books == a.books && yearBirth == a.yearBirth && yearDeath == a.yearDeath && bio == a.bio) return true;
-	return false;
+    return *name;
 }
+
+QString Author::getBio()
+{
+    return *bio;
+}
+
+std::vector<QString> Author::getVector()
+{
+    return *books;
+}
+
+int Author::getYearBirth()
+{
+    return *yearBirth;
+}
+
+int Author::getYearDeath()
+{
+    return *yearBirth;
+}
+
+bool Author::addBook(const QString &book)
+{
+    //todo verificare, poate afecta complexitatea
+    books->push_back(book);
+    return true;
+}
+
+bool Author::exist()
+{
+    return _exist;
+}
+
+void Author::write(QJsonObject &json) const
+{
+    json["name"] = *name;
+    QJsonArray booksJsonArray;
+    foreach(const QString bookName, *books)
+    {
+        //qDebug() << bookName;
+        booksJsonArray.append(bookName);
+    }
+    json["AuthorBooks"] = booksJsonArray;
+    json["yearBirth"] = *yearBirth;
+    json["yearDeath"] = *yearDeath;
+    json["bio"] = *bio;
+}
+
+void Author::read(const QJsonObject &json)
+{
+    name = new QString(json["name"].toString());
+    QJsonArray booksJsonArray = json["AuthorBooks"].toArray();
+    for(int index = 0; index < booksJsonArray.size(); index++)
+    {
+        QString bookName = booksJsonArray[index].toString();
+        books->push_back(bookName);
+        qDebug() << bookName;
+    }
+    yearBirth = new int(json["yearBirth"].toInt());
+    yearDeath = new int(json["yearDeath"].toInt());
+    bio = new QString(json["bio"].toString());
+}
+

@@ -20,15 +20,21 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 
     QGridLayout *readerLayout = new QGridLayout(tabReader);
     QWidget *readerExtras = new QWidget(tabReader);
-    Reader *reader = new Reader(tabReader, "/home/gabriel/Downloads/Crime and Punishment.pdf");
+    Reader *reader = new Reader(tabReader, "/home/radu/Download/0.pdf");
     readerLayout->addWidget(readerExtras, 0, 0, 1, 1);
     readerLayout->addWidget(reader, 0, 1, 1, 3);
 
 	QTabWidget *localTabs = new QTabWidget(tabLocal);
 	QLayout *localLayout = new QHBoxLayout(tabLocal);
 
-	SubtabBooks *books = new SubtabBooks(tabLocal);
-	SubtabAuthors *authors = new SubtabAuthors(tabLocal);
+    database.addBook(Book("0.pdf","Konosuba 5", "Ching Chong"));
+    database.addBook(Book("1.pdf","To Kill A Mockingbird", "Some Dude"));
+    database.addBook(Book("2.pdf","Pride and Prejudice", "Ivan Ivanov"));
+    database.addBook(Book("3.pdf","KEK", "/pol/"));
+    database.addBook(Book("4.pdf","a", "A"));
+    database.addBook(Book("5.pdf","B", "8"));
+    SubtabBooks *books = new SubtabBooks(tabLocal, database);
+    SubtabAuthors *authors = new SubtabAuthors(tabLocal, database);
 
 	localTabs->addTab(books, "Books");
 	localTabs->addTab(authors, "Authors");
@@ -48,6 +54,6 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 
 MainWindow::~MainWindow() 
 {
-	if (mainTabs) delete mainTabs;
-	if (mainLayout) delete mainLayout;
+    if (mainLayout) delete mainLayout;
+    if (mainTabs) delete mainTabs;
 }

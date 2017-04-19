@@ -20,7 +20,8 @@ SOURCES += \
     cpp/SubtabAuthors.cpp \
     cpp/SubtabBooks.cpp \
     cpp/Reader.cpp \
-    cpp/ImageLoader.cpp
+    cpp/ImageLoader.cpp \
+    cpp/Database.cpp
 
 HEADERS  += \
     src/Author.h \
@@ -35,7 +36,8 @@ HEADERS  += \
     src/SubtabAuthors.h \
     src/SubtabBooks.h \
     src/Reader.h \
-    src/ImageLoader.h
+    src/ImageLoader.h \
+    src/Database.h
 
 FORMS    += widget.ui
 
