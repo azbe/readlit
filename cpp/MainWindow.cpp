@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 
     QGridLayout *settingsLayout = new QGridLayout(tabSettings);
     Settings *settings = new Settings(tabSettings);
-
+    settingsLayout->addWidget(settings,0,0);
 
     SubtabBooks *books = new SubtabBooks(tabLocal, database);
     SubtabAuthors *authors = new SubtabAuthors(tabLocal, database);
@@ -59,3 +59,4 @@ MainWindow::~MainWindow()
     if (mainTabs) delete mainTabs;
     database.save("database.json");
 }
+
