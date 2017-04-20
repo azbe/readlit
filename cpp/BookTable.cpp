@@ -4,6 +4,7 @@
 
 BookTable::BookTable(QWidget *parent) : QTableWidget(parent)
 {
+    book = 0;
     setColumnCount(1);
     setRowCount(5);
 
@@ -47,6 +48,7 @@ BookTable::BookTable(QWidget *parent) : QTableWidget(parent)
 
 void BookTable::setBook(const Book& book)
 {
+    this->book = new Book(book);
     item(0,0)->setText(book.getFilePath());
     item(1,0)->setText(book.getTitle());
     item(2,0)->setText(book.getAuthor());
@@ -54,8 +56,35 @@ void BookTable::setBook(const Book& book)
     item(4,0)->setText(book.getDescription());
 }
 
+void BookTable::saveBook()
+{
+    QString title = item(1,0)->text();
+    QString author = item(2,0)->text();
+    int year = book->getYear();
+    try
+    {
+        year = item(3,0)->text().toInt();
+    }
+    catch (...) {} //TO DO
+    QString summary = item(4,0)->text();
+
+    Book newBook(book->getFilePath(), title, author, year, summary);
+    this->book = new Book(newBook);
+    emit updateBook(newBook);
+}
+
+void BookTable::clear()
+{
+    item(0,0)->setText(book->getFilePath());
+    item(1,0)->setText(book->getTitle());
+    item(2,0)->setText(book->getAuthor());
+    item(3,0)->setText(QString::number(book->getYear()));
+    item(4,0)->setText(book->getDescription());
+}
+
 BookTable::~BookTable()
 {
+    if (book) delete book;
     delete summary;
     delete year;
     delete author;

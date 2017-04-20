@@ -115,6 +115,33 @@ bool DataBase::addBookToAuthor(const QString &title, const QString &name)
     authors[name].addBook(title);
 }
 
+bool DataBase::removeBookFromAuthor(const QString &title, const QString &name)
+{
+    std::vector<QString> authorBooks = authors[name].getVector();
+    for (int index = 0; index < authorBooks.size(); index++)
+    {
+        if (authorBooks[index] == title)
+        {
+            authorBooks.erase(authorBooks.begin() + index);
+            break;
+        }
+    }
+    Author newAuthor(authors[name].getName(), authorBooks, authors[name].getYearBirth(), authors[name].getYearDeath(), authors[name].getBio());
+    deleteAuthor(name);
+    addAuthor(newAuthor);
+}
+
+bool DataBase::editBook(const Book &newBook)
+{
+    QString oldAuthor = books[newBook.getFilePath()].getAuthor();
+    removeBookFromAuthor(newBook.getTitle(), oldAuthor);
+    if (!findAuthor(newBook.getAuthor()))
+        addAuthor(Author(newBook.getAuthor()));
+    addBookToAuthor(newBook.getTitle(), newBook.getAuthor());
+    deleteBook(newBook.getFilePath());
+    addBook(newBook);
+}
+
 void DataBase::write(QJsonObject &json)
 {
     QJsonArray booksArray;

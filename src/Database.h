@@ -31,7 +31,9 @@ public:
     bool findAuthor(const QString &name);
     Author getAuthor(const QString &name);
     QStringList getAuthorNames();
+    bool editBook(const Book &newBook);
     bool addBookToAuthor(const QString& title, const QString& name);
+    bool removeBookFromAuthor(const QString& title, const QString& name);
 
     void save(const QString & fileName);
     void load(const QString & fileName);

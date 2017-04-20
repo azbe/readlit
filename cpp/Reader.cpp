@@ -9,6 +9,12 @@
 Reader::Reader(QWidget *parent) : QWidget(parent)
 {
     book = 0;
+    scrollArea = 0;
+    scrollBar = 0;
+    pageArea = 0;
+    pageAreaLayout = 0;
+    pages = 0;
+    isActualized = 0;
 }
 
 Reader::Reader(QWidget *parent, const QString& path, const int& startingPage) : QWidget(parent)

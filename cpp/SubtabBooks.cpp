@@ -41,27 +41,47 @@ SubtabBooks::SubtabBooks(QWidget *parent, DataBase& database) : QWidget(parent)
 	dataWidget->setSizePolicy(*genericPolicy);
 	delete genericPolicy;
     dataWidgetLayout = new QGridLayout(dataWidget);
+    bookData = new BookTable(books);
+    connect(bookList, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), this, SLOT(getBookDetails(QListWidgetItem*)));
+    connect(this, SIGNAL(updateBookDetails(Book)), bookData, SLOT(setBook(Book)));
+    connect(bookData, SIGNAL(updateBook(Book)), this, SLOT(saveNewBook(Book)));
+    dataWidgetLayout->addWidget(bookData, 1, 0, 1, 5);
+    dataWidgetLayout->setContentsMargins(0, 0, 0, 0);
 	for (int i = 0; i < 4; i++)
 	{
 		QString text;
+        dataButtons[i] = new DataButton("", books);
 		switch (i)
 		{
-			case 0: { text = "Sync"; break; }
-            case 1: { text = "Save"; break; }
-			case 2: { text = "Load"; break; }
-			case 3: { text = "Clear"; break; }
+            case 0:
+            {
+                text = "Sync";
+                break;
+            }
+            case 1:
+            {
+                text = "Save";
+                connect(dataButtons[i], SIGNAL(clicked(bool)), bookData, SLOT(saveBook()));
+                break;
+            }
+            case 2:
+            {
+                text = "Load";
+                break;
+            }
+            case 3:
+            {
+                text = "Clear";
+                connect(dataButtons[i], SIGNAL(clicked(bool)), bookData, SLOT(clear()));
+                break;
+            }
 		}
 		//text += " Book Data";
-		dataButtons[i] = new DataButton(text, books);
+        dataButtons[i]->setText(text);
 		dataButtons[i]->setMaximumWidth(UIConstants::DATA_BUTTON_DEFAULT_MAX_SIZE);
 		dataButtons[i]->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		dataWidgetLayout->addWidget(dataButtons[i], 0, i, 1, 1);
 	}
-    bookData = new BookTable(books);
-    connect(bookList, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), this, SLOT(getBookDetails(QListWidgetItem*)));
-    connect(this, SIGNAL(updateBookDetails(Book)), bookData, SLOT(setBook(Book)));
-    dataWidgetLayout->addWidget(bookData, 1, 0, 1, 5);
-	dataWidgetLayout->setContentsMargins(0, 0, 0, 0);
 	bookWidgetsLayout1->addWidget(bookList);
 	bookWidgetsLayout1->addWidget(dataWidget);
 	bookWidgetsLayout1->setContentsMargins(0, 0, 0, 0);
@@ -86,6 +106,13 @@ SubtabBooks::~SubtabBooks()
     delete bookWidgetsLayout0;
     delete scanner;
     delete bookLayout;
+}
+
+void SubtabBooks::saveNewBook(const Book &book)
+{
+    database->editBook(book);
+    bookList->currentItem()->setText(book.getTitle());
+    //emit updateAuthors();
 }
 
 void SubtabBooks::getBookDetails(QListWidgetItem *item)
