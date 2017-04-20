@@ -5,6 +5,7 @@
 #include "src/SubtabAuthors.h"
 #include "src/Constants.h"
 #include "src/Reader.h"
+#include "src/Settings.h"
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
@@ -21,12 +22,16 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 
     QGridLayout *readerLayout = new QGridLayout(tabReader);
     QWidget *readerExtras = new QWidget(tabReader);
-    Reader *reader = new Reader(tabReader, "/home/radu/Downloads/0.pdf");
+    Reader *reader = new Reader(tabReader, "/home/alin/Downloads/0.pdf");
     readerLayout->addWidget(readerExtras, 0, 0, 1, 1);
     readerLayout->addWidget(reader, 0, 1, 1, 3);
 
 	QTabWidget *localTabs = new QTabWidget(tabLocal);
 	QLayout *localLayout = new QHBoxLayout(tabLocal);
+
+    QGridLayout *settingsLayout = new QGridLayout(tabSettings);
+    Settings *settings = new Settings(tabSettings);
+
 
     SubtabBooks *books = new SubtabBooks(tabLocal, database);
     SubtabAuthors *authors = new SubtabAuthors(tabLocal, database);

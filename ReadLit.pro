@@ -5,7 +5,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = ReadLit
 TEMPLATE = app
-
+CONFIG += c++11
 
 SOURCES += \
     cpp/Author.cpp \
@@ -21,7 +21,8 @@ SOURCES += \
     cpp/SubtabBooks.cpp \
     cpp/Reader.cpp \
     cpp/ImageLoader.cpp \
-    cpp/Database.cpp
+    cpp/Database.cpp \
+    cpp/Settings.cpp
 
 HEADERS  += \
     src/Author.h \
@@ -37,7 +38,8 @@ HEADERS  += \
     src/SubtabBooks.h \
     src/Reader.h \
     src/ImageLoader.h \
-    src/Database.h
+    src/Database.h \
+    src/Settings.h
 
 FORMS    += widget.ui
 
