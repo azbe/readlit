@@ -5,7 +5,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = ReadLit
 TEMPLATE = app
-
+CONFIG += c++14
 
 SOURCES += \
     cpp/Author.cpp \
