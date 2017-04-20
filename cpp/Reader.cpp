@@ -7,7 +7,9 @@
 #include "src/ImageLoader.h"
 
 Reader::Reader(QWidget *parent) : QWidget(parent)
-{}
+{
+    book = 0;
+}
 
 Reader::Reader(QWidget *parent, const QString& path, const int& startingPage) : QWidget(parent)
 {
@@ -106,20 +108,17 @@ double Reader::getScrollBarPercent() const
     return (1.0*scrollBar->value() - scrollBar->minimum())/(scrollBar->maximum() - scrollBar->minimum());
 }
 
-bool Reader::event(QEvent *event)
+void Reader::resizeEvent(QResizeEvent *event)
 {
-    if (event->type() == QEvent::Resize)
+    if (!book) return;
+    isMouseScrolling = true;
+    newSize = size();
+    if(resizeTimerId)
     {
-        isMouseScrolling = true;
-        newSize = size();
-        if(resizeTimerId)
-        {
-            killTimer(resizeTimerId);
-            resizeTimerId = 0;
-        }
-        resizeTimerId = startTimer(200);
+        killTimer(resizeTimerId);
+        resizeTimerId = 0;
     }
-    return QWidget::event(event);
+    resizeTimerId = startTimer(200);
 }
 
 void Reader::timerEvent(QTimerEvent *te)
