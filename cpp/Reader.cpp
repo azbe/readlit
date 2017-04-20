@@ -6,6 +6,9 @@
 
 #include "src/ImageLoader.h"
 
+Reader::Reader(QWidget *parent) : QWidget(parent)
+{}
+
 Reader::Reader(QWidget *parent, const QString& path, const int& startingPage) : QWidget(parent)
 {
     book = Poppler::Document::load(path);
