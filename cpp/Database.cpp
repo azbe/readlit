@@ -70,6 +70,14 @@ Book DataBase::getBook(const QString &PathID)
     return books[PathID];
 }
 
+Book DataBase::getBookByTitle(const QString &title)
+{
+    for (auto const &book : books)
+        if (book.second.getTitle() == title)
+            return book.second;
+    return Book();
+}
+
 QStringList DataBase::getBookTitles()
 {
     QStringList bookTitles;

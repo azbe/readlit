@@ -47,7 +47,7 @@ SubtabBooks::SubtabBooks(QWidget *parent, DataBase& database) : QWidget(parent)
 		switch (i)
 		{
 			case 0: { text = "Sync"; break; }
-			case 1: { text = "Set"; break; }
+            case 1: { text = "Save"; break; }
 			case 2: { text = "Load"; break; }
 			case 3: { text = "Clear"; break; }
 		}
@@ -57,8 +57,10 @@ SubtabBooks::SubtabBooks(QWidget *parent, DataBase& database) : QWidget(parent)
 		dataButtons[i]->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		dataWidgetLayout->addWidget(dataButtons[i], 0, i, 1, 1);
 	}
-    bookData = new DataTable(books);
-	dataWidgetLayout->addWidget(bookData, 1, 0, 1, 5);
+    bookData = new BookTable(books);
+    connect(bookList, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), this, SLOT(getBookDetails(QListWidgetItem*)));
+    connect(this, SIGNAL(updateBookDetails(Book)), bookData, SLOT(setBook(Book)));
+    dataWidgetLayout->addWidget(bookData, 1, 0, 1, 5);
 	dataWidgetLayout->setContentsMargins(0, 0, 0, 0);
 	bookWidgetsLayout1->addWidget(bookList);
 	bookWidgetsLayout1->addWidget(dataWidget);
@@ -84,6 +86,12 @@ SubtabBooks::~SubtabBooks()
     delete bookWidgetsLayout0;
     delete scanner;
     delete bookLayout;
+}
+
+void SubtabBooks::getBookDetails(QListWidgetItem *item)
+{
+    Book book = database->getBookByTitle(item->text());
+    emit updateBookDetails(book);
 }
 
 void SubtabBooks::getBookpaths(QStringList bookPaths)

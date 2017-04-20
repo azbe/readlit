@@ -31,7 +31,7 @@ SubtabAuthors::SubtabAuthors(QWidget *parent, DataBase& database) : QWidget(pare
 		switch (i)
 		{
 		case 0: { text = "Sync"; break; }
-		case 1: { text = "Set"; break; }
+        case 1: { text = "Save"; break; }
 		case 2: { text = "Load"; break; }
 		case 3: { text = "Clear"; break; }
 		}
@@ -41,9 +41,9 @@ SubtabAuthors::SubtabAuthors(QWidget *parent, DataBase& database) : QWidget(pare
 		dataButtons[i]->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		authorDataLayout->addWidget(dataButtons[i], 0, i, 1, 1);
 	}
-    authorDataTable = new DataTable(authorData);
-    //connect(authorList, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), authorDataTable, updateAuthorData(QListWidgetItem*));
-	authorDataLayout->addWidget(authorDataTable, 1, 0, 1, 5);
+    authorDataTable = new AuthorTable(authorData);
+    connect(this, SIGNAL(updateAuthorDetails(Author)), authorDataTable, SLOT(setAuthor(Author)));
+    authorDataLayout->addWidget(authorDataTable, 1, 0, 1, 5);
 	authorDataLayout->setContentsMargins(0, 0, 0, 0);
 
     authorLayout->addWidget(authorList);
@@ -71,6 +71,8 @@ void SubtabAuthors::newScan()
 
 void SubtabAuthors::updateAuthorBooks(QListWidgetItem *item)
 {
+    Author author = database->getAuthor(item->text());
+    emit updateAuthorDetails(author);
     QStringList books = database->getBookTitles();
     authorBooks->clear();
     authorBooks->addItems(books);

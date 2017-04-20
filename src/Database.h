@@ -26,6 +26,7 @@ public:
     bool deleteAuthor(const QString & name);
     bool findBook(const QString &PathID);
     Book getBook(const QString &PathID);
+    Book getBookByTitle(const QString& title);
     QStringList getBookTitles();
     bool findAuthor(const QString &name);
     Author getAuthor(const QString &name);

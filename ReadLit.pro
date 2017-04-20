@@ -13,7 +13,6 @@ SOURCES += \
     cpp/BrowserButton.cpp \
     cpp/DataButton.cpp \
     cpp/DataList.cpp \
-    cpp/DataTable.cpp \
     cpp/main.cpp \
     cpp/MainWindow.cpp \
     cpp/ScannerButton.cpp \
@@ -21,7 +20,9 @@ SOURCES += \
     cpp/SubtabBooks.cpp \
     cpp/Reader.cpp \
     cpp/ImageLoader.cpp \
-    cpp/Database.cpp
+    cpp/Database.cpp \
+    cpp/BookTable.cpp \
+    cpp/AuthorTable.cpp
 
 HEADERS  += \
     src/Author.h \
@@ -30,14 +31,15 @@ HEADERS  += \
     src/Constants.h \
     src/DataButton.h \
     src/DataList.h \
-    src/DataTable.h \
+    src/Database.h \
     src/MainWindow.h \
     src/ScannerButton.h \
     src/SubtabAuthors.h \
     src/SubtabBooks.h \
     src/Reader.h \
     src/ImageLoader.h \
-    src/Database.h
+    src/BookTable.h \
+    src/AuthorTable.h
 
 FORMS    += widget.ui
 
