@@ -148,7 +148,7 @@ void Reader::timerEvent(QTimerEvent *te)
     }
     else
     {
-        scrollBar->valueChanged(0);
+        scrollBarValueChanged();
     }
 }
 
@@ -169,23 +169,6 @@ void Reader::scrollBarValueChanged()
 {
     if (isMouseScrolling) return;
     updateCurrentPage();
-    /*
-    if (!isActualized[currentPage])
-    {
-        actualizeView(currentPage);
-        isActualized[currentPage] = true;
-    }
-    if (currentPage > 0 && !isActualized[currentPage-1] && getScrollBarPercent() < lastScrollBarValue)
-    {
-        actualizeView(currentPage-1);
-        isActualized[currentPage-1] = true;
-    }
-    if (currentPage < pageCount - 1 && !isActualized[currentPage+1] && getScrollBarPercent() > lastScrollBarValue)
-    {
-        actualizeView(currentPage+1);
-        isActualized[currentPage+1] = true;
-    }
-    */
     for (int index = currentPage - ReaderConstants::PRELOAD_DEFAULT_NUMBER_PAGES; index <= currentPage + ReaderConstants::PRELOAD_DEFAULT_NUMBER_PAGES; index++)
     {
         if (index < 0 || index >= pageCount)
@@ -208,20 +191,6 @@ void Reader::scrollBarReleased()
 {
     lastScrollBarValue = getScrollBarPercent();
     updateCurrentPage();
-    /*
-    if (currentPage > 0)
-    {
-        actualizeView(currentPage-1);
-        isActualized[currentPage-1] = true;
-    }
-    actualizeView(currentPage);
-    isActualized[currentPage] = true;
-    if (currentPage < pageCount - 1)
-    {
-        actualizeView(currentPage+1);
-        isActualized[currentPage+1] = true;
-    }
-    */
     for (int index = currentPage - ReaderConstants::PRELOAD_DEFAULT_NUMBER_PAGES; index <= currentPage + ReaderConstants::PRELOAD_DEFAULT_NUMBER_PAGES; index++)
     {
         if (index < 0 || index >= pageCount)

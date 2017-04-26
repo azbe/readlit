@@ -50,6 +50,35 @@ void AuthorTable::setAuthor(const Author &author)
     item(3,0)->setText(author.getBio());
 }
 
+void AuthorTable::saveAuthor()
+{
+    int yearBirth = author->getYearBirth();
+    try
+    {
+        yearBirth = item(1,0)->text().toInt();
+    }
+    catch (...) {} //TO DO
+    int yearDeath = author->getYearDeath();
+    try
+    {
+        yearDeath = item(2,0)->text().toInt();
+    }
+    catch (...) {} //TO DO
+    QString bio = item(3,0)->text();
+
+    Author newAuthor(author->getName(), author->getVector(), yearBirth, yearDeath, bio);
+    this->author = new Author(newAuthor);
+    emit updateAuthor(newAuthor);
+}
+
+void AuthorTable::clear()
+{
+    item(0,0)->setText(author->getName());
+    item(1,0)->setText(QString::number(author->getYearBirth()));
+    item(2,0)->setText(QString::number(author->getYearDeath()));
+    item(3,0)->setText(author->getBio());
+}
+
 AuthorTable::~AuthorTable()
 {
     if (author) delete author;

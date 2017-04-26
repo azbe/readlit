@@ -43,6 +43,7 @@ SubtabBooks::SubtabBooks(QWidget *parent, DataBase& database) : QWidget(parent)
     dataWidgetLayout = new QGridLayout(dataWidget);
     bookData = new BookTable(books);
     connect(bookList, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), this, SLOT(getBookDetails(QListWidgetItem*)));
+    connect(bookList, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(toOpenInReader()));
     connect(this, SIGNAL(updateBookDetails(Book)), bookData, SLOT(setBook(Book)));
     connect(bookData, SIGNAL(updateBook(Book)), this, SLOT(saveNewBook(Book)));
     dataWidgetLayout->addWidget(bookData, 1, 0, 1, 5);
@@ -106,6 +107,11 @@ SubtabBooks::~SubtabBooks()
     delete bookWidgetsLayout0;
     delete scanner;
     delete bookLayout;
+}
+
+void SubtabBooks::toOpenInReader()
+{
+    emit(openInReader(bookData->getBook().getFilePath()));
 }
 
 void SubtabBooks::saveNewBook(const Book &book)

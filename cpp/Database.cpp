@@ -129,12 +129,19 @@ bool DataBase::removeBookFromAuthor(const QString &title, const QString &name)
 
 bool DataBase::editBook(const Book &newBook)
 {
+    QString oldTitle = books[newBook.getFilePath()].getTitle();
     QString oldAuthor = books[newBook.getFilePath()].getAuthor();
-    removeBookFromAuthor(newBook.getTitle(), oldAuthor);
+    removeBookFromAuthor(oldTitle, oldAuthor);
     if (!findAuthor(newBook.getAuthor()))
         addAuthor(Author(newBook.getAuthor()));
     deleteBook(newBook.getFilePath());
     addBook(newBook);
+}
+
+bool DataBase::editAuthor(const Author &newAuthor)
+{
+    deleteAuthor(newAuthor.getName());
+    addAuthor(newAuthor);
 }
 
 void DataBase::write(QJsonObject &json)

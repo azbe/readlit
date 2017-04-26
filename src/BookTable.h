@@ -13,6 +13,8 @@ public:
     explicit BookTable(QWidget *parent = 0);
     ~BookTable();
 
+    Book getBook();
+
 signals:
     void updateBook(const Book& book);
 

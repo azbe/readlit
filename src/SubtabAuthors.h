@@ -22,6 +22,7 @@ signals:
     void updateAuthorDetails(const Author& author);
 
 public slots:
+    void saveNewAuthor(const Author& author);
     void newScan();
     void updateAuthorBooks(QListWidgetItem *item);
 

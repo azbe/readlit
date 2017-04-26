@@ -13,8 +13,13 @@ public:
     explicit AuthorTable(QWidget *parent = 0);
     ~AuthorTable();
 
+signals:
+    void updateAuthor(const Author& author);
+
 public slots:
     void setAuthor(const Author& author);
+    void saveAuthor();
+    void clear();
 
 private:
     Author *author;

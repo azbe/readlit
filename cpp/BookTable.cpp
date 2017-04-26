@@ -46,6 +46,11 @@ BookTable::BookTable(QWidget *parent) : QTableWidget(parent)
     verticalHeader()->setStretchLastSection(true);
 }
 
+Book BookTable::getBook()
+{
+    return *book;
+}
+
 void BookTable::setBook(const Book& book)
 {
     this->book = new Book(book);

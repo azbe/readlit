@@ -38,8 +38,8 @@ class Reader : public QWidget
     bool *isActualized;
 
     double pageAspectRatio;
-    unsigned int pageCount;
-    unsigned int currentPage;
+    int pageCount;
+    int currentPage;
     double lastScrollBarValue;
     bool isMouseScrolling;
 

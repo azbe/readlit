@@ -25,10 +25,12 @@ public:
     void updateBookList();
 
     signals:
+    void openInReader(const QString& filePath);
     void updateAuthors();
     void updateBookDetails(const Book& book);
 
     private slots:
+    void toOpenInReader();
     void saveNewBook(const Book& book);
     void getBookDetails(QListWidgetItem *item);
     void getBookpaths(QStringList bookPaths);
