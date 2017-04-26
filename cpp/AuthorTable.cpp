@@ -4,6 +4,7 @@
 
 AuthorTable::AuthorTable(QWidget *parent) : QTableWidget(parent)
 {
+    author = 0;
     setColumnCount(1);
     setRowCount(4);
 
@@ -42,6 +43,7 @@ AuthorTable::AuthorTable(QWidget *parent) : QTableWidget(parent)
 
 void AuthorTable::setAuthor(const Author &author)
 {
+    this->author = new Author(author);
     item(0,0)->setText(author.getName());
     item(1,0)->setText(QString::number(author.getYearBirth()));
     item(2,0)->setText(QString::number(author.getYearDeath()));
@@ -50,6 +52,7 @@ void AuthorTable::setAuthor(const Author &author)
 
 AuthorTable::~AuthorTable()
 {
+    if (author) delete author;
     delete bio;
     delete yearDeath;
     delete yearBirth;

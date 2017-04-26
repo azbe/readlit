@@ -169,6 +169,7 @@ void Reader::scrollBarValueChanged()
 {
     if (isMouseScrolling) return;
     updateCurrentPage();
+    /*
     if (!isActualized[currentPage])
     {
         actualizeView(currentPage);
@@ -184,6 +185,17 @@ void Reader::scrollBarValueChanged()
         actualizeView(currentPage+1);
         isActualized[currentPage+1] = true;
     }
+    */
+    for (int index = currentPage - ReaderConstants::PRELOAD_DEFAULT_NUMBER_PAGES; index <= currentPage + ReaderConstants::PRELOAD_DEFAULT_NUMBER_PAGES; index++)
+    {
+        if (index < 0 || index >= pageCount)
+            continue;
+        if (!isActualized[index])
+        {
+            isActualized[index] = true;
+            actualizeView(index);
+        }
+    }
     lastScrollBarValue = getScrollBarPercent();
 }
 
@@ -196,6 +208,7 @@ void Reader::scrollBarReleased()
 {
     lastScrollBarValue = getScrollBarPercent();
     updateCurrentPage();
+    /*
     if (currentPage > 0)
     {
         actualizeView(currentPage-1);
@@ -208,7 +221,17 @@ void Reader::scrollBarReleased()
         actualizeView(currentPage+1);
         isActualized[currentPage+1] = true;
     }
-
+    */
+    for (int index = currentPage - ReaderConstants::PRELOAD_DEFAULT_NUMBER_PAGES; index <= currentPage + ReaderConstants::PRELOAD_DEFAULT_NUMBER_PAGES; index++)
+    {
+        if (index < 0 || index >= pageCount)
+            continue;
+        if (!isActualized[index])
+        {
+            isActualized[index] = true;
+            actualizeView(index);
+        }
+    }
     isMouseScrolling = false;
 }
 

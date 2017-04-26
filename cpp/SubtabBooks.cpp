@@ -112,7 +112,7 @@ void SubtabBooks::saveNewBook(const Book &book)
 {
     database->editBook(book);
     bookList->currentItem()->setText(book.getTitle());
-    //emit updateAuthors();
+    emit updateAuthors();
 }
 
 void SubtabBooks::getBookDetails(QListWidgetItem *item)

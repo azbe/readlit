@@ -17,6 +17,7 @@ public slots:
     void setAuthor(const Author& author);
 
 private:
+    Author *author;
     QTableWidgetItem *header;
     QTableWidgetItem *name;
     QTableWidgetItem *yearBirth;
