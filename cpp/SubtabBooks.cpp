@@ -117,6 +117,7 @@ void SubtabBooks::saveNewBook(const Book &book)
 
 void SubtabBooks::getBookDetails(QListWidgetItem *item)
 {
+    if (!item) return;
     Book book = database->getBookByTitle(item->text());
     emit updateBookDetails(book);
 }

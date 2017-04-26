@@ -14,13 +14,9 @@ bool DataBase::addBook(const Book& NewBook)
         return false;
     }
     books.insert(std::pair<QString, Book>(NewBook.getFilePath(), NewBook));
-    if (findAuthor(NewBook.getAuthor()))
-        addBookToAuthor(NewBook.getTitle(), NewBook.getAuthor());
-    else
-    {
+    if (!findAuthor(NewBook.getAuthor()))
         addAuthor(Author(NewBook.getAuthor()));
-        addBookToAuthor(NewBook.getTitle(), NewBook.getAuthor());
-    }
+    addBookToAuthor(NewBook.getTitle(), NewBook.getAuthor());
     return true;
 }
 
@@ -128,7 +124,7 @@ bool DataBase::removeBookFromAuthor(const QString &title, const QString &name)
     }
     Author newAuthor(authors[name].getName(), authorBooks, authors[name].getYearBirth(), authors[name].getYearDeath(), authors[name].getBio());
     deleteAuthor(name);
-    addAuthor(newAuthor);
+    if (authorBooks.size() > 0) addAuthor(newAuthor);
 }
 
 bool DataBase::editBook(const Book &newBook)
@@ -137,7 +133,6 @@ bool DataBase::editBook(const Book &newBook)
     removeBookFromAuthor(newBook.getTitle(), oldAuthor);
     if (!findAuthor(newBook.getAuthor()))
         addAuthor(Author(newBook.getAuthor()));
-    addBookToAuthor(newBook.getTitle(), newBook.getAuthor());
     deleteBook(newBook.getFilePath());
     addBook(newBook);
 }

@@ -67,13 +67,20 @@ void SubtabAuthors::newScan()
     QStringList authors = database->getAuthorNames();
     authorList->clear();
     authorList->addItems(authors);
+    if (authorList->count() > 0)
+    {
+        authorList->setCurrentRow(0);
+        updateAuthorBooks(authorList->item(0));
+    }
 }
 
 void SubtabAuthors::updateAuthorBooks(QListWidgetItem *item)
 {
+    if (!item) return;
     Author author = database->getAuthor(item->text());
     emit updateAuthorDetails(author);
-    QStringList books = database->getBookTitles();
+    std::vector<QString> books = author.getVector();
     authorBooks->clear();
-    authorBooks->addItems(books);
+    for (int i = 0; i < books.size(); i++)
+        authorBooks->addItem(books[i]);
 }
