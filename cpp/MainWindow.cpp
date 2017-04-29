@@ -1,10 +1,4 @@
-
 #include "src/MainWindow.h"
-#include "src/SubtabBooks.h"
-#include "src/SubtabAuthors.h"
-#include "src/Constants.h"
-#include "src/Reader.h"
-#include "src/Settings.h"
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
@@ -27,8 +21,8 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
     localTabs = new QTabWidget(tabLocal);
     localLayout = new QHBoxLayout(tabLocal);
 
-    QGridLayout *settingsLayout = new QGridLayout(tabSettings);
-    Settings *settings = new Settings(tabSettings);
+    settingsLayout = new QGridLayout(tabSettings);
+    settings = new Settings(tabSettings, "settings.cfg");
     settingsLayout->addWidget(settings,0,0);
 
     books = new SubtabBooks(tabLocal, database);
@@ -54,6 +48,10 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 
 MainWindow::~MainWindow() 
 {
+    //settings->save("settings.cfg");
+    database.save("database.json");
+    delete settings;
+    delete settingsLayout;
     delete tabSettings;
     delete authors;
     delete books;
@@ -66,7 +64,6 @@ MainWindow::~MainWindow()
     delete tabReader;
     delete mainLayout;
     delete mainTabs;
-    database.save("database.json");
 }
 
 void MainWindow::openBookInReader(const QString &path)

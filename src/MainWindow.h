@@ -8,8 +8,9 @@
 #include "src/Database.h"
 #include "src/SubtabBooks.h"
 #include "src/SubtabAuthors.h"
-#include "src/Constants.h"
 #include "src/Reader.h"
+#include "src/Constants.h"
+#include "src/Settings.h"
 
 
 class MainWindow : public QWidget
@@ -37,6 +38,8 @@ class MainWindow : public QWidget
     SubtabBooks *books;
     SubtabAuthors *authors;
     QWidget *tabSettings;
+    QGridLayout *settingsLayout;
+    Settings *settings;
 
     DataBase database;
 };

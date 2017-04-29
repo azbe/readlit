@@ -26,4 +26,11 @@ namespace UIConstants
 	const QString SCANNER_BUTTON_DEFAULT_TEXT = "Scan 'n Save";
 }
 
+namespace SettingsConstants
+{
+    const QString DATABASE_DEFAULT_PATH = "database.json";
+    const QStringList SCANNER_DEFAULT_PATHS;
+    //...
+}
+
 #endif //CONSTANTS_h

@@ -20,8 +20,16 @@ class Settings : public QWidget
     Q_OBJECT
 
     public:
-    explicit Settings(QWidget *parent = 0);
+    explicit Settings(QWidget *parent = 0, const QString& loadPath = "");
     ~Settings();
+
+    void save(const QString& path);
+    void load(const QString& path);
+
+public:
+    QString databasePath;
+    //...
+
 private:
     QWidget *defaultButtons;
     QWidget *pythonButtons;

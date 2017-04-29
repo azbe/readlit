@@ -1,7 +1,11 @@
 #include "src/Settings.h"
+#include "src/Constants.h"
 
-Settings::Settings(QWidget *parent) : QWidget(parent)
+Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
 {
+    databasePath = SettingsConstants::DATABASE_DEFAULT_PATH;
+    //..
+    //load(loadPath);
 
     layoutSettings = new QVBoxLayout(this);
     defaultPaths = new QGroupBox(this);
