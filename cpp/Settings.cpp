@@ -38,7 +38,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     defaultLayout->addWidget(scannerBrowser,1, 3, 1, 2);
     defaultLayout->addWidget(scannerDefault, 1, 5, 1, 1);
     saveButtonDefault = new QPushButton("Save",defaultPaths);
-    defaultLayout->addWidget(saveButtonDefault,2, 0, 1, 1);
+    defaultLayout->addWidget(saveButtonDefault,2, 5, 1, 1);
     pythonScripts = new QGroupBox(this);
     pythonScripts->setTitle("Python Paths");
     pythonScripts->setSizePolicy(sizePolicy);
@@ -81,7 +81,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     pythonLayout->addWidget(authorSyncPaths,6, 1, 1, 2);
     pythonLayout->addWidget(authorSyncBrowser,6, 3, 1, 2);
     pythonLayout->addWidget(authorSyncDefault, 6, 5, 1, 1);
-    pythonLayout->addWidget(saveButtonPython,7, 0, 1, 1);
+    pythonLayout->addWidget(saveButtonPython,7, 5, 1, 1);
     layoutSettings->addWidget(defaultPaths);
     layoutSettings->addWidget(pythonScripts);
     bonus = new QWidget(this);
