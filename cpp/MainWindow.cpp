@@ -1,9 +1,9 @@
 #include "src/MainWindow.h"
-
+#include "src/Constants.h"
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
 	resize(UIConstants::MAINWINDOW_DEFAULT_WIDTH, UIConstants::MAINWINDOW_DEFAULT_HEIGHT);
-    database.load("database.json");
+    database.load(SettingsConstants::DATABASE_DEFAULT_PATH);
 
 	mainTabs = new QTabWidget(this);
 	mainLayout = new QHBoxLayout(this);

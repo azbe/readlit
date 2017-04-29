@@ -13,6 +13,7 @@
 #include <QToolButton>
 #include <QGridLayout>
 #include <QWidget>
+#include <QFile>
 #include "src/BrowserButton.h"
 #include "src/Constants.h"
 class Settings : public QWidget
@@ -25,10 +26,12 @@ class Settings : public QWidget
 
     void save(const QString& path);
     void load(const QString& path);
-
-public:
-    QString databasePath;
-    //...
+    QString databasePath = "mare";
+    QString scannerPath = "mare";
+    QString translatorPath;
+    QString dictionaryPath;
+    QString authorSyncPath;
+    QString bookSyncPath;
 
 private:
     QWidget *bonus;
@@ -38,32 +41,32 @@ private:
     QPushButton *defaultsButtonDefault;
     QPushButton *saveButtonPython;
     QPushButton *defaultsButtonPython;
-    QGroupBox *defaultPaths;
+    QGroupBox *defaultText;
     QGroupBox *pythonScripts;
     QVBoxLayout *layoutSettings;
     QWidget *database;
-    QLabel *databasePathsLabel;
-    QLineEdit *databasePaths;
+    QLabel *databaseTextLabel;
+    QLineEdit *databaseText;
     BrowserButton *databaseBrowser;
     QWidget *scanner;
-    QLabel *scannerPathsLabel;
-    QLineEdit *scannerPaths;
+    QLabel *scannerTextLabel;
+    QLineEdit *scannerText;
     BrowserButton *scannerBrowser;
     QWidget *bookSync;
-    QLabel *bookSyncPathsLabel;
-    QLineEdit *bookSyncPaths;
+    QLabel *bookSyncTextLabel;
+    QLineEdit *bookSyncText;
     BrowserButton *bookSyncBrowser;
     QWidget *translator;
-    QLabel *translatorPathsLabel;
-    QLineEdit *translatorPaths;
+    QLabel *translatorTextLabel;
+    QLineEdit *translatorText;
     BrowserButton *translatorBrowser;
     QWidget *dictionary;
-    QLabel *dictionaryPathsLabel;
-    QLineEdit *dictionaryPaths;
+    QLabel *dictionaryTextLabel;
+    QLineEdit *dictionaryText;
     BrowserButton *dictionaryBrowser;
     QWidget *authorSync;
-    QLabel *authorSyncPathsLabel;
-    QLineEdit *authorSyncPaths;
+    QLabel *authorSyncTextLabel;
+    QLineEdit *authorSyncText;
     BrowserButton *authorSyncBrowser;
     QGridLayout *defaultLayout;
     QGridLayout *pythonLayout;

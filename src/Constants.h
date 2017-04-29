@@ -28,9 +28,13 @@ namespace UIConstants
 
 namespace SettingsConstants
 {
+
     const QString DATABASE_DEFAULT_PATH = "database.json";
-    const QStringList SCANNER_DEFAULT_PATHS;
-    //...
+    const QString SCANNER_DEFAULT_PATH ="scanner.txt";
+    const QString TRANSLATOR_DEFAULT_PATH="translator.py";
+    const QString DICTIONARY_DEFAULT_PATH="dictionary.py";
+    const QString BOOK_SYNC_DEFAULT_PATH="bookSync.py";
+    const QString AUTHOR_SYNC_DEFAULT_PATH="authorSync.py";
 }
 
 #endif //CONSTANTS_h
