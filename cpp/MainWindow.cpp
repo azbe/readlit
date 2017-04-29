@@ -18,9 +18,6 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 	tabLocal = new QWidget(this);
 	tabSettings = new QWidget(this);
 
-    QGridLayout *readerLayout = new QGridLayout(tabReader);
-    QWidget *readerExtras = new QWidget(tabReader);
-    Reader *reader = new Reader();
     readerLayout = new QGridLayout(tabReader);
     readerExtras = new QWidget(tabReader);
     reader = new Reader(tabReader);
@@ -34,8 +31,6 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
     Settings *settings = new Settings(tabSettings);
     settingsLayout->addWidget(settings,0,0);
 
-    SubtabBooks *books = new SubtabBooks(tabLocal, database);
-    SubtabAuthors *authors = new SubtabAuthors(tabLocal, database);
     books = new SubtabBooks(tabLocal, database);
     authors = new SubtabAuthors(tabLocal, database);
     connect(books, SIGNAL(updateAuthors()), authors, SLOT(newScan()));

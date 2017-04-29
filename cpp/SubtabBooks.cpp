@@ -94,7 +94,8 @@ SubtabBooks::SubtabBooks(QWidget *parent, DataBase& database) : QWidget(parent)
 SubtabBooks::~SubtabBooks()
 {
     delete bookData;
-    for (int i = 0; i < 4; i++) dataButtons[i];
+    for (int i = 0; i < 4; i++)
+        delete dataButtons[i];
     delete dataWidgetLayout;
     delete dataWidget;
     delete bookList;

@@ -24,7 +24,7 @@ SOURCES += \
     cpp/Database.cpp \
     cpp/Settings.cpp \
     cpp/BookTable.cpp \
-    cpp/AuthorTable.cpp
+    cpp/AuthorTable.cpp \
 
 HEADERS  += \
     src/Author.h \
@@ -41,9 +41,9 @@ HEADERS  += \
     src/Reader.h \
     src/ImageLoader.h \
     src/Database.h \
-    src/Settings.h
+    src/Settings.h \
     src/BookTable.h \
-    src/AuthorTable.h
+    src/AuthorTable.h \
 
 FORMS    += widget.ui
 
