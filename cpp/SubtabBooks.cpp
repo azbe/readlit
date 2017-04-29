@@ -17,9 +17,10 @@ SubtabBooks::SubtabBooks(QWidget *parent, DataBase& database) : QWidget(parent)
     bookWidgetsLayout0 = new QHBoxLayout(scanner);
     folderPathsLabel = new QLabel("Folder Paths", scanner);
     folderPaths = new QLineEdit(scanner);
-    browserButton = new BrowserButton(scanner);
+    browserButton = new BrowserButton(scanner, BrowserButton::DIR);
+    connect(browserButton, SIGNAL(sendPaths(QStringList)), this, SLOT(getBrowsePaths(QStringList)));
     scannerButton = new ScannerButton(scanner, folderPaths);
-    connect(scannerButton, SIGNAL(sendBookPaths(QStringList)), this, SLOT(getBookpaths(QStringList)));
+    connect(scannerButton, SIGNAL(sendBookPaths(QStringList)), this, SLOT(getBookPaths(QStringList)));
 	bookWidgetsLayout0->addWidget(folderPathsLabel);
 	bookWidgetsLayout0->addWidget(folderPaths);
 	bookWidgetsLayout0->addWidget(browserButton);
@@ -94,7 +95,8 @@ SubtabBooks::SubtabBooks(QWidget *parent, DataBase& database) : QWidget(parent)
 SubtabBooks::~SubtabBooks()
 {
     delete bookData;
-    for (int i = 0; i < 4; i++) dataButtons[i];
+    for (int i = 0; i < 4; i++)
+        delete dataButtons[i];
     delete dataWidgetLayout;
     delete dataWidget;
     delete bookList;
@@ -128,7 +130,18 @@ void SubtabBooks::getBookDetails(QListWidgetItem *item)
     emit updateBookDetails(book);
 }
 
-void SubtabBooks::getBookpaths(QStringList bookPaths)
+void SubtabBooks::getBrowsePaths(QStringList browsePaths)
+{
+    QString text;
+    for (int index = 0; index < browsePaths.size() - 1; index++)
+        text.append(browsePaths.value(index));
+    text.append(browsePaths.value(browsePaths.size() - 1));
+    if (!folderPaths->text().isEmpty()) text.prepend(",");
+
+    folderPaths->setText(folderPaths->text().append(text));
+}
+
+void SubtabBooks::getBookPaths(QStringList bookPaths)
 {
     for (int index = 0; index < bookPaths.size(); index++)
     {

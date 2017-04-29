@@ -33,7 +33,8 @@ public:
     void toOpenInReader();
     void saveNewBook(const Book& book);
     void getBookDetails(QListWidgetItem *item);
-    void getBookpaths(QStringList bookPaths);
+    void getBrowsePaths(QStringList browsePaths);
+    void getBookPaths(QStringList bookPaths);
 
 private:
     DataBase *database;
