@@ -17,7 +17,7 @@ Book::Book(const QString& _filePath,
            const int& _year,
            const QString& _description)
 {
-    if (filePath->isEmpty()) title = new QString(*filePath);
+    if (_title.isEmpty()) title = new QString(*filePath);
     else title = new QString(_title);
     author = new QString(_author);
     filePath = new QString(_filePath);

@@ -14,13 +14,9 @@ bool DataBase::addBook(const Book& NewBook)
         return false;
     }
     books.insert(std::pair<QString, Book>(NewBook.getFilePath(), NewBook));
-    if (findAuthor(NewBook.getAuthor()))
-        addBookToAuthor(NewBook.getTitle(), NewBook.getAuthor());
-    else
-    {
+    if (!findAuthor(NewBook.getAuthor()))
         addAuthor(Author(NewBook.getAuthor()));
-        addBookToAuthor(NewBook.getTitle(), NewBook.getAuthor());
-    }
+    addBookToAuthor(NewBook.getTitle(), NewBook.getAuthor());
     return true;
 }
 
@@ -70,6 +66,14 @@ Book DataBase::getBook(const QString &PathID)
     return books[PathID];
 }
 
+Book DataBase::getBookByTitle(const QString &title)
+{
+    for (auto const &book : books)
+        if (book.second.getTitle() == title)
+            return book.second;
+    return Book();
+}
+
 QStringList DataBase::getBookTitles()
 {
     QStringList bookTitles;
@@ -105,6 +109,39 @@ QStringList DataBase::getAuthorNames()
 bool DataBase::addBookToAuthor(const QString &title, const QString &name)
 {
     authors[name].addBook(title);
+}
+
+bool DataBase::removeBookFromAuthor(const QString &title, const QString &name)
+{
+    std::vector<QString> authorBooks = authors[name].getVector();
+    for (int index = 0; index < authorBooks.size(); index++)
+    {
+        if (authorBooks[index] == title)
+        {
+            authorBooks.erase(authorBooks.begin() + index);
+            break;
+        }
+    }
+    Author newAuthor(authors[name].getName(), authorBooks, authors[name].getYearBirth(), authors[name].getYearDeath(), authors[name].getBio());
+    deleteAuthor(name);
+    if (authorBooks.size() > 0) addAuthor(newAuthor);
+}
+
+bool DataBase::editBook(const Book &newBook)
+{
+    QString oldTitle = books[newBook.getFilePath()].getTitle();
+    QString oldAuthor = books[newBook.getFilePath()].getAuthor();
+    removeBookFromAuthor(oldTitle, oldAuthor);
+    if (!findAuthor(newBook.getAuthor()))
+        addAuthor(Author(newBook.getAuthor()));
+    deleteBook(newBook.getFilePath());
+    addBook(newBook);
+}
+
+bool DataBase::editAuthor(const Author &newAuthor)
+{
+    deleteAuthor(newAuthor.getName());
+    addAuthor(newAuthor);
 }
 
 void DataBase::write(QJsonObject &json)

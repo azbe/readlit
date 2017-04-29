@@ -23,6 +23,7 @@ class Reader : public QWidget
     void updateCurrentPage();
 
     public:
+    explicit Reader(QWidget *parent);
     explicit Reader(QWidget *parent, const QString& path, const int& startingPage = 0);
     ~Reader();
 
@@ -37,15 +38,15 @@ class Reader : public QWidget
     bool *isActualized;
 
     double pageAspectRatio;
-    unsigned int pageCount;
-    unsigned int currentPage;
+    int pageCount;
+    int currentPage;
     double lastScrollBarValue;
     bool isMouseScrolling;
 
     int resizeTimerId = 0;
     QSize newSize;
 
-    bool event(QEvent *event);
+    void resizeEvent(QResizeEvent *event);
     void timerEvent(QTimerEvent *te);
 
     private slots:

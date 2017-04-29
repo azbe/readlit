@@ -3,8 +3,14 @@
 
 #include <QWidget>
 #include <QTabWidget>
+#include <QGridLayout>
 
 #include "src/Database.h"
+#include "src/SubtabBooks.h"
+#include "src/SubtabAuthors.h"
+#include "src/Constants.h"
+#include "src/Reader.h"
+
 
 class MainWindow : public QWidget
 {
@@ -14,10 +20,23 @@ class MainWindow : public QWidget
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
 
+    private slots:
+    void openBookInReader(const QString& path);
+
     private:
 
 	QTabWidget *mainTabs;
     QLayout	*mainLayout;
+    QWidget *tabReader;
+    QGridLayout *readerLayout;
+    Reader *reader;
+    QWidget *readerExtras;
+    QWidget *tabLocal;
+    QTabWidget *localTabs;
+    QLayout *localLayout;
+    SubtabBooks *books;
+    SubtabAuthors *authors;
+    QWidget *tabSettings;
 
     DataBase database;
 };

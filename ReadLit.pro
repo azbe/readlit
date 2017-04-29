@@ -5,7 +5,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = ReadLit
 TEMPLATE = app
-CONFIG += c++11
+
+CONFIG += c++14
 
 SOURCES += \
     cpp/Author.cpp \
@@ -13,7 +14,6 @@ SOURCES += \
     cpp/BrowserButton.cpp \
     cpp/DataButton.cpp \
     cpp/DataList.cpp \
-    cpp/DataTable.cpp \
     cpp/main.cpp \
     cpp/MainWindow.cpp \
     cpp/ScannerButton.cpp \
@@ -22,7 +22,9 @@ SOURCES += \
     cpp/Reader.cpp \
     cpp/ImageLoader.cpp \
     cpp/Database.cpp \
-    cpp/Settings.cpp
+    cpp/Settings.cpp \
+    cpp/BookTable.cpp \
+    cpp/AuthorTable.cpp
 
 HEADERS  += \
     src/Author.h \
@@ -31,7 +33,7 @@ HEADERS  += \
     src/Constants.h \
     src/DataButton.h \
     src/DataList.h \
-    src/DataTable.h \
+    src/Database.h \
     src/MainWindow.h \
     src/ScannerButton.h \
     src/SubtabAuthors.h \
@@ -40,6 +42,8 @@ HEADERS  += \
     src/ImageLoader.h \
     src/Database.h \
     src/Settings.h
+    src/BookTable.h \
+    src/AuthorTable.h
 
 FORMS    += widget.ui
 

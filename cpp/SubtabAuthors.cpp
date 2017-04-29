@@ -25,26 +25,46 @@ SubtabAuthors::SubtabAuthors(QWidget *parent, DataBase& database) : QWidget(pare
 	authorData->setSizePolicy(*genericPolicy);
 	delete genericPolicy;
     authorDataLayout = new QGridLayout(authorData);
+    authorDataTable = new AuthorTable(authorData);
+    connect(this, SIGNAL(updateAuthorDetails(Author)), authorDataTable, SLOT(setAuthor(Author)));
+    connect(authorDataTable, SIGNAL(updateAuthor(Author)), this, SLOT(saveNewAuthor(Author)));
 	for (int i = 0; i < 4; i++)
 	{
 		QString text;
+        dataButtons[i] = new DataButton(text, authorData);
 		switch (i)
 		{
-		case 0: { text = "Sync"; break; }
-		case 1: { text = "Set"; break; }
-		case 2: { text = "Load"; break; }
-		case 3: { text = "Clear"; break; }
+            case 0:
+            {
+                text = "Sync";
+                break;
+            }
+            case 1:
+            {
+                text = "Save";
+                connect(dataButtons[i], SIGNAL(clicked(bool)), authorDataTable, SLOT(saveAuthor()));
+                break;
+            }
+            case 2:
+            {
+                text = "Load";
+                break;
+            }
+            case 3:
+            {
+                text = "Clear";
+                connect(dataButtons[i], SIGNAL(clicked(bool)), authorDataTable, SLOT(clear()));
+                break;
+            }
 		}
-		//text += " Author Data";
-		dataButtons[i] = new DataButton(text, authorData);
+        //text += " Author Data";
+        dataButtons[i]->setText(text);
 		dataButtons[i]->setMaximumWidth(UIConstants::DATA_BUTTON_DEFAULT_MAX_SIZE);
 		dataButtons[i]->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		authorDataLayout->addWidget(dataButtons[i], 0, i, 1, 1);
 	}
-    authorDataTable = new DataTable(authorData);
-    //connect(authorList, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), authorDataTable, updateAuthorData(QListWidgetItem*));
-	authorDataLayout->addWidget(authorDataTable, 1, 0, 1, 5);
-	authorDataLayout->setContentsMargins(0, 0, 0, 0);
+    authorDataLayout->addWidget(authorDataTable, 1, 0, 1, 5);
+    authorDataLayout->setContentsMargins(0, 0, 0, 0);
 
     authorLayout->addWidget(authorList);
 	authorLayout->addWidget(authorBooks);
@@ -62,16 +82,30 @@ SubtabAuthors::~SubtabAuthors()
     delete authorLayout;
 }
 
+void SubtabAuthors::saveNewAuthor(const Author &author)
+{
+    database->editAuthor(author);
+}
+
 void SubtabAuthors::newScan()
 {
     QStringList authors = database->getAuthorNames();
     authorList->clear();
     authorList->addItems(authors);
+    if (authorList->count() > 0)
+    {
+        authorList->setCurrentRow(0);
+        updateAuthorBooks(authorList->item(0));
+    }
 }
 
 void SubtabAuthors::updateAuthorBooks(QListWidgetItem *item)
 {
-    QStringList books = database->getBookTitles();
+    if (!item) return;
+    Author author = database->getAuthor(item->text());
+    emit updateAuthorDetails(author);
+    std::vector<QString> books = author.getVector();
     authorBooks->clear();
-    authorBooks->addItems(books);
+    for (int i = 0; i < books.size(); i++)
+        authorBooks->addItem(books[i]);
 }

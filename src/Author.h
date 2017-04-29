@@ -2,7 +2,6 @@
 #define AUTHOR_H
 
 #include <QObject>
-#include <QDebug>
 #include <QString>
 #include <QVector>
 #include <QJsonObject>

@@ -9,7 +9,7 @@
 #include "src/BrowserButton.h"
 #include "src/ScannerButton.h"
 #include "src/DataList.h"
-#include "src/DataTable.h"
+#include "src/BookTable.h"
 #include "src/DataButton.h"
 #include "src/Constants.h"
 
@@ -25,9 +25,14 @@ public:
     void updateBookList();
 
     signals:
+    void openInReader(const QString& filePath);
     void updateAuthors();
+    void updateBookDetails(const Book& book);
 
     private slots:
+    void toOpenInReader();
+    void saveNewBook(const Book& book);
+    void getBookDetails(QListWidgetItem *item);
     void getBookpaths(QStringList bookPaths);
 
 private:
@@ -45,7 +50,7 @@ private:
     QWidget *dataWidget;
     QGridLayout *dataWidgetLayout;
     DataButton *dataButtons[4];
-    DataTable *bookData;
+    BookTable *bookData;
 };
 
 #endif //SUBTABBOOKS_H

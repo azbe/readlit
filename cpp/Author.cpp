@@ -108,7 +108,6 @@ void Author::write(QJsonObject &json) const
     QJsonArray booksJsonArray;
     foreach(const QString bookName, *books)
     {
-        //qDebug() << bookName;
         booksJsonArray.append(bookName);
     }
     json["AuthorBooks"] = booksJsonArray;
@@ -126,7 +125,6 @@ void Author::read(const QJsonObject &json)
     {
         QString bookName = booksJsonArray[index].toString();
         books->push_back(bookName);
-        qDebug() << bookName;
     }
     yearBirth = new int(json["yearBirth"].toInt());
     yearDeath = new int(json["yearDeath"].toInt());

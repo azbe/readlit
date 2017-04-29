@@ -7,7 +7,7 @@
 #include "DataList.h"
 #include "Database.h"
 #include "src/DataButton.h"
-#include "src/DataTable.h"
+#include "src/AuthorTable.h"
 #include "src/Constants.h"
 
 class SubtabAuthors : public QWidget
@@ -18,7 +18,11 @@ public:
     SubtabAuthors(QWidget *parent, DataBase& database);
 	~SubtabAuthors();
 
+signals:
+    void updateAuthorDetails(const Author& author);
+
 public slots:
+    void saveNewAuthor(const Author& author);
     void newScan();
     void updateAuthorBooks(QListWidgetItem *item);
 
@@ -30,7 +34,7 @@ private:
 	QLayout *authorLayout;
     QGridLayout *authorDataLayout;
     DataButton *dataButtons[4];
-    DataTable *authorDataTable;
+    AuthorTable *authorDataTable;
 };
 
 #endif //SUBTABAUTHORS_H

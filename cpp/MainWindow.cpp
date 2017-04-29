@@ -1,4 +1,3 @@
-#include <QGridLayout>
 
 #include "src/MainWindow.h"
 #include "src/SubtabBooks.h"
@@ -15,19 +14,21 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 	mainTabs = new QTabWidget(this);
 	mainLayout = new QHBoxLayout(this);
 
-	QWidget *tabReader, *tabLocal, *tabSettings;
 	tabReader = new QWidget(this);
 	tabLocal = new QWidget(this);
 	tabSettings = new QWidget(this);
 
     QGridLayout *readerLayout = new QGridLayout(tabReader);
     QWidget *readerExtras = new QWidget(tabReader);
-    Reader *reader = new Reader(tabReader, "/home/alin/Downloads/0.pdf");
+    Reader *reader = new Reader();
+    readerLayout = new QGridLayout(tabReader);
+    readerExtras = new QWidget(tabReader);
+    reader = new Reader(tabReader);
     readerLayout->addWidget(readerExtras, 0, 0, 1, 1);
     readerLayout->addWidget(reader, 0, 1, 1, 3);
 
-	QTabWidget *localTabs = new QTabWidget(tabLocal);
-	QLayout *localLayout = new QHBoxLayout(tabLocal);
+    localTabs = new QTabWidget(tabLocal);
+    localLayout = new QHBoxLayout(tabLocal);
 
     QGridLayout *settingsLayout = new QGridLayout(tabSettings);
     Settings *settings = new Settings(tabSettings);
@@ -35,7 +36,10 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 
     SubtabBooks *books = new SubtabBooks(tabLocal, database);
     SubtabAuthors *authors = new SubtabAuthors(tabLocal, database);
+    books = new SubtabBooks(tabLocal, database);
+    authors = new SubtabAuthors(tabLocal, database);
     connect(books, SIGNAL(updateAuthors()), authors, SLOT(newScan()));
+    connect(books, SIGNAL(openInReader(QString)), this, SLOT(openBookInReader(QString)));
 
 	localTabs->addTab(books, "Books");
 	localTabs->addTab(authors, "Authors");
@@ -55,8 +59,25 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 
 MainWindow::~MainWindow() 
 {
-    if (mainLayout) delete mainLayout;
-    if (mainTabs) delete mainTabs;
+    delete tabSettings;
+    delete authors;
+    delete books;
+    delete localLayout;
+    delete localTabs;
+    delete tabLocal;
+    delete readerExtras;
+    delete reader;
+    delete readerLayout;
+    delete tabReader;
+    delete mainLayout;
+    delete mainTabs;
     database.save("database.json");
 }
 
+void MainWindow::openBookInReader(const QString &path)
+{
+    delete reader;
+    reader = new Reader(tabReader, path);
+    readerLayout->addWidget(reader, 0, 1, 1, 3);
+    mainTabs->setCurrentIndex(0);
+}
