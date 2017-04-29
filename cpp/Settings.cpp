@@ -128,17 +128,17 @@ void Settings::load(const QString &fileName)
             while (!savedFile.atEnd()) {
            line = savedFile.readLine();
             str = line.split('=');
-            if(QString::compare(str[0],"Database Path")==0)
+            if(QString::compare(str[0],"Database Path")==0&&(str[1].isEmpty())!=0)
             databasePath=str[1];
-            if(QString::compare(str[0],"Scanner Path")==0)
+            if(QString::compare(str[0],"Scanner Path")==0&&(str[1].isEmpty())!=0)
             scannerPath=str[1];
-            if(QString::compare(str[0],"Dictionary Path")==0)
+            if(QString::compare(str[0],"Dictionary Path")==0&&(str[1].isEmpty())!=0)
             dictionaryPath=str[1];
-            if(QString::compare(str[0],"Translator Path")==0)
+            if(QString::compare(str[0],"Translator Path")==0&&(str[1].isEmpty())!=0)
             translatorPath=str[1];
-            if(QString::compare(str[0],"Book Sync Path")==0)
+            if(QString::compare(str[0],"Book Sync Path")==0&&(str[1].isEmpty())!=0)
             bookSyncPath=str[1];
-            if(QString::compare(str[0],"Author Sync Path")==0)
+            if(QString::compare(str[0],"Author Sync Path")==0&&(str[1].isEmpty())!=0)
             authorSyncPath=str[1];
             }
 
