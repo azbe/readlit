@@ -27,7 +27,7 @@ void BrowserButton::mousePressEvent(QMouseEvent *event)
             }
             case PYTHON:
             {
-                fileNames = QFileDialog::getOpenFileNames(0, QString(), ".", "Python Files (*.py)");
+                fileNames.append(QFileDialog::getOpenFileName(0, QString(), ".", "Python Files (*.py)"));
                 break;
             }
             case JSON:
