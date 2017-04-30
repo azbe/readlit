@@ -108,11 +108,20 @@ void Settings::save(const QString &fileName)
 {
     QFile saveFile(fileName);
 
-    if(!saveFile.exists() || !saveFile.open(QIODevice::WriteOnly))
+    if(!saveFile.exists()|| !saveFile.open(QIODevice::WriteOnly))
     {
         qWarning("Couldn't open save file!");
         return;
     }
+
+    QTextStream textFisier(&saveFile);
+    textFisier<<("Database Path="+databaseText->text()+"\n");
+    textFisier<<("Scanner Path="+scannerText->text()+"\n");
+    textFisier<<("Dictionary Path="+dictionaryText->text()+"\n");
+    textFisier<<("Translator Path="+translatorText->text()+"\n");
+    textFisier<<("Author Sync Path="+authorSyncText->text()+"\n");
+    textFisier<<("Book Sync Path="+bookSyncText->text()+"\n");
+    saveFile.close();
 }
 
 void Settings::load(const QString &fileName)
@@ -129,19 +138,20 @@ void Settings::load(const QString &fileName)
             while (!savedFile.atEnd()) {
            line = savedFile.readLine();
             str = line.split('=');
-            if(QString::compare(str[0],"Database Path")==0&&(str[1].isEmpty())!=0)
+            if(QString::compare(str[0],"Database Path")==0)
             databasePath=str[1];
-            if(QString::compare(str[0],"Scanner Path")==0&&(str[1].isEmpty())!=0)
+            if(QString::compare(str[0],"Scanner Path")==0)
             scannerPath=str[1];
-            if(QString::compare(str[0],"Dictionary Path")==0&&(str[1].isEmpty())!=0)
+            if(QString::compare(str[0],"Dictionary Path")==0)
             dictionaryPath=str[1];
-            if(QString::compare(str[0],"Translator Path")==0&&(str[1].isEmpty())!=0)
+            if(QString::compare(str[0],"Translator Path")==0)
             translatorPath=str[1];
-            if(QString::compare(str[0],"Book Sync Path")==0&&(str[1].isEmpty())!=0)
+            if(QString::compare(str[0],"Book Sync Path")==0)
             bookSyncPath=str[1];
-            if(QString::compare(str[0],"Author Sync Path")==0&&(str[1].isEmpty())!=0)
+            if(QString::compare(str[0],"Author Sync Path")==0)
             authorSyncPath=str[1];
             }
+            savedFile.close();
 
 }
 
@@ -151,7 +161,7 @@ void Settings::load(const QString &fileName)
 Settings::~Settings()
 {
 
-
+    save("settings.cfg");
     delete bookSyncTextLabel;
     delete bookSyncText;
     delete bookSyncBrowser;

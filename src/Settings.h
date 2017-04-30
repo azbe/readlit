@@ -14,6 +14,7 @@
 #include <QGridLayout>
 #include <QWidget>
 #include <QFile>
+#include <QTextStream>
 #include "src/BrowserButton.h"
 #include "src/Constants.h"
 class Settings : public QWidget
