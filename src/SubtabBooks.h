@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QLayout>
 #include <QLabel>
+#include <QProcess>
 
 #include "src/Database.h"
 #include "src/BrowserButton.h"
@@ -33,6 +34,9 @@ public:
     void toOpenInReader();
     void saveNewBook(const Book& book);
     void getBookDetails(QListWidgetItem *item);
+    void getSyncDetails();
+    void getSyncDetailsForReal();
+    void getSyncDetailsFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void getBrowsePaths(QStringList browsePaths);
     void getBookPaths(QStringList bookPaths);
 
@@ -52,6 +56,11 @@ private:
     QGridLayout *dataWidgetLayout;
     DataButton *dataButtons[4];
     BookTable *bookData;
+
+    QProcess *script;
+    bool isSyncing;
+    int syncingRow;
+    QString *syncingPath;
 };
 
 #endif //SUBTABBOOKS_H

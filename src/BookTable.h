@@ -16,6 +16,7 @@ public:
     ~BookTable();
 
     Book getBook();
+    Book getUnsavedBook();
 
 signals:
     void updateBook(const Book& book);
@@ -23,9 +24,6 @@ signals:
 public slots:
     void setBook(const Book& book);
     void saveBook();
-    void syncBook();
-    void getSyncBook();
-    void finishedSyncBook(int exitCode, QProcess::ExitStatus exitStatus);
     void clear();
 
 private:
@@ -36,9 +34,6 @@ private:
     QTableWidgetItem *author;
     QTableWidgetItem *year;
     QTableWidgetItem *summary;
-
-    QProcess *script;
-    bool isSyncing;
 };
 
 #endif // BOOKTABLE_H

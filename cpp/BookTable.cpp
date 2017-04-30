@@ -42,13 +42,16 @@ BookTable::BookTable(QWidget *parent) : QTableWidget(parent)
     verticalHeader()->setCascadingSectionResizes(true);
     verticalHeader()->setDefaultSectionSize(30);
     verticalHeader()->setStretchLastSection(true);
-
-    isSyncing = false;
 }
 
 Book BookTable::getBook()
 {
     return *book;
+}
+
+Book BookTable::getUnsavedBook()
+{
+    return Book(item(0,0)->text(), item(1,0)->text(), item(2,0)->text(), item(3,0)->text().toInt(), item(4,0)->text());
 }
 
 void BookTable::setBook(const Book& book)
@@ -76,46 +79,6 @@ void BookTable::saveBook()
     Book newBook(book->getFilePath(), title, author, year, summary);
     this->book = new Book(newBook);
     emit updateBook(newBook);
-}
-
-void BookTable::syncBook()
-{
-    if (isSyncing) return;
-    QStringList arguments;
-    arguments << "sync_books.py" << ("\'" + item(1,0)->text() + "\'");
-
-    script = new QProcess(this);
-    try
-    {
-        connect(script, SIGNAL(readyReadStandardOutput()), this, SLOT(getSyncBook()));
-        connect(script, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(finishedSyncBook(int, QProcess::ExitStatus)));
-        script->start("python2", arguments);
-        isSyncing = true;
-    }
-    catch (...)
-    {
-        //TO DO
-    }
-}
-
-void BookTable::getSyncBook()
-{
-    QByteArray b = script->readAllStandardOutput();
-
-    QStringList str = QString(b).split("\n");
-    item(1,0)->setText(str.value(0));
-    item(2,0)->setText(str.value(1));
-    item(4,0)->setText(str.value(2));
-}
-
-void BookTable::finishedSyncBook(int exitCode, QProcess::ExitStatus exitStatus)
-{
-    if (exitCode != 0 || exitStatus == QProcess::CrashExit)
-    {
-        //TO DO
-        return;
-    }
-    isSyncing = false;
 }
 
 void BookTable::clear()

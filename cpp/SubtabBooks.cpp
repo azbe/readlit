@@ -58,7 +58,8 @@ SubtabBooks::SubtabBooks(QWidget *parent, DataBase& database) : QWidget(parent)
             case 0:
             {
                 text = "Sync";
-                connect(dataButtons[i], SIGNAL(clicked(bool)), bookData, SLOT(syncBook()));
+                connect(dataButtons[i], SIGNAL(clicked(bool)), this, SLOT(getSyncDetails()));
+                isSyncing = false;
                 break;
             }
             case 1:
@@ -129,6 +130,55 @@ void SubtabBooks::getBookDetails(QListWidgetItem *item)
     if (!item) return;
     Book book = database->getBookByTitle(item->text());
     emit updateBookDetails(book);
+}
+
+void SubtabBooks::getSyncDetails()
+{
+    if (isSyncing) return;
+    QStringList arguments;
+    arguments << "sync_books.py" << ("\'" + bookData->getUnsavedBook().getTitle() + "\'");
+
+    script = new QProcess(this);
+    try
+    {
+        connect(script, SIGNAL(readyReadStandardOutput()), this, SLOT(getSyncDetailsForReal()));
+        connect(script, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(getSyncDetailsFinished(int, QProcess::ExitStatus)));
+        script->start("python2", arguments);
+        isSyncing = true;
+        syncingRow = bookList->currentRow();
+        syncingPath = new QString(bookData->getBook().getFilePath());
+    }
+    catch (...)
+    {
+        //TO DO
+    }
+}
+
+void SubtabBooks::getSyncDetailsForReal()
+{
+    QByteArray b = script->readAllStandardOutput();
+
+    QStringList str = QString(b).split("\n");
+    if (str.value(0) == "ERROR" && str.value(1) == "ERROR" && str.value(2) == "ERROR")
+        return;
+
+    Book newBook(*syncingPath, str.value(0), str.value(1), database->getBook(*syncingPath).getYear(), str.value(2));
+    database->editBook(newBook);
+    bookList->item(syncingRow)->setText(str.value(0));
+    getBookDetails(bookList->item(syncingRow));
+    emit updateAuthors();
+}
+
+void SubtabBooks::getSyncDetailsFinished(int exitCode, QProcess::ExitStatus exitStatus)
+{
+    if (exitCode != 0 || exitStatus == QProcess::CrashExit)
+    {
+        //TO DO
+        return;
+    }
+    isSyncing = false;
+    delete syncingPath;
+    delete script;
 }
 
 void SubtabBooks::getBrowsePaths(QStringList browsePaths)
