@@ -95,7 +95,8 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     layoutSettings->addWidget(defaultText);
     layoutSettings->addWidget(pythonScripts);
     bonus = new QWidget(this);
-    QSizePolicy sizeDefault(QSizePolicy::Expanding,QSizePolicy::Maximum);
+    QSizePolicy sizeDefault(QSizePolicy::Expanding,QSizePolicy::Expanding);
+    sizeDefault.setVerticalStretch(1);
     bonus->setSizePolicy(sizeDefault);
     layoutSettings->addWidget(bonus);
 
