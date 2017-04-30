@@ -58,6 +58,7 @@ SubtabBooks::SubtabBooks(QWidget *parent, DataBase& database) : QWidget(parent)
             case 0:
             {
                 text = "Sync";
+                connect(dataButtons[i], SIGNAL(clicked(bool)), bookData, SLOT(syncBook()));
                 break;
             }
             case 1:
