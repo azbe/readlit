@@ -162,9 +162,11 @@ void SubtabBooks::getSyncDetailsForReal()
     if (str.value(0) == "ERROR" && str.value(1) == "ERROR" && str.value(2) == "ERROR")
         return;
 
+    int currentRow = bookList->currentRow();
     Book newBook(*syncingPath, str.value(0), str.value(1), database->getBook(*syncingPath).getYear(), str.value(2));
     database->editBook(newBook);
     bookList->item(syncingRow)->setText(str.value(0));
+    bookList->setCurrentRow(currentRow);
     getBookDetails(bookList->item(syncingRow));
     emit updateAuthors();
 }
