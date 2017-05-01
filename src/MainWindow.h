@@ -10,7 +10,7 @@
 #include "src/SubtabAuthors.h"
 #include "src/Constants.h"
 #include "src/Reader.h"
-
+#include "src/ReaderExtras.h"
 
 class MainWindow : public QWidget
 {
@@ -28,9 +28,9 @@ class MainWindow : public QWidget
 	QTabWidget *mainTabs;
     QLayout	*mainLayout;
     QWidget *tabReader;
-    QGridLayout *readerLayout;
+    QHBoxLayout *readerLayout;
     Reader *reader;
-    QWidget *readerExtras;
+    ReaderExtras *readerExtras;
     QWidget *tabLocal;
     QTabWidget *localTabs;
     QLayout *localLayout;

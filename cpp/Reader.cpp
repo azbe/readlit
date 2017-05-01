@@ -8,6 +8,7 @@
 
 Reader::Reader(QWidget *parent) : QWidget(parent)
 {
+    setStyleSheet("border: 2px solid blue;");
     book = 0;
     scrollArea = 0;
     scrollBar = 0;

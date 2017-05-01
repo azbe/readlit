@@ -13,11 +13,11 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 	tabLocal = new QWidget(this);
 	tabSettings = new QWidget(this);
 
-    readerLayout = new QGridLayout(tabReader);
-    readerExtras = new QWidget(tabReader);
+    readerLayout = new QHBoxLayout(tabReader);
+    readerExtras = new ReaderExtras(tabReader);
     reader = new Reader(tabReader);
-    readerLayout->addWidget(readerExtras, 0, 0, 1, 1);
-    readerLayout->addWidget(reader, 0, 1, 1, 3);
+    readerLayout->addWidget(readerExtras, 1);
+    readerLayout->addWidget(reader, 3);
 
     localTabs = new QTabWidget(tabLocal);
     localLayout = new QHBoxLayout(tabLocal);
@@ -63,7 +63,11 @@ MainWindow::~MainWindow()
 void MainWindow::openBookInReader(const QString &path)
 {
     delete reader;
+    readerExtras->setParent(0);
+    delete readerLayout;
+    readerLayout = new QHBoxLayout(tabReader);
     reader = new Reader(tabReader, path);
-    readerLayout->addWidget(reader, 0, 1, 1, 3);
+    readerLayout->addWidget(readerExtras, 1);
+    readerLayout->addWidget(reader, 3);
     mainTabs->setCurrentIndex(0);
 }
