@@ -9,6 +9,7 @@
 #include "src/DataButton.h"
 #include "src/AuthorTable.h"
 #include "src/Constants.h"
+#include "src/SyncWorker.h"
 
 class SubtabAuthors : public QWidget
 {
@@ -24,6 +25,9 @@ signals:
 public slots:
     void saveNewAuthor(const Author& author);
     void newScan();
+    void getSyncDetails();
+    void getSyncDetailsDone(const QStringList& info, const QString& name, int row);
+    void getSyncDetailsError(const QString& err, SyncWorker *worker);
     void updateAuthorBooks(QListWidgetItem *item);
 
 private:

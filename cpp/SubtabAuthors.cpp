@@ -1,4 +1,5 @@
 #include "src/SubtabAuthors.h"
+#include <qdebug.h>
 
 SubtabAuthors::SubtabAuthors(QWidget *parent, DataBase& database) : QWidget(parent)
 {
@@ -37,6 +38,7 @@ SubtabAuthors::SubtabAuthors(QWidget *parent, DataBase& database) : QWidget(pare
             case 0:
             {
                 text = "Sync";
+                connect(dataButtons[i], SIGNAL(clicked(bool)), this, SLOT(getSyncDetails()));
                 break;
             }
             case 1:
@@ -97,6 +99,32 @@ void SubtabAuthors::newScan()
         authorList->setCurrentRow(0);
         updateAuthorBooks(authorList->item(0));
     }
+}
+
+void SubtabAuthors::getSyncDetails()
+{
+    SyncWorker *worker = new SyncWorker(this, SyncWorker::AUTHOR, authorDataTable->getUnsavedName(), authorDataTable->getAuthor().getName(), authorList->currentRow());
+    connect(worker, SIGNAL(sendSyncDetails(QStringList, QString, int)), this, SLOT(getSyncDetailsDone(QStringList, QString, int)));
+    connect(worker, SIGNAL(error(QString, SyncWorker*)), this, SLOT(getSyncDetailsError(QString, SyncWorker*)));
+    worker->start();
+}
+
+void SubtabAuthors::getSyncDetailsDone(const QStringList &details, const QString &name, int row)
+{
+    int currentRow = authorList->currentRow();
+    QString description;
+    for (int index = 1; index < details.size(); index++)
+        description.append(details.value(index) + " ");
+    Author newAuthor(details.value(0), database->getAuthor(name).getVector(), database->getAuthor(name).getYearBirth(), database->getAuthor(name).getYearDeath(), description);
+    database->editAuthor(newAuthor);
+    authorList->item(row)->setText(details.value(0));
+    authorList->setCurrentRow(currentRow);
+}
+
+void SubtabAuthors::getSyncDetailsError(const QString &err, SyncWorker *worker)
+{
+    qDebug() << err;
+    delete worker;
 }
 
 void SubtabAuthors::updateAuthorBooks(QListWidgetItem *item)

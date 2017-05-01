@@ -13,7 +13,7 @@
 #include "src/BookTable.h"
 #include "src/DataButton.h"
 #include "src/Constants.h"
-
+#include "src/SyncWorker.h"
 
 class SubtabBooks : public QWidget
 {
@@ -35,8 +35,8 @@ public:
     void saveNewBook(const Book& book);
     void getBookDetails(QListWidgetItem *item);
     void getSyncDetails();
-    void getSyncDetailsForReal();
-    void getSyncDetailsFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void getSyncDetailsDone(const QStringList& details, const QString& path, int row);
+    void getSyncDetailsError(const QString &err, SyncWorker *worker);
     void getBrowsePaths(QStringList browsePaths);
     void getBookPaths(QStringList bookPaths);
 
@@ -56,11 +56,6 @@ private:
     QGridLayout *dataWidgetLayout;
     DataButton *dataButtons[4];
     BookTable *bookData;
-
-    QProcess *script;
-    bool isSyncing;
-    int syncingRow;
-    QString *syncingPath;
 };
 
 #endif //SUBTABBOOKS_H

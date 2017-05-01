@@ -41,6 +41,16 @@ AuthorTable::AuthorTable(QWidget *parent) : QTableWidget(parent)
     verticalHeader()->setStretchLastSection(true);
 }
 
+Author AuthorTable::getAuthor()
+{
+    return *author;
+}
+
+QString AuthorTable::getUnsavedName()
+{
+    return item(0,0)->text();
+}
+
 void AuthorTable::setAuthor(const Author &author)
 {
     this->author = new Author(author);

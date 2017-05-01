@@ -17,13 +17,12 @@ try:
 
 	title = re.sub(r'(^([ \n]*))|(\n)', '', tree.xpath('//h1[@id="bookTitle"]/text()')[0])
 	author = re.sub(r'(^([ \n]*))|(\n)', '', tree.xpath('//div[@id="bookAuthors"]/span[@itemprop="author"]/a[@class="authorName"]/span[@itemprop="name"]/text()')[0])
-	description = re.sub(r'(&#[0-9]*;?)|(<br/?>)|(</?[bi]>)|(</?span[^>]*>)|(\n*$)', '', etree.tostring(tree.xpath('//div[@id="description"]/span')[1], pretty_print=True))
+	descriptionTree = tree.xpath('//div[@id="description"]/span')
+	description = re.sub(r'(&#[0-9]*;?)|(\n*<br/?>\n*)|(\n*</?[bi]>\n*)|(</?span[^>]*>)|(</?a[^>]*>)|(\n*$)', '', etree.tostring(descriptionTree[len(descriptionTree) - 1], pretty_print=True))
 
 	print title
 	print author
 	print description
 except:
-	print 'ERROR'
-	print 'ERROR'
-	print 'ERROR'
+	sys.stderr.write('ERROR\n')
 

@@ -13,6 +13,9 @@ public:
     explicit AuthorTable(QWidget *parent = 0);
     ~AuthorTable();
 
+    Author getAuthor();
+    QString getUnsavedName();
+
 signals:
     void updateAuthor(const Author& author);
 

@@ -22,7 +22,8 @@ SOURCES += \
     cpp/ImageLoader.cpp \
     cpp/Database.cpp \
     cpp/BookTable.cpp \
-    cpp/AuthorTable.cpp
+    cpp/AuthorTable.cpp \
+    cpp/SyncWorker.cpp
 
 HEADERS  += \
     src/Author.h \
@@ -39,7 +40,8 @@ HEADERS  += \
     src/Reader.h \
     src/ImageLoader.h \
     src/BookTable.h \
-    src/AuthorTable.h
+    src/AuthorTable.h \
+    src/SyncWorker.h
 
 FORMS    += widget.ui
 
