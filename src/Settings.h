@@ -27,12 +27,13 @@ class Settings : public QWidget
 
     void save(const QString& path);
     void load(const QString& path);
-    QString databasePath = "mare";
-    QString scannerPath = "mare";
+    QString databasePath;
+    QString scannerPath;
     QString translatorPath;
     QString dictionaryPath;
     QString authorSyncPath;
     QString bookSyncPath;
+    QString python2Path;
 
 private:
     QWidget *bonus;
@@ -69,6 +70,12 @@ private:
     QLabel *authorSyncTextLabel;
     QLineEdit *authorSyncText;
     BrowserButton *authorSyncBrowser;
+    QWidget *python2;
+    QLabel *python2TextLabel;
+    QLineEdit *python2Text;
+    BrowserButton *python2Browser;
+    QGridLayout *python2Layout;
+    QPushButton *python2Default;
     QGridLayout *defaultLayout;
     QGridLayout *pythonLayout;
     QPushButton *databaseDefault;

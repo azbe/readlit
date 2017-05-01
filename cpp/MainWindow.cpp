@@ -3,14 +3,16 @@
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
 	resize(UIConstants::MAINWINDOW_DEFAULT_WIDTH, UIConstants::MAINWINDOW_DEFAULT_HEIGHT);
+    tabSettings = new QWidget(this);
+    settingsLayout = new QGridLayout(tabSettings);
+    settings = new Settings(tabSettings, "settings.cfg");
+    settingsLayout->addWidget(settings,0,0);
     database.load(SettingsConstants::DATABASE_DEFAULT_PATH);
-
 	mainTabs = new QTabWidget(this);
 	mainLayout = new QHBoxLayout(this);
 
 	tabReader = new QWidget(this);
 	tabLocal = new QWidget(this);
-	tabSettings = new QWidget(this);
 
     readerLayout = new QGridLayout(tabReader);
     readerExtras = new QWidget(tabReader);
@@ -21,9 +23,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
     localTabs = new QTabWidget(tabLocal);
     localLayout = new QHBoxLayout(tabLocal);
 
-    settingsLayout = new QGridLayout(tabSettings);
-    settings = new Settings(tabSettings, "settings.cfg");
-    settingsLayout->addWidget(settings,0,0);
+
 
     books = new SubtabBooks(tabLocal, database);
     authors = new SubtabAuthors(tabLocal, database);
@@ -49,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 MainWindow::~MainWindow() 
 {
     //settings->save("settings.cfg");
-    database.save("database.json");
+    database.save(SettingsConstants::DATABASE_DEFAULT_PATH);
     delete settings;
     delete settingsLayout;
     delete tabSettings;

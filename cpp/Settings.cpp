@@ -9,8 +9,8 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     authorSyncPath = SettingsConstants::AUTHOR_SYNC_DEFAULT_PATH;
     bookSyncPath = SettingsConstants::BOOK_SYNC_DEFAULT_PATH;
     translatorPath = SettingsConstants::TRANSLATOR_DEFAULT_PATH;
+    python2Path=SettingsConstants::PYTHON2_DEFAULT_PATH;
     load(loadPath);
-
     layoutSettings = new QVBoxLayout(this);
     layoutSettings->setSpacing(6);
     defaultText = new QGroupBox(this);
@@ -56,20 +56,30 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     dictionaryDefault= new QPushButton("Default",pythonScripts);
     dictionaryText->setSizePolicy(sizePolicy1);
     dictionaryText->setText(dictionaryPath);
-    pythonLayout->addWidget(dictionaryTextLabel,3, 0, 1, 1);
-    pythonLayout->addWidget(dictionaryText,3, 1, 1, 2);
-    pythonLayout->addWidget(dictionaryBrowser,3, 3, 1, 2);
-    pythonLayout->addWidget(dictionaryDefault, 3, 5, 1, 1);
+    pythonLayout->addWidget(dictionaryTextLabel,4, 0, 1, 1);
+    pythonLayout->addWidget(dictionaryText,4, 1, 1, 2);
+    pythonLayout->addWidget(dictionaryBrowser,4, 3, 1, 2);
+    pythonLayout->addWidget(dictionaryDefault, 4, 5, 1, 1);
+    python2TextLabel = new QLabel("Python2", pythonScripts);
+    python2Text = new QLineEdit(pythonScripts);
+    python2Browser = new BrowserButton(pythonScripts);
+    python2Default= new QPushButton("Default",pythonScripts);
+    python2Text->setSizePolicy(sizePolicy1);
+    python2Text->setText(python2Path);
+    pythonLayout->addWidget(python2TextLabel,3, 0, 1, 1);
+    pythonLayout->addWidget(python2Text,3, 1, 1, 2);
+    pythonLayout->addWidget(python2Browser,3, 3, 1, 2);
+    pythonLayout->addWidget(python2Default, 3, 5, 1, 1);
     translatorTextLabel = new QLabel("Translator", pythonScripts);
     translatorText = new QLineEdit(pythonScripts);
     translatorBrowser = new BrowserButton(pythonScripts);
     translatorDefault= new QPushButton("Default",pythonScripts);
     translatorText->setSizePolicy(sizePolicy1);
     translatorText->setText(translatorPath);
-    pythonLayout->addWidget(translatorTextLabel,4, 0, 1, 1);
-    pythonLayout->addWidget(translatorText,4, 1, 1, 2);
-    pythonLayout->addWidget(translatorBrowser,4, 3, 1, 2);
-    pythonLayout->addWidget(translatorDefault, 4, 5, 1, 1);
+    pythonLayout->addWidget(translatorTextLabel,5, 0, 1, 1);
+    pythonLayout->addWidget(translatorText,5, 1, 1, 2);
+    pythonLayout->addWidget(translatorBrowser,5, 3, 1, 2);
+    pythonLayout->addWidget(translatorDefault, 5, 5, 1, 1);
     saveButtonPython = new QPushButton("Save",pythonButtons);
     bookSyncTextLabel = new QLabel("Books Sync", pythonScripts);
     bookSyncText = new QLineEdit(pythonScripts);
@@ -77,21 +87,21 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     bookSyncDefault= new QPushButton("Default",pythonScripts);
     bookSyncText->setSizePolicy(sizePolicy1);
     bookSyncText->setText(bookSyncPath);
-    pythonLayout->addWidget(bookSyncTextLabel,5, 0, 1, 1);
-    pythonLayout->addWidget(bookSyncText,5, 1, 1, 2);
-    pythonLayout->addWidget(bookSyncBrowser,5, 3, 1, 2);
-    pythonLayout->addWidget(bookSyncDefault, 5, 5, 1, 1);
+    pythonLayout->addWidget(bookSyncTextLabel,6, 0, 1, 1);
+    pythonLayout->addWidget(bookSyncText,6, 1, 1, 2);
+    pythonLayout->addWidget(bookSyncBrowser,6, 3, 1, 2);
+    pythonLayout->addWidget(bookSyncDefault, 6, 5, 1, 1);
     authorSyncTextLabel = new QLabel("Authors Sync", pythonScripts);
     authorSyncText = new QLineEdit(pythonScripts);
     authorSyncBrowser = new BrowserButton(pythonScripts);
     authorSyncDefault= new QPushButton("Default",pythonScripts);
     authorSyncText->setSizePolicy(sizePolicy1);
     authorSyncText->setText(authorSyncPath);
-    pythonLayout->addWidget(authorSyncTextLabel,6, 0, 1, 1);
-    pythonLayout->addWidget(authorSyncText,6, 1, 1, 2);
-    pythonLayout->addWidget(authorSyncBrowser,6, 3, 1, 2);
-    pythonLayout->addWidget(authorSyncDefault, 6, 5, 1, 1);
-    pythonLayout->addWidget(saveButtonPython,7, 5, 1, 1);
+    pythonLayout->addWidget(authorSyncTextLabel,7, 0, 1, 1);
+    pythonLayout->addWidget(authorSyncText,7, 1, 1, 2);
+    pythonLayout->addWidget(authorSyncBrowser,7, 3, 1, 2);
+    pythonLayout->addWidget(authorSyncDefault, 7, 5, 1, 1);
+    pythonLayout->addWidget(saveButtonPython,8, 5, 1, 1);
     layoutSettings->addWidget(defaultText);
     layoutSettings->addWidget(pythonScripts);
     bonus = new QWidget(this);
@@ -99,7 +109,6 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     sizeDefault.setVerticalStretch(1);
     bonus->setSizePolicy(sizeDefault);
     layoutSettings->addWidget(bonus);
-
 
 
 }
@@ -121,6 +130,7 @@ void Settings::save(const QString &fileName)
     textFisier<<("Translator Path="+translatorText->text()+"\n");
     textFisier<<("Author Sync Path="+authorSyncText->text()+"\n");
     textFisier<<("Book Sync Path="+bookSyncText->text()+"\n");
+    textFisier<<("Python2 Path="+python2Text->text()+"\n");
     saveFile.close();
 }
 
@@ -150,6 +160,8 @@ void Settings::load(const QString &fileName)
             bookSyncPath=str[1];
             if(QString::compare(str[0],"Author Sync Path")==0)
             authorSyncPath=str[1];
+            if(QString::compare(str[0],"Python2 Path")==0)
+            python2Path=str[1];
             }
             savedFile.close();
 

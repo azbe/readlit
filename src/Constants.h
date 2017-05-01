@@ -35,6 +35,7 @@ namespace SettingsConstants
     const QString DICTIONARY_DEFAULT_PATH="dictionary.py";
     const QString BOOK_SYNC_DEFAULT_PATH="bookSync.py";
     const QString AUTHOR_SYNC_DEFAULT_PATH="authorSync.py";
+    const QString PYTHON2_DEFAULT_PATH="python2.py";
 }
 
 #endif //CONSTANTS_h
