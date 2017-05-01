@@ -23,7 +23,8 @@ SOURCES += \
     cpp/Database.cpp \
     cpp/BookTable.cpp \
     cpp/AuthorTable.cpp \
-    cpp/SyncWorker.cpp
+    cpp/SyncWorker.cpp \
+    cpp/ReaderExtras.cpp
 
 HEADERS  += \
     src/Author.h \
@@ -41,9 +42,11 @@ HEADERS  += \
     src/ImageLoader.h \
     src/BookTable.h \
     src/AuthorTable.h \
-    src/SyncWorker.h
+    src/SyncWorker.h \
+    src/ReaderExtras.h
 
-FORMS    += widget.ui
+FORMS    += widget.ui \
+    ReaderExtras.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../usr/lib/x86_64-linux-gnu/release/ -lpoppler-qt5
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../usr/lib/x86_64-linux-gnu/debug/ -lpoppler-qt5
