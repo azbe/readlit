@@ -13,14 +13,14 @@ Author::Author()
 
 Author::Author(const QString &name,
                std::vector<QString> books,
-               const int &yearBirth,
-               const int &yearDeath,
+               const QString &yearBirth,
+               const QString &yearDeath,
                const QString &bio)
 {
     this->name = new QString(name);
     this->books = new std::vector<QString>(books);
-    this->yearBirth = new int(yearBirth);
-    this->yearDeath = new int(yearDeath);
+    this->yearBirth = new QString(yearBirth);
+    this->yearDeath = new QString(yearDeath);
     this->bio = new QString(bio);
     this->_exist = true;
 }
@@ -29,8 +29,8 @@ Author::Author(const Author & a)
 {
     name = new QString(*a.name);
     books = new std::vector<QString>(*a.books);
-    yearBirth = new int(*a.yearBirth);
-    yearDeath = new int(*a.yearDeath);
+    yearBirth = new QString(*a.yearBirth);
+    yearDeath = new QString(*a.yearDeath);
     bio = new QString(*a.bio);
     _exist = a._exist;
 }
@@ -41,8 +41,8 @@ Author& Author::operator =(const Author &a)
 
     name = new QString(*a.name);
     books = new std::vector<QString>(*a.books);
-    yearBirth = new int(*a.yearBirth);
-    yearDeath = new int(*a.yearDeath);
+    yearBirth = new QString(*a.yearBirth);
+    yearDeath = new QString(*a.yearDeath);
     bio = new QString(*a.bio);
     _exist = a._exist;
 
@@ -75,17 +75,27 @@ QString Author::getBio() const
     return *bio;
 }
 
+int Author::getYearBirthInt() const
+{
+    return yearBirth->toInt();
+}
+
+int Author::getYearDeathInt() const
+{
+    return yearDeath->toInt();
+}
+
 std::vector<QString> Author::getVector() const
 {
     return *books;
 }
 
-int Author::getYearBirth() const
+QString Author::getYearBirth() const
 {
     return *yearBirth;
 }
 
-int Author::getYearDeath() const
+QString Author::getYearDeath() const
 {
     return *yearBirth;
 }
@@ -126,8 +136,8 @@ void Author::read(const QJsonObject &json)
         QString bookName = booksJsonArray[index].toString();
         books->push_back(bookName);
     }
-    yearBirth = new int(json["yearBirth"].toInt());
-    yearDeath = new int(json["yearDeath"].toInt());
+    yearBirth = new QString(json["yearBirth"].toInt());
+    yearDeath = new QString(json["yearDeath"].toInt());
     bio = new QString(json["bio"].toString());
 }
 

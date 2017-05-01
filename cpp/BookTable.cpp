@@ -51,7 +51,7 @@ Book BookTable::getBook()
 
 Book BookTable::getUnsavedBook()
 {
-    return Book(item(0,0)->text(), item(1,0)->text(), item(2,0)->text(), item(3,0)->text().toInt(), item(4,0)->text());
+    return Book(item(0,0)->text(), item(1,0)->text(), item(2,0)->text(), item(3,0)->text(), item(4,0)->text());
 }
 
 void BookTable::setBook(const Book& book)
@@ -60,7 +60,7 @@ void BookTable::setBook(const Book& book)
     item(0,0)->setText(book.getFilePath());
     item(1,0)->setText(book.getTitle());
     item(2,0)->setText(book.getAuthor());
-    item(3,0)->setText(QString::number(book.getYear()));
+    item(3,0)->setText(book.getYear());
     item(4,0)->setText(book.getDescription());
 }
 
@@ -68,7 +68,7 @@ void BookTable::saveBook()
 {
     QString title = item(1,0)->text();
     QString author = item(2,0)->text();
-    int year = book->getYear();
+    QString year = book->getYear();
     try
     {
         year = item(3,0)->text().toInt();
@@ -86,7 +86,7 @@ void BookTable::clear()
     item(0,0)->setText(book->getFilePath());
     item(1,0)->setText(book->getTitle());
     item(2,0)->setText(book->getAuthor());
-    item(3,0)->setText(QString::number(book->getYear()));
+    item(3,0)->setText(book->getYear());
     item(4,0)->setText(book->getDescription());
 }
 

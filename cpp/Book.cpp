@@ -14,14 +14,14 @@ Book::Book() /*adaugat pentru functionalizarea cu mape si vectori */
 Book::Book(const QString& _filePath,
            const QString& _title,
            const QString& _author,
-           const int& _year,
+           const QString& _year,
            const QString& _description)
 {
     if (_title.isEmpty()) title = new QString(*filePath);
     else title = new QString(_title);
     author = new QString(_author);
     filePath = new QString(_filePath);
-    year = new int(_year);
+    year = new QString(_year);
     description = new QString(_description);
     _exist = true;
 }
@@ -31,7 +31,7 @@ Book::Book(const Book& b)
     title = new QString(*b.title);
     author = new QString(*b.author);
     filePath = new QString(*b.filePath);
-    year = new int(*b.year);
+    year = new QString(*b.year);
     description = new QString(*b.description);
 }
 
@@ -43,7 +43,7 @@ Book& Book::operator = (const Book& b)
     title = new QString(*b.title);
     author = new QString(*b.author);
     filePath = new QString(*b.filePath);
-    year = new int(*b.year);
+    year = new QString(*b.year);
     description = new QString(*b.description);
     _exist = b._exist;
 
@@ -75,7 +75,7 @@ QString Book::getFilePath() const
     return *filePath;
 }
 
-int Book::getYear() const
+QString Book::getYear() const
 {
     return *year;
 }
@@ -83,6 +83,11 @@ int Book::getYear() const
 QString Book::getDescription() const
 {
     return *description;
+}
+
+int Book::getYearInt() const
+{
+    return year->toInt();
 }
 
 bool Book::operator == (const Book& b) const
@@ -105,7 +110,7 @@ void Book::read(const QJsonObject &json)
     title = new QString(json["title"].toString());
     author = new QString(json["author"].toString());
     filePath = new QString(json["filePath"].toString());
-    year = new int(json["year"].toInt());
+    year = new QString(json["year"].toString());
     description = new QString(json["description"].toString());
 }
 

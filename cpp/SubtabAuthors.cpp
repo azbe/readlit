@@ -134,6 +134,6 @@ void SubtabAuthors::updateAuthorBooks(QListWidgetItem *item)
     emit updateAuthorDetails(author);
     std::vector<QString> books = author.getVector();
     authorBooks->clear();
-    for (int i = 0; i < books.size(); i++)
+    for (unsigned i = 0; i < books.size(); i++)
         authorBooks->addItem(books[i]);
 }

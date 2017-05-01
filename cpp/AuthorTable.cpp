@@ -55,20 +55,20 @@ void AuthorTable::setAuthor(const Author &author)
 {
     this->author = new Author(author);
     item(0,0)->setText(author.getName());
-    item(1,0)->setText(QString::number(author.getYearBirth()));
-    item(2,0)->setText(QString::number(author.getYearDeath()));
+    item(1,0)->setText(author.getYearBirth());
+    item(2,0)->setText(author.getYearDeath());
     item(3,0)->setText(author.getBio());
 }
 
 void AuthorTable::saveAuthor()
 {
-    int yearBirth = author->getYearBirth();
+    QString yearBirth = author->getYearBirth();
     try
     {
         yearBirth = item(1,0)->text().toInt();
     }
     catch (...) {} //TO DO
-    int yearDeath = author->getYearDeath();
+    QString yearDeath = author->getYearDeath();
     try
     {
         yearDeath = item(2,0)->text().toInt();
@@ -84,8 +84,8 @@ void AuthorTable::saveAuthor()
 void AuthorTable::clear()
 {
     item(0,0)->setText(author->getName());
-    item(1,0)->setText(QString::number(author->getYearBirth()));
-    item(2,0)->setText(QString::number(author->getYearDeath()));
+    item(1,0)->setText(author->getYearBirth());
+    item(2,0)->setText(author->getYearDeath());
     item(3,0)->setText(author->getBio());
 }
 

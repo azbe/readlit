@@ -21,8 +21,8 @@ public:
     Author();
     explicit Author(const QString & name,
                     std::vector<QString> books = std::vector<QString>(),
-                    const int & yearBirth = 0,
-                    const int & yearDeath = 0,
+                    const QString &yearBirth = 0,
+                    const QString &yearDeath = 0,
                     const QString & bio = "n/a");
     Author(const Author & a);
     Author& operator = (const Author & a);
@@ -32,9 +32,11 @@ public:
 
     QString getName() const;
     QString getBio() const;
+    QString getYearBirth() const;
+    QString getYearDeath() const;
+    int getYearBirthInt() const;
+    int getYearDeathInt() const;
     std::vector<QString> getVector() const;
-    int getYearBirth() const;
-    int getYearDeath() const;
 
     bool addBook(const QString & book);
     bool exist();
@@ -47,8 +49,8 @@ public:
 private:
     QString *name;
     std::vector<QString> *books;//Oriunde avem carti, optimizam eficienta pastrand doar titlul si cautand cartea in baza de date
-    int *yearBirth;
-    int *yearDeath;
+    QString *yearBirth;
+    QString *yearDeath;
     QString *bio;
     bool _exist;
 };
