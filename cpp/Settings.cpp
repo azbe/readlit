@@ -3,13 +3,7 @@
 
 Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
 {
-    databasePath = SettingsConstants::DATABASE_DEFAULT_PATH;
-    scannerPath = SettingsConstants::SCANNER_DEFAULT_PATH;
-    dictionaryPath = SettingsConstants::DICTIONARY_DEFAULT_PATH;
-    authorSyncPath = SettingsConstants::AUTHOR_SYNC_DEFAULT_PATH;
-    bookSyncPath = SettingsConstants::BOOK_SYNC_DEFAULT_PATH;
-    translatorPath = SettingsConstants::TRANSLATOR_DEFAULT_PATH;
-    python2Path=SettingsConstants::PYTHON2_DEFAULT_PATH;
+
     load(loadPath);
     layoutSettings = new QVBoxLayout(this);
     layoutSettings->setSpacing(6);
@@ -113,6 +107,14 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
 
 }
 
+QString Settings::databasePath = SettingsConstants::DATABASE_DEFAULT_PATH;
+QString Settings::scannerPath = SettingsConstants::SCANNER_DEFAULT_PATH;
+QString Settings::dictionaryPath = SettingsConstants::DICTIONARY_DEFAULT_PATH;
+QString Settings::authorSyncPath = SettingsConstants::AUTHOR_SYNC_DEFAULT_PATH;
+QString Settings::bookSyncPath = SettingsConstants::BOOK_SYNC_DEFAULT_PATH;
+QString Settings::translatorPath = SettingsConstants::TRANSLATOR_DEFAULT_PATH;
+QString Settings::python2Path=SettingsConstants::PYTHON2_DEFAULT_PATH;
+
 void Settings::save(const QString &fileName)
 {
     QFile saveFile(fileName);
@@ -143,13 +145,17 @@ void Settings::load(const QString &fileName)
         qWarning("couldnt open the file");
         return;
     }
-    QStringList str;
+    QStringList str,str1;
     QString line;
             while (!savedFile.atEnd()) {
            line = savedFile.readLine();
             str = line.split('=');
             if(QString::compare(str[0],"Database Path")==0)
-            databasePath=str[1];
+            {
+                str1 = str[1].split('\n');
+                databasePath=str1[0];
+            }
+
             if(QString::compare(str[0],"Scanner Path")==0)
             scannerPath=str[1];
             if(QString::compare(str[0],"Dictionary Path")==0)

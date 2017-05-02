@@ -27,13 +27,13 @@ class Settings : public QWidget
 
     void save(const QString& path);
     void load(const QString& path);
-    QString databasePath;
-    QString scannerPath;
-    QString translatorPath;
-    QString dictionaryPath;
-    QString authorSyncPath;
-    QString bookSyncPath;
-    QString python2Path;
+    static QString databasePath;
+    static QString scannerPath;
+    static QString translatorPath;
+    static QString dictionaryPath;
+    static QString authorSyncPath;
+    static QString bookSyncPath;
+    static QString python2Path;
 
 private:
     QWidget *bonus;

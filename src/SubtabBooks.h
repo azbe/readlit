@@ -12,7 +12,7 @@
 #include "src/BookTable.h"
 #include "src/DataButton.h"
 #include "src/Constants.h"
-
+#include "src/Settings.h"
 
 class SubtabBooks : public QWidget
 {
