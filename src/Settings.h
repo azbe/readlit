@@ -15,6 +15,7 @@
 #include <QWidget>
 #include <QFile>
 #include <QTextStream>
+#include <QMouseEvent>
 #include "src/BrowserButton.h"
 #include "src/Constants.h"
 class Settings : public QWidget
@@ -24,8 +25,7 @@ class Settings : public QWidget
     public:
     explicit Settings(QWidget *parent = 0, const QString& loadPath = "");
     ~Settings();
-
-    void save(const QString& path);
+     void save(const QString& path);
     void load(const QString& path);
     static QString databasePath;
     static QString scannerPath;
@@ -35,18 +35,25 @@ class Settings : public QWidget
     static QString bookSyncPath;
     static QString python2Path;
 
+
+    private slots:
+    void updateDatabasePath();
+    void updateScannerPath();
+    void updateDictionaryPath();
+    void updateTranslatorPath();
+    void updatePython2Path();
+    void updateAuthorSyncPath();
+    void updateBookSyncPath();
+   void saveFile();
+
 private:
     QWidget *bonus;
-    QWidget *defaultButtons;
-    QWidget *pythonButtons;
+    QString rememberPath;
     QPushButton *saveButtonDefault;
-    QPushButton *defaultsButtonDefault;
     QPushButton *saveButtonPython;
-    QPushButton *defaultsButtonPython;
     QGroupBox *defaultText;
     QGroupBox *pythonScripts;
     QVBoxLayout *layoutSettings;
-    QWidget *database;
     QLabel *databaseTextLabel;
     QLineEdit *databaseText;
     BrowserButton *databaseBrowser;

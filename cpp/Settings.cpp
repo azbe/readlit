@@ -3,8 +3,8 @@
 
 Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
 {
-
-    load(loadPath);
+    rememberPath = loadPath;
+    load(rememberPath);
     layoutSettings = new QVBoxLayout(this);
     layoutSettings->setSpacing(6);
     defaultText = new QGroupBox(this);
@@ -37,8 +37,8 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     defaultLayout->addWidget(scannerText,1, 1, 1, 2);
     defaultLayout->addWidget(scannerBrowser,1, 3, 1, 2);
     defaultLayout->addWidget(scannerDefault, 1, 5, 1, 1);
-    saveButtonDefault = new QPushButton("Save",defaultText);
-    defaultLayout->addWidget(saveButtonDefault,2, 5, 1, 1);
+    //saveButtonDefault = new QPushButton("Save",defaultText);
+   // defaultLayout->addWidget(saveButtonDefault,2, 5, 1, 1);
     pythonScripts = new QGroupBox(this);
     pythonScripts->setTitle("Python Text");
     pythonScripts->setSizePolicy(sizePolicy);
@@ -74,7 +74,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     pythonLayout->addWidget(translatorText,5, 1, 1, 2);
     pythonLayout->addWidget(translatorBrowser,5, 3, 1, 2);
     pythonLayout->addWidget(translatorDefault, 5, 5, 1, 1);
-    saveButtonPython = new QPushButton("Save",pythonButtons);
+    saveButtonPython = new QPushButton("Save",pythonScripts);
     bookSyncTextLabel = new QLabel("Books Sync", pythonScripts);
     bookSyncText = new QLineEdit(pythonScripts);
     bookSyncBrowser = new BrowserButton(pythonScripts);
@@ -103,7 +103,14 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     sizeDefault.setVerticalStretch(1);
     bonus->setSizePolicy(sizeDefault);
     layoutSettings->addWidget(bonus);
-
+    connect(databaseDefault, SIGNAL(clicked(bool)), this, SLOT(updateDatabasePath()));
+    connect(scannerDefault, SIGNAL(clicked(bool)), this, SLOT(updateScannerPath()));
+    connect(dictionaryDefault, SIGNAL(clicked(bool)), this, SLOT(updateDictionaryPath()));
+    connect(translatorDefault, SIGNAL(clicked(bool)), this, SLOT(updateTranslatorPath()));
+    connect(python2Default, SIGNAL(clicked(bool)), this, SLOT(updatePython2Path()));
+    connect(bookSyncDefault, SIGNAL(clicked(bool)), this, SLOT(updateBookSyncPath()));
+    connect(authorSyncDefault, SIGNAL(clicked(bool)), this, SLOT(updateAuthorSyncPath()));
+   connect(saveButtonPython, SIGNAL(clicked(bool)),this,SLOT(saveFile()));
 
 }
 
@@ -114,6 +121,65 @@ QString Settings::authorSyncPath = SettingsConstants::AUTHOR_SYNC_DEFAULT_PATH;
 QString Settings::bookSyncPath = SettingsConstants::BOOK_SYNC_DEFAULT_PATH;
 QString Settings::translatorPath = SettingsConstants::TRANSLATOR_DEFAULT_PATH;
 QString Settings::python2Path=SettingsConstants::PYTHON2_DEFAULT_PATH;
+
+void Settings::saveFile()
+{
+    save(rememberPath);
+}
+
+
+void Settings::updateDatabasePath()
+{
+
+        databasePath = SettingsConstants::DATABASE_DEFAULT_PATH;
+        databaseText->setText(databasePath);
+}
+
+void Settings::updateScannerPath()
+{
+
+        scannerPath = SettingsConstants::SCANNER_DEFAULT_PATH;
+        scannerText->setText(scannerPath);
+}
+
+void Settings::updateTranslatorPath()
+{
+
+        translatorPath = SettingsConstants::TRANSLATOR_DEFAULT_PATH;
+        translatorText->setText(translatorPath);
+}
+
+void Settings::updateDictionaryPath()
+{
+
+        dictionaryPath = SettingsConstants::DICTIONARY_DEFAULT_PATH;
+        dictionaryText->setText(dictionaryPath);
+}
+
+void Settings::updatePython2Path()
+{
+
+        python2Path = SettingsConstants::PYTHON2_DEFAULT_PATH;
+        python2Text->setText(python2Path);
+}
+
+
+
+void Settings::updateAuthorSyncPath()
+{
+
+        authorSyncPath = SettingsConstants::AUTHOR_SYNC_DEFAULT_PATH;
+        authorSyncText->setText(authorSyncPath);
+}
+
+void Settings::updateBookSyncPath()
+{
+
+        bookSyncPath = SettingsConstants::BOOK_SYNC_DEFAULT_PATH;
+        bookSyncText->setText(bookSyncPath);
+}
+
+
 
 void Settings::save(const QString &fileName)
 {
@@ -179,39 +245,29 @@ void Settings::load(const QString &fileName)
 Settings::~Settings()
 {
 
-    save("settings.cfg");
+    //save("settings.cfg");
     delete bookSyncTextLabel;
     delete bookSyncText;
     delete bookSyncBrowser;
-    delete bookSync;
     delete authorSyncTextLabel;
     delete authorSyncText;
     delete authorSyncBrowser;
-    delete authorSync;
     delete translatorTextLabel;
     delete translatorText;
     delete translatorBrowser;
-    delete translator;
     delete dictionaryTextLabel;
     delete dictionaryText;
     delete dictionaryBrowser;
-    delete dictionary;
     delete saveButtonPython;
-    delete defaultsButtonPython;
-    delete pythonButtons;
     delete pythonLayout;
     delete pythonScripts;
     delete databaseTextLabel;
     delete databaseText;
     delete databaseBrowser;;
-    delete database;
     delete scannerTextLabel;
     delete scannerText;
     delete scannerBrowser;
-    delete scanner;
     delete saveButtonDefault;
-    delete defaultsButtonDefault;
-    delete defaultButtons;
     delete defaultLayout;
     delete defaultText;
     delete layoutSettings;
