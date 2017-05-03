@@ -130,37 +130,32 @@ void Settings::saveFile()
 
 void Settings::updateDatabasePath()
 {
-
-        databasePath = SettingsConstants::DATABASE_DEFAULT_PATH;
-        databaseText->setText(databasePath);
+        databaseText->setText(SettingsConstants::DATABASE_DEFAULT_PATH);
 }
 
 void Settings::updateScannerPath()
 {
 
-        scannerPath = SettingsConstants::SCANNER_DEFAULT_PATH;
-        scannerText->setText(scannerPath);
+        scannerText->setText(SettingsConstants::SCANNER_DEFAULT_PATH);
 }
 
 void Settings::updateTranslatorPath()
 {
 
-        translatorPath = SettingsConstants::TRANSLATOR_DEFAULT_PATH;
-        translatorText->setText(translatorPath);
+        translatorText->setText(SettingsConstants::TRANSLATOR_DEFAULT_PATH);
 }
 
 void Settings::updateDictionaryPath()
 {
 
-        dictionaryPath = SettingsConstants::DICTIONARY_DEFAULT_PATH;
-        dictionaryText->setText(dictionaryPath);
+
+        dictionaryText->setText(SettingsConstants::DICTIONARY_DEFAULT_PATH);
 }
 
 void Settings::updatePython2Path()
 {
 
-        python2Path = SettingsConstants::PYTHON2_DEFAULT_PATH;
-        python2Text->setText(python2Path);
+        python2Text->setText(SettingsConstants::PYTHON2_DEFAULT_PATH);
 }
 
 
@@ -168,15 +163,13 @@ void Settings::updatePython2Path()
 void Settings::updateAuthorSyncPath()
 {
 
-        authorSyncPath = SettingsConstants::AUTHOR_SYNC_DEFAULT_PATH;
-        authorSyncText->setText(authorSyncPath);
+        authorSyncText->setText(SettingsConstants::AUTHOR_SYNC_DEFAULT_PATH);
 }
 
 void Settings::updateBookSyncPath()
 {
 
-        bookSyncPath = SettingsConstants::BOOK_SYNC_DEFAULT_PATH;
-        bookSyncText->setText(bookSyncPath);
+        bookSyncText->setText(SettingsConstants::BOOK_SYNC_DEFAULT_PATH);
 }
 
 
