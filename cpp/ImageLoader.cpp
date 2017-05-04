@@ -9,16 +9,15 @@ ImageLoader::ImageLoader(QObject *parent, Poppler::Page *page, int pagenum, int 
     this->height = height;
 }
 
-ImageLoader::~ImageLoader()
-{
-}
+ImageLoader::~ImageLoader() {} //*page is deleted in process
 
 void ImageLoader::process()
 {
     QImage image = page->renderToImage(ReaderConstants::SCAN_DEFAULT_HORIZONTAL_RES, ReaderConstants::SCAN_DEFAULT_VERTICAL_RES).scaled(width, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    if (image.isNull()); //TO DO: erori
     delete page;
-
+    if (image.isNull())
+        qDebug() << "ImageLoader::process - Error rendering image";
+    //Emiting null image is fine here
     emit result(image, pagenum);
     emit finished();
 }

@@ -2,10 +2,8 @@
 #include "ui_ReaderExtras.h"
 
 ReaderExtras::ReaderExtras(QWidget *parent) :
-    QWidget(parent)//,
-    //ui(new Ui::ReaderExtras)
+    QWidget(parent)
 {
-    //ui->setupUi(this);
     setContentsMargins(0,0,0,0);
     extrasLayout = new QVBoxLayout(this);
 
@@ -57,7 +55,6 @@ ReaderExtras::ReaderExtras(QWidget *parent) :
 
 ReaderExtras::~ReaderExtras()
 {
-    //delete ui;
     for (int i = 0; i < 2; i++)
     {
         delete lebtbTextBrowser[i];

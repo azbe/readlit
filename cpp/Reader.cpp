@@ -3,26 +3,48 @@
 
 #include <QResizeEvent>
 #include <QThread>
+#include <QDebug>
 
 #include "src/ImageLoader.h"
 
 Reader::Reader(QWidget *parent) : QWidget(parent)
 {
-    setStyleSheet("border: 2px solid blue;");
-    book = 0;
-    scrollArea = 0;
-    scrollBar = 0;
-    pageArea = 0;
-    pageAreaLayout = 0;
-    pages = 0;
-    isActualized = 0;
+    book = nullptr;
+    scrollArea = nullptr;
+    scrollBar = nullptr;
+    pageArea = nullptr;
+    pageAreaLayout = nullptr;
+    pages = nullptr;
+    isActualized = nullptr;
 }
 
-Reader::Reader(QWidget *parent, const QString& path, const int& startingPage) : QWidget(parent)
+Reader::Reader(QWidget *parent, const QString& path) : QWidget(parent)
 {
     book = Poppler::Document::load(path);
-    if(book); //TO DO: erori
-
+    if(!book)
+    {
+        qDebug() << "Reader::Reader(QWidget,QString,int) - Error opening poppler document at path = " << path << "\nUsing empty constructor instead";
+        book = nullptr;
+        scrollArea = nullptr;
+        scrollBar = nullptr;
+        pageArea = nullptr;
+        pageAreaLayout = nullptr;
+        pages = nullptr;
+        isActualized = nullptr;
+        return;
+    }
+    if (!book->page(0))
+    {
+        qDebug() << "Reader::Reader(QWidget,QString,int) - Error opening poppler page 0 for aspect ratio\nUsing empty constructor instead";
+        book = nullptr;
+        scrollArea = nullptr;
+        scrollBar = nullptr;
+        pageArea = nullptr;
+        pageAreaLayout = nullptr;
+        pages = nullptr;
+        isActualized = nullptr;
+        return;
+    }
     Poppler::Page *page = book->page(0);
     pageAspectRatio = (ReaderConstants::SCAN_DEFAULT_VERTICAL_RES * (page->pageSizeF().height() / 72)) / (ReaderConstants::SCAN_DEFAULT_HORIZONTAL_RES * (page->pageSizeF().width() / 72));
     delete page;
@@ -41,7 +63,6 @@ Reader::Reader(QWidget *parent, const QString& path, const int& startingPage) : 
     updateCurrentPage();
     pageArea = new QFrame(scrollArea);
     resizeTimerId = 0;
-    //pageArea->setStyleSheet("border: 3px solid blue");
     pageAreaLayout = new QVBoxLayout(pageArea);
 
     pages = new QLabel*[pageCount];
@@ -49,7 +70,6 @@ Reader::Reader(QWidget *parent, const QString& path, const int& startingPage) : 
     for (int index = 0; index < pageCount; index++)
     {
         pages[index] = new QLabel(pageArea);
-        //pages[index]->setStyleSheet("border: 1px solid red");
         pageAreaLayout->addWidget(pages[index]);
 
         isActualized[index] = false;
@@ -58,31 +78,40 @@ Reader::Reader(QWidget *parent, const QString& path, const int& startingPage) : 
     scrollArea->setWidget(pageArea);
 }
 
+bool Reader::isNull() const
+{
+    return !book;
+}
+
 Reader::~Reader()
 {
-    if(pages)
-    {
-        for (int index = 0; index < pageCount; index++)
-            if (pages[index])
-                delete pages[index];
-        delete[] pages;
-        delete[] isActualized;
-    }
-    if(pageAreaLayout) delete pageAreaLayout;
-    if(pageArea) delete pageArea;
-    if(scrollBar) delete scrollBar;
-    if(scrollArea) delete scrollArea;
-    if(book) delete book;
+    for (int index = 0; index < pageCount; index++)
+        if (pages[index])
+            delete pages[index];
+    delete[] pages;
+    delete[] isActualized;
+    delete pageAreaLayout;
+    delete pageArea;
+    delete scrollBar;
+    delete scrollArea;
+    delete book;
 }
 
 QImage Reader::getPageImage(const int& index) const
 {
-    //TO DO: erori
     Poppler::Page *page = book->page(index);
-    if (!page);
+    if (!page)
+    {
+        qDebug() << "Reader::getPageImage - Error receiving poppler page #" << index;
+        return QImage();
+    }
     QImage image = page->renderToImage(ReaderConstants::SCAN_DEFAULT_HORIZONTAL_RES, ReaderConstants::SCAN_DEFAULT_VERTICAL_RES);
-    if (image.isNull());
     delete page;
+    if (image.isNull())
+    {
+        qDebug() << "Reader::getPageImage - Error rendering poppler page #" << index << " to image";
+        return QImage();
+    }
     return image;
 }
 
@@ -100,19 +129,28 @@ void Reader::updatePageCount()
         }
         delete page;
     }
+    //Shitcode
     pageCount = index;
 }
 
 void Reader::updateCurrentPage()
 {
-    int a[3] = {scrollBar->minimum(), scrollBar->value(), scrollBar->maximum()};
-    currentPage = (scrollBar->value() - scrollBar->minimum())/(1.0 * scrollBar->maximum() - scrollBar->minimum()) * pageCount;
-    if (currentPage == pageCount) --currentPage;
+    if (1.0 * scrollBar->maximum() - scrollBar->minimum() != 0)
+        currentPage = (scrollBar->value() - scrollBar->minimum())/(1.0 * scrollBar->maximum() - scrollBar->minimum()) * pageCount;
+    else
+        qDebug() << "Reader::updateCurrentPage - Error: division by 0 - scrollBar->maximum() = " << scrollBar->maximum() << " scrollBar->minimum() = " << scrollBar->minimum() << "\ncurrentPage unchanged.";
+    if (currentPage == pageCount) --currentPage; //Shitcode
 }
 
 double Reader::getScrollBarPercent() const
 {
-    return (1.0*scrollBar->value() - scrollBar->minimum())/(scrollBar->maximum() - scrollBar->minimum());
+    if (1.0 * scrollBar->maximum() - scrollBar->minimum() != 0)
+        return (scrollBar->value() - scrollBar->minimum())/(1.0 * scrollBar->maximum() - scrollBar->minimum());
+    else
+    {
+        qDebug() << "Reader::getScrollBarPercent - Error: division by 0 - scrollBar->maximum() = " << scrollBar->maximum() << " scrollBar->minimum() = " << scrollBar->minimum() << "\nReturning lastScrollBarValue = " << lastScrollBarValue;
+        return lastScrollBarValue;
+    }
 }
 
 void Reader::resizeEvent(QResizeEvent *event)
@@ -125,7 +163,7 @@ void Reader::resizeEvent(QResizeEvent *event)
         killTimer(resizeTimerId);
         resizeTimerId = 0;
     }
-    resizeTimerId = startTimer(200);
+    resizeTimerId = startTimer(ReaderConstants::RESIZE_DEFAULT_TIMER);
 }
 
 void Reader::timerEvent(QTimerEvent *te)
@@ -133,7 +171,7 @@ void Reader::timerEvent(QTimerEvent *te)
     if(te->timerId() == resizeTimerId)
     {
         scrollArea->resize(newSize);
-        pageArea->resize(newSize.width() - 15, pageCount * pageAspectRatio * (newSize.width() - 15));
+        pageArea->resize(newSize.width() - 15, pageCount * pageAspectRatio * (newSize.width() - 15)); //Shitcode (magic numbers)
 
         for (int index = 0; index < pageCount; index++)
         {
@@ -142,7 +180,7 @@ void Reader::timerEvent(QTimerEvent *te)
         }
         scrollBar->setValue(lastScrollBarValue * scrollBar->maximum());
         isMouseScrolling = false;
-        startTimer(100);
+        startTimer(100); //Shitcode (magic number)
 
         killTimer(te->timerId());
         resizeTimerId = 0;
@@ -156,6 +194,16 @@ void Reader::timerEvent(QTimerEvent *te)
 void Reader::actualizeView(int page)
 {
     QThread *imageLoadingThread = new QThread();
+    if (page < 0 || page > pageCount)
+    {
+        qDebug() << "Reader::actualizeView - Error: pagenum = " << page << " too big or too small (pageCount = " << pageCount << ")";
+        return;
+    }
+    if (!book->page(page))
+    {
+        qDebug() << "Reader::actualizeView - Error receiving poppler page " << page;
+        return;
+    }
     ImageLoader *imageLoader = new ImageLoader(Q_NULLPTR, book->page(page), page, pages[page]->width(), pages[page]->height());
     imageLoader->moveToThread(imageLoadingThread);
     QObject::connect(imageLoader, SIGNAL(result(QImage,int)), this, SLOT(handleImage(QImage,int)));
@@ -207,6 +255,18 @@ void Reader::scrollBarReleased()
 
 void Reader::handleImage(QImage image, int pagenum)
 {
+    if (pagenum < 0 || pagenum >= pageCount)
+    {
+        qDebug() << "Reader::handleImage - Error: pagenum = " << pagenum << " too big or too small";
+        return;
+    }
+    if (image.isNull())
+    {
+        qDebug() << "Reader::handleImage - Error: received null image from ImageLoader";
+        if (isActualized[pagenum])
+            isActualized[pagenum] = false;
+        return;
+    }
     pages[pagenum]->setPixmap(QPixmap::fromImage(image));
 }
 

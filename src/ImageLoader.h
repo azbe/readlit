@@ -5,6 +5,7 @@
 #include <QThread>
 #include <QPixmap>
 #include <QImage>
+#include <QDebug>
 #include <poppler-qt5.h>
 
 class ImageLoader : public QObject

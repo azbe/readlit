@@ -6,6 +6,7 @@ namespace ReaderConstants
     const int PRELOAD_DEFAULT_NUMBER_PAGES = 3;
     const int SCAN_DEFAULT_HORIZONTAL_RES = 600;
     const int SCAN_DEFAULT_VERTICAL_RES = 600;
+    const int RESIZE_DEFAULT_TIMER = 200;
 }
 
 namespace UIConstants

@@ -23,8 +23,6 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
     localTabs = new QTabWidget(tabLocal);
     localLayout = new QHBoxLayout(tabLocal);
 
-
-
     books = new SubtabBooks(tabLocal, database);
     authors = new SubtabAuthors(tabLocal, database);
     connect(books, SIGNAL(updateAuthors()), authors, SLOT(newScan()));
@@ -71,6 +69,12 @@ void MainWindow::openBookInReader(const QString &path)
     readerLayout = new QHBoxLayout(tabReader);
     reader = new Reader(tabReader, path);
     readerLayout->addWidget(readerExtras, 1);
+    if (reader->isNull())
+    {
+        qDebug() << "MainWindow::openBookInReader - Error: reader is null";
+        delete reader;
+        return;
+    }
     readerLayout->addWidget(reader, 3);
     mainTabs->setCurrentIndex(0);
 }

@@ -9,6 +9,7 @@
 #include <QLabel>
 #include <QScrollBar>
 #include <QTimer>
+#include <QDebug>
 #include <poppler-qt5.h>
 
 class Reader : public QWidget
@@ -24,7 +25,8 @@ class Reader : public QWidget
 
     public:
     explicit Reader(QWidget *parent);
-    explicit Reader(QWidget *parent, const QString& path, const int& startingPage = 0);
+    bool isNull() const;
+    explicit Reader(QWidget *parent, const QString& path);
     ~Reader();
 
     private:
