@@ -61,31 +61,31 @@ void AuthorTable::setAuthor(const Author &author)
 }
 
 void AuthorTable::saveAuthor()
-{   if(author!=NULL)
+{   if(author!=nullptr)
     {
-    QString yearBirth = author->getYearBirth();
-    yearBirth = item(1,0)->text();
-    QString yearDeath = author->getYearDeath();
-    yearDeath = item(2,0)->text();
-    QString bio = item(3,0)->text();
+        QString yearBirth = author->getYearBirth();
+        yearBirth = item(1,0)->text();
+        QString yearDeath = author->getYearDeath();
+        yearDeath = item(2,0)->text();
+        QString bio = item(3,0)->text();
 
-    Author newAuthor(author->getName(), author->getVector(), yearBirth, yearDeath, bio);
-    this->author = new Author(newAuthor);
-    emit updateAuthor(newAuthor);
+        Author newAuthor(author->getName(), author->getVector(), yearBirth, yearDeath, bio);
+        this->author = new Author(newAuthor);
+        emit updateAuthor(newAuthor);
     }
-    else qDebug()<<"No author selected";
+    else qDebug()<<"AuthorTable::saveAuthor - Error: No author selected";
 }
 
 void AuthorTable::clear()
 {
-     if(author!=NULL)
+    if(author!=nullptr)
     {
-    item(0,0)->setText(author->getName());
-    item(1,0)->setText(author->getYearBirth());
-    item(2,0)->setText(author->getYearDeath());
-    item(3,0)->setText(author->getBio());
+        item(0,0)->setText(author->getName());
+        item(1,0)->setText(author->getYearBirth());
+        item(2,0)->setText(author->getYearDeath());
+        item(3,0)->setText(author->getBio());
     }
-    else qDebug()<<"No author selected";
+    else qDebug()<<"AuthorTable::clear - Error: No author selected";
 }
 
 AuthorTable::~AuthorTable()

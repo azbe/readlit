@@ -78,13 +78,12 @@ SubtabBooks::SubtabBooks(QWidget *parent, DataBase& database) : QWidget(parent)
                 connect(dataButtons[i], SIGNAL(clicked(bool)), bookData, SLOT(clear()));
                 break;
             }
-		}
-		//text += " Book Data";
+        }
         dataButtons[i]->setText(text);
 		dataButtons[i]->setMaximumWidth(UIConstants::DATA_BUTTON_DEFAULT_MAX_SIZE);
 		dataButtons[i]->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-		dataWidgetLayout->addWidget(dataButtons[i], 0, i, 1, 1);
-	}
+        dataWidgetLayout->addWidget(dataButtons[i], 0, i, 1, 1);
+    }
 	bookWidgetsLayout1->addWidget(bookList);
 	bookWidgetsLayout1->addWidget(dataWidget);
 	bookWidgetsLayout1->setContentsMargins(0, 0, 0, 0);
@@ -152,11 +151,6 @@ void SubtabBooks::getSyncDetailsDone(const QStringList &details, const QString& 
     emit updateAuthors();
 }
 
-void SubtabBooks::getSyncDetailsError(const QString &err, SyncWorker* worker)
-{
-    //qDebug() << err;
-    delete worker;
-}
 
 void SubtabBooks::getBrowsePaths(QStringList browsePaths)
 {

@@ -24,7 +24,7 @@ public:
     QString getFilePath() const;
     QString getYear() const;
     QString getDescription() const;
-    int getYearInt() const;
+    QString getYearInt() const;
 
     bool operator == (const Book& b) const;
 

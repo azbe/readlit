@@ -75,14 +75,14 @@ QString Author::getBio() const
     return *bio;
 }
 
-int Author::getYearBirthInt() const
+QString Author::getYearBirthInt() const
 {
-    return yearBirth->toInt();
+    return *yearBirth;
 }
 
-int Author::getYearDeathInt() const
+QString Author::getYearDeathInt() const
 {
-    return yearDeath->toInt();
+    return *yearDeath;
 }
 
 std::vector<QString> Author::getVector() const
@@ -97,7 +97,7 @@ QString Author::getYearBirth() const
 
 QString Author::getYearDeath() const
 {
-    return *yearBirth;
+    return *yearDeath;
 }
 
 bool Author::addBook(const QString &book)
@@ -136,8 +136,8 @@ void Author::read(const QJsonObject &json)
         QString bookName = booksJsonArray[index].toString();
         books->push_back(bookName);
     }
-    yearBirth = new QString(json["yearBirth"].toInt());
-    yearDeath = new QString(json["yearDeath"].toInt());
+    yearBirth = new QString(json["yearBirth"].toString());
+    yearDeath = new QString(json["yearDeath"].toString());
     bio = new QString(json["bio"].toString());
 }
 

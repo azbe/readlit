@@ -72,18 +72,20 @@ void BookTable::setBook(const Book& book)
 }
 
 void BookTable::saveBook()
-{   if(book!=NULL)
-   { QString title = item(1,0)->text();
-    QString author = item(2,0)->text();
-    QString year = book->getYear();
-    year = item(3,0)->text();
+{   if(book!=nullptr)
+   {
+        QString title = item(1,0)->text();
+        QString author = item(2,0)->text();
+        QString year = book->getYear();
+        year = item(3,0)->text();
 
-    QString summary = item(4,0)->text();
+        QString summary = item(4,0)->text();
 
-    Book newBook(book->getFilePath(), title, author, year, summary);
-    this->book = new Book(newBook);
-    emit updateBook(newBook);}
-    else qDebug()<<"No book selected";
+        Book newBook(book->getFilePath(), title, author, year, summary);
+        this->book = new Book(newBook);
+        emit updateBook(newBook);
+    }
+        else qDebug()<<"No book selected";
 }
 
 void BookTable::clear()

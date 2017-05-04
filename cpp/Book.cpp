@@ -85,9 +85,9 @@ QString Book::getDescription() const
     return *description;
 }
 
-int Book::getYearInt() const
+QString Book::getYearInt() const
 {
-    return year->toInt();
+    return *year;
 }
 
 bool Book::operator == (const Book& b) const

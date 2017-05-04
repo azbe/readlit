@@ -34,8 +34,8 @@ public:
     QString getBio() const;
     QString getYearBirth() const;
     QString getYearDeath() const;
-    int getYearBirthInt() const;
-    int getYearDeathInt() const;
+    QString getYearBirthInt() const;
+    QString getYearDeathInt() const;
     std::vector<QString> getVector() const;
 
     bool addBook(const QString & book);
