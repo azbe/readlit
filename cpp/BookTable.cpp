@@ -1,5 +1,7 @@
 #include "src/BookTable.h"
 
+
+
 BookTable::BookTable(QWidget *parent) : QTableWidget(parent)
 {
     book = 0;
@@ -47,6 +49,7 @@ BookTable::BookTable(QWidget *parent) : QTableWidget(parent)
 Book BookTable::getBook()
 {
     return *book;
+
 }
 
 Book BookTable::getUnsavedBook()
@@ -56,38 +59,43 @@ Book BookTable::getUnsavedBook()
 
 void BookTable::setBook(const Book& book)
 {
+
     this->book = new Book(book);
     item(0,0)->setText(book.getFilePath());
     item(1,0)->setText(book.getTitle());
     item(2,0)->setText(book.getAuthor());
     item(3,0)->setText(book.getYear());
     item(4,0)->setText(book.getDescription());
+
+
+
 }
 
 void BookTable::saveBook()
-{
-    QString title = item(1,0)->text();
+{   if(book!=NULL)
+   { QString title = item(1,0)->text();
     QString author = item(2,0)->text();
     QString year = book->getYear();
-    try
-    {
-        year = item(3,0)->text().toInt();
-    }
-    catch (...) {} //TO DO
+    year = item(3,0)->text();
+
     QString summary = item(4,0)->text();
 
     Book newBook(book->getFilePath(), title, author, year, summary);
     this->book = new Book(newBook);
-    emit updateBook(newBook);
+    emit updateBook(newBook);}
+    else qDebug()<<"No book selected";
 }
 
 void BookTable::clear()
-{
+{   if(book!=NULL)
+    {
     item(0,0)->setText(book->getFilePath());
     item(1,0)->setText(book->getTitle());
     item(2,0)->setText(book->getAuthor());
     item(3,0)->setText(book->getYear());
     item(4,0)->setText(book->getDescription());
+    }
+    else qDebug()<<"No book selected";
 }
 
 BookTable::~BookTable()

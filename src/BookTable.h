@@ -4,7 +4,7 @@
 #include <QTableWidget>
 #include <QProcess>
 #include <QHeaderView>
-
+#include <qdebug.h>
 #include "src/Book.h"
 
 class BookTable : public QTableWidget
@@ -12,7 +12,7 @@ class BookTable : public QTableWidget
     Q_OBJECT
 
 public:
-    explicit BookTable(QWidget *parent = 0);
+    BookTable(QWidget *parent = 0);
     ~BookTable();
 
     Book getBook();

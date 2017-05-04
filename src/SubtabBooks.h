@@ -14,6 +14,7 @@
 #include "src/DataButton.h"
 #include "src/Constants.h"
 #include "src/SyncWorker.h"
+#include <qdebug.h>
 
 class SubtabBooks : public QWidget
 {
@@ -36,7 +37,6 @@ public:
     void getBookDetails(QListWidgetItem *item);
     void getSyncDetails();
     void getSyncDetailsDone(const QStringList& details, const QString& path, int row);
-    void getSyncDetailsError(const QString &err, SyncWorker *worker);
     void getBrowsePaths(QStringList browsePaths);
     void getBookPaths(QStringList bookPaths);
 
