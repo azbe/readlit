@@ -10,6 +10,7 @@
 #include "src/SubtabAuthors.h"
 #include "src/Reader.h"
 #include "src/ReaderExtras.h"
+#include "src/Settings.h"
 
 class MainWindow : public QWidget
 {

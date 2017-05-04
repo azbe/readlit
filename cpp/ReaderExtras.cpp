@@ -11,11 +11,12 @@ ReaderExtras::ReaderExtras(QWidget *parent) :
 
     findWidget = new QWidget(this);
     findWidget->setContentsMargins(0,0,0,0);
-    findWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
+    findWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     findWidgetLayout = new QHBoxLayout(findWidget);
     findLineEdit = new QLineEdit(findWidget);
     findLineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     findButton = new QPushButton("Find", findWidget);
+    findButton->setMaximumWidth(75);
     findWidgetLayout->addWidget(findLineEdit);
     findWidgetLayout->addWidget(findButton);
 
@@ -28,7 +29,7 @@ ReaderExtras::ReaderExtras(QWidget *parent) :
         lebtbSubWidget[index]->setContentsMargins(-9,0,-9,0);
         lebtbSubWidgetLayout[index] = new QHBoxLayout(lebtbSubWidget[index]);
         lebtbLineEdit[index] = new QLineEdit(lebtbSubWidget[index]);
-        lebtbLineEdit[index]->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        lebtbLineEdit[index]->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         switch (index)
         {
             case 0:
@@ -41,6 +42,7 @@ ReaderExtras::ReaderExtras(QWidget *parent) :
                 lebtbPushButton[index] = new QPushButton("Translate", lebtbSubWidget[index]);
             }
         }
+        lebtbPushButton[index]->setMaximumWidth(75);
         lebtbSubWidgetLayout[index]->addWidget(lebtbLineEdit[index]);
         lebtbSubWidgetLayout[index]->addWidget(lebtbPushButton[index]);
         lebtbTextBrowser[index] = new QTextBrowser(lebtbWidget[index]);
