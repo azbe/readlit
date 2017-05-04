@@ -37,8 +37,6 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     defaultLayout->addWidget(scannerText,1, 1, 1, 2);
     defaultLayout->addWidget(scannerBrowser,1, 3, 1, 2);
     defaultLayout->addWidget(scannerDefault, 1, 5, 1, 1);
-    //saveButtonDefault = new QPushButton("Save",defaultText);
-   // defaultLayout->addWidget(saveButtonDefault,2, 5, 1, 1);
     pythonScripts = new QGroupBox(this);
     pythonScripts->setTitle("Python Text");
     pythonScripts->setSizePolicy(sizePolicy);
@@ -74,7 +72,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     pythonLayout->addWidget(translatorText,5, 1, 1, 2);
     pythonLayout->addWidget(translatorBrowser,5, 3, 1, 2);
     pythonLayout->addWidget(translatorDefault, 5, 5, 1, 1);
-    saveButtonPython = new QPushButton("Save",pythonScripts);
+    saveButton = new QPushButton("Save",pythonScripts);
     bookSyncTextLabel = new QLabel("Books Sync", pythonScripts);
     bookSyncText = new QLineEdit(pythonScripts);
     bookSyncBrowser = new BrowserButton(pythonScripts);
@@ -95,7 +93,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     pythonLayout->addWidget(authorSyncText,7, 1, 1, 2);
     pythonLayout->addWidget(authorSyncBrowser,7, 3, 1, 2);
     pythonLayout->addWidget(authorSyncDefault, 7, 5, 1, 1);
-    pythonLayout->addWidget(saveButtonPython,8, 5, 1, 1);
+    pythonLayout->addWidget(saveButton,8, 5, 1, 1);
     layoutSettings->addWidget(defaultText);
     layoutSettings->addWidget(pythonScripts);
     bonus = new QWidget(this);
@@ -110,7 +108,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     connect(python2Default, SIGNAL(clicked(bool)), this, SLOT(updatePython2Path()));
     connect(bookSyncDefault, SIGNAL(clicked(bool)), this, SLOT(updateBookSyncPath()));
     connect(authorSyncDefault, SIGNAL(clicked(bool)), this, SLOT(updateAuthorSyncPath()));
-   connect(saveButtonPython, SIGNAL(clicked(bool)),this,SLOT(saveFile()));
+   connect(saveButton, SIGNAL(clicked(bool)),this,SLOT(saveFile()));
 
 }
 
@@ -131,36 +129,31 @@ void Settings::saveFile()
 void Settings::updateDatabasePath()
 {
 
-        databasePath = SettingsConstants::DATABASE_DEFAULT_PATH;
-        databaseText->setText(databasePath);
+        databaseText->setText(SettingsConstants::DATABASE_DEFAULT_PATH);
 }
 
 void Settings::updateScannerPath()
 {
 
-        scannerPath = SettingsConstants::SCANNER_DEFAULT_PATH;
-        scannerText->setText(scannerPath);
+        scannerText->setText(SettingsConstants::SCANNER_DEFAULT_PATH);
 }
 
 void Settings::updateTranslatorPath()
 {
 
-        translatorPath = SettingsConstants::TRANSLATOR_DEFAULT_PATH;
-        translatorText->setText(translatorPath);
+        translatorText->setText(SettingsConstants::TRANSLATOR_DEFAULT_PATH);
 }
 
 void Settings::updateDictionaryPath()
 {
 
-        dictionaryPath = SettingsConstants::DICTIONARY_DEFAULT_PATH;
-        dictionaryText->setText(dictionaryPath);
+        dictionaryText->setText(SettingsConstants::DICTIONARY_DEFAULT_PATH);
 }
 
 void Settings::updatePython2Path()
 {
 
-        python2Path = SettingsConstants::PYTHON2_DEFAULT_PATH;
-        python2Text->setText(python2Path);
+        python2Text->setText(SettingsConstants::PYTHON2_DEFAULT_PATH);
 }
 
 
@@ -168,15 +161,13 @@ void Settings::updatePython2Path()
 void Settings::updateAuthorSyncPath()
 {
 
-        authorSyncPath = SettingsConstants::AUTHOR_SYNC_DEFAULT_PATH;
-        authorSyncText->setText(authorSyncPath);
+        authorSyncText->setText(SettingsConstants::AUTHOR_SYNC_DEFAULT_PATH);
 }
 
 void Settings::updateBookSyncPath()
 {
 
-        bookSyncPath = SettingsConstants::BOOK_SYNC_DEFAULT_PATH;
-        bookSyncText->setText(bookSyncPath);
+        bookSyncText->setText(SettingsConstants::BOOK_SYNC_DEFAULT_PATH);
 }
 
 
@@ -187,7 +178,7 @@ void Settings::save(const QString &fileName)
 
     if(!saveFile.exists()|| !saveFile.open(QIODevice::WriteOnly))
     {
-        qWarning("Couldn't open save file!");
+         qDebug()<<"Fisier inexistent";
         return;
     }
 
@@ -208,7 +199,7 @@ void Settings::load(const QString &fileName)
 
     if(!savedFile.exists() || !savedFile.open(QIODevice::ReadOnly))
     {
-        qWarning("couldnt open the file");
+        qDebug()<<"Fisier inexistent";
         return;
     }
     QStringList str,str1;
@@ -245,29 +236,33 @@ void Settings::load(const QString &fileName)
 Settings::~Settings()
 {
 
-    //save("settings.cfg");
     delete bookSyncTextLabel;
     delete bookSyncText;
     delete bookSyncBrowser;
+    delete bookSyncDefault;
     delete authorSyncTextLabel;
     delete authorSyncText;
     delete authorSyncBrowser;
+    delete authorSyncDefault;
     delete translatorTextLabel;
     delete translatorText;
     delete translatorBrowser;
+    delete translatorDefault;
     delete dictionaryTextLabel;
     delete dictionaryText;
     delete dictionaryBrowser;
-    delete saveButtonPython;
+    delete dictionaryDefault;
+    delete saveButton;
     delete pythonLayout;
     delete pythonScripts;
     delete databaseTextLabel;
     delete databaseText;
-    delete databaseBrowser;;
+    delete databaseBrowser;
+    delete databaseDefault;
     delete scannerTextLabel;
     delete scannerText;
     delete scannerBrowser;
-    delete saveButtonDefault;
+    delete scannerDefault;
     delete defaultLayout;
     delete defaultText;
     delete layoutSettings;

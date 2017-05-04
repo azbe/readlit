@@ -2,7 +2,7 @@
 #define AUTHORTABLE_H
 
 #include <QTableWidget>
-
+#include <qdebug.h>
 #include "src/Author.h"
 
 class AuthorTable : public QTableWidget
