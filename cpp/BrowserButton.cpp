@@ -37,6 +37,7 @@ void BrowserButton::mousePressEvent(QMouseEvent *event)
             }
         }
 
-        emit sendPaths(fileNames);
+        if (!fileNames.isEmpty())
+            emit sendPaths(fileNames);
     }
 }

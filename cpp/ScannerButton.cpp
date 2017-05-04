@@ -20,6 +20,10 @@ void ScannerButton::mousePressEvent(QMouseEvent *event)
         QStringList bookPaths;
         for (int index = 0; index < pieces.size(); index++)
             bookPaths.append(getBooksInFolder(pieces.value(index)));
+
+        if (bookPaths.isEmpty())
+            return;
+
         emit sendBookPaths(bookPaths);
     }
 }
@@ -27,6 +31,12 @@ void ScannerButton::mousePressEvent(QMouseEvent *event)
 QStringList ScannerButton::getBooksInFolder(QString folderPath)
 {
     QDir dir(folderPath);
+    if (!dir.exists())
+    {
+        qDebug() << "ScannerButton::getBooksInFolder - Error: directory does not exist";
+        return QStringList();
+    }
+
     QStringList filePaths;
 
     dir.setNameFilters(QStringList("*.pdf"));
