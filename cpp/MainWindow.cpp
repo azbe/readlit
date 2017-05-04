@@ -36,8 +36,6 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 	localTabs->setCurrentIndex(0);
 	localLayout->addWidget(localTabs);
 
-	//TO DO: Settings
-
 	mainTabs->addTab(tabReader, "Reader");
 	mainTabs->addTab(tabLocal, "Local");
 	mainTabs->addTab(tabSettings, "Settings");
