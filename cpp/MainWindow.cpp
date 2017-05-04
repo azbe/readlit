@@ -1,17 +1,18 @@
-
 #include "src/MainWindow.h"
-
+#include "src/Constants.h"
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
 	resize(UIConstants::MAINWINDOW_DEFAULT_WIDTH, UIConstants::MAINWINDOW_DEFAULT_HEIGHT);
-    database.load("database.json");
-
+    tabSettings = new QWidget(this);
+    settingsLayout = new QGridLayout(tabSettings);
+    settings = new Settings(tabSettings, "settings.cfg");
+    settingsLayout->addWidget(settings,0,0);
+    database.load(Settings::databasePath.trimmed());
 	mainTabs = new QTabWidget(this);
 	mainLayout = new QHBoxLayout(this);
 
 	tabReader = new QWidget(this);
 	tabLocal = new QWidget(this);
-	tabSettings = new QWidget(this);
 
     readerLayout = new QHBoxLayout(tabReader);
     readerExtras = new ReaderExtras(tabReader);
@@ -21,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 
     localTabs = new QTabWidget(tabLocal);
     localLayout = new QHBoxLayout(tabLocal);
+
+
 
     books = new SubtabBooks(tabLocal, database);
     authors = new SubtabAuthors(tabLocal, database);
@@ -45,6 +48,9 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 
 MainWindow::~MainWindow() 
 {
+    database.save(Settings::databasePath.trimmed());
+    delete settings;
+    delete settingsLayout;
     delete tabSettings;
     delete authors;
     delete books;
@@ -57,7 +63,6 @@ MainWindow::~MainWindow()
     delete tabReader;
     delete mainLayout;
     delete mainTabs;
-    database.save("database.json");
 }
 
 void MainWindow::openBookInReader(const QString &path)
