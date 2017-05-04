@@ -151,6 +151,11 @@ void SubtabBooks::getSyncDetailsDone(const QStringList &details, const QString& 
     emit updateAuthors();
 }
 
+void SubtabBooks::getSyncDetailsError(const QString &error, SyncWorker *worker)
+{
+    qDebug() << "SubtabBooks::getSyncDetailsError - Error: " << error;
+    delete worker;
+}
 
 void SubtabBooks::getBrowsePaths(QStringList browsePaths)
 {

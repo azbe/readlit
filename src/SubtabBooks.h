@@ -37,6 +37,7 @@ public:
     void getBookDetails(QListWidgetItem *item);
     void getSyncDetails();
     void getSyncDetailsDone(const QStringList& details, const QString& path, int row);
+    void getSyncDetailsError(const QString& error, SyncWorker *worker);
     void getBrowsePaths(QStringList browsePaths);
     void getBookPaths(QStringList bookPaths);
 
