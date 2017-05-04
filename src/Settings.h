@@ -46,7 +46,14 @@ class Settings : public QWidget
     void updatePython2Path();
     void updateAuthorSyncPath();
     void updateBookSyncPath();
-   void saveFile();
+    void browserDatabase(const QStringList &folderPaths);
+    void browserScanner(const QStringList &folderPaths);
+    void browserPython2(const QStringList &folderPaths);
+    void browserDictionary(const QStringList &folderPaths);
+    void browserTranslator(const QStringList &folderPaths);
+    void browserBookSync(const QStringList &folderPaths);
+    void browserAuthorSync(const QStringList &folderPaths);
+    void saveFile();
 
 private:
     QWidget *bonus;

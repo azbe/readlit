@@ -15,7 +15,7 @@ void ScannerButton::mousePressEvent(QMouseEvent *event)
 {
     if(event->button() == Qt::LeftButton)
     {
-        QStringList pieces = folderPaths->text().split(",", QString::SkipEmptyParts);
+        QStringList pieces = (folderPaths->text().trimmed()).split(",", QString::SkipEmptyParts);
 
         QStringList bookPaths;
         for (int index = 0; index < pieces.size(); index++)

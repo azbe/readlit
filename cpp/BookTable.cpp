@@ -85,7 +85,7 @@ void BookTable::saveBook()
         this->book = new Book(newBook);
         emit updateBook(newBook);
     }
-        else qDebug()<<"No book selected";
+        else qDebug()<<"BookTable::saveBook - Eroare: No book selected";
 }
 
 void BookTable::clear()
@@ -97,7 +97,7 @@ void BookTable::clear()
     item(3,0)->setText(book->getYear());
     item(4,0)->setText(book->getDescription());
     }
-    else qDebug()<<"No book selected";
+    else qDebug()<<"BookTable::clear - Eroare:No book selected";
 }
 
 BookTable::~BookTable()
