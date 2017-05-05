@@ -16,7 +16,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     defaultLayout->setSpacing(6);
     databaseTextLabel = new QLabel("Database", defaultText);
     databaseText = new QLineEdit(defaultText);
-    databaseBrowser = new BrowserButton(defaultText);
+    databaseBrowser = new BrowserButton(defaultText, BrowserButton::JSON);
     databaseDefault= new QPushButton("Default",defaultText);
     QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Fixed);
     sizePolicy1.setHorizontalStretch(1);
@@ -29,7 +29,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     defaultLayout->addWidget(databaseDefault, 0, 5, 1, 1);
     scannerTextLabel = new QLabel("Scanner", defaultText);
     scannerText = new QLineEdit(defaultText);
-    scannerBrowser = new BrowserButton(defaultText);
+    scannerBrowser = new BrowserButton(defaultText, BrowserButton::DIR);
     scannerDefault= new QPushButton("Default",defaultText);
     scannerText->setSizePolicy(sizePolicy1);
     scannerText->setText(scannerPath);
@@ -44,7 +44,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     pythonLayout->setSpacing(6);
     dictionaryTextLabel = new QLabel("Dictionary", pythonScripts);
     dictionaryText = new QLineEdit(pythonScripts);
-    dictionaryBrowser = new BrowserButton(pythonScripts);
+    dictionaryBrowser = new BrowserButton(pythonScripts, BrowserButton::PYTHON);
     dictionaryDefault= new QPushButton("Default",pythonScripts);
     dictionaryText->setSizePolicy(sizePolicy1);
     dictionaryText->setText(dictionaryPath);
@@ -54,7 +54,8 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     pythonLayout->addWidget(dictionaryDefault, 4, 5, 1, 1);
     python2TextLabel = new QLabel("Python2", pythonScripts);
     python2Text = new QLineEdit(pythonScripts);
-    python2Browser = new BrowserButton(pythonScripts);
+    /*PAJEEEEEEEEEEEEEEEET >PYTHON 2 BOYS! */
+    python2Browser = new BrowserButton(pythonScripts, BrowserButton::PYTHON);
     python2Default= new QPushButton("Default",pythonScripts);
     python2Text->setSizePolicy(sizePolicy1);
     python2Text->setText(python2Path);
@@ -64,7 +65,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     pythonLayout->addWidget(python2Default, 3, 5, 1, 1);
     translatorTextLabel = new QLabel("Translator", pythonScripts);
     translatorText = new QLineEdit(pythonScripts);
-    translatorBrowser = new BrowserButton(pythonScripts);
+    translatorBrowser = new BrowserButton(pythonScripts, BrowserButton::PYTHON);
     translatorDefault= new QPushButton("Default",pythonScripts);
     translatorText->setSizePolicy(sizePolicy1);
     translatorText->setText(translatorPath);
@@ -75,7 +76,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     saveButton = new QPushButton("Save",pythonScripts);
     bookSyncTextLabel = new QLabel("Books Sync", pythonScripts);
     bookSyncText = new QLineEdit(pythonScripts);
-    bookSyncBrowser = new BrowserButton(pythonScripts);
+    bookSyncBrowser = new BrowserButton(pythonScripts, BrowserButton::PYTHON);
     bookSyncDefault= new QPushButton("Default",pythonScripts);
     bookSyncText->setSizePolicy(sizePolicy1);
     bookSyncText->setText(bookSyncPath);
@@ -85,7 +86,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     pythonLayout->addWidget(bookSyncDefault, 6, 5, 1, 1);
     authorSyncTextLabel = new QLabel("Authors Sync", pythonScripts);
     authorSyncText = new QLineEdit(pythonScripts);
-    authorSyncBrowser = new BrowserButton(pythonScripts);
+    authorSyncBrowser = new BrowserButton(pythonScripts, BrowserButton::PYTHON);
     authorSyncDefault= new QPushButton("Default",pythonScripts);
     authorSyncText->setSizePolicy(sizePolicy1);
     authorSyncText->setText(authorSyncPath);
@@ -109,7 +110,6 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     connect(bookSyncDefault, SIGNAL(clicked(bool)), this, SLOT(updateBookSyncPath()));
     connect(authorSyncDefault, SIGNAL(clicked(bool)), this, SLOT(updateAuthorSyncPath()));
    connect(saveButton, SIGNAL(clicked(bool)),this,SLOT(saveFile()));
-
 }
 
 QString Settings::databasePath = SettingsConstants::DATABASE_DEFAULT_PATH;
@@ -266,6 +266,4 @@ Settings::~Settings()
     delete defaultLayout;
     delete defaultText;
     delete layoutSettings;
-
-
 }

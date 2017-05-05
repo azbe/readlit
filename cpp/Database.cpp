@@ -9,7 +9,6 @@ bool DataBase::addBook(const Book& NewBook)
 {
     if(books.count(NewBook.getFilePath()) != 0)
     {
-        //TODO EROARE
         error("The book: " + NewBook.getFilePath() + "is not in data base: deleteBook(const QString &)");
         return false;
     }
@@ -94,7 +93,7 @@ bool DataBase::findAuthor(const QString& name)
 {
     if(authors.count(name) == 0)
     {
-        error("The author: " + name + " is not in database: findAuthor(const QString&)");
+        //error("The author: " + name + " is not in database: findAuthor(const QString&)");
         return false;
     }
     return true;
@@ -216,7 +215,7 @@ void DataBase::save(const QString &fileName)
 {
     QFile saveFile(fileName);
 
-    if(!saveFile.exists() || !saveFile.open(QIODevice::WriteOnly))
+    if(!saveFile.open(QIODevice::WriteOnly))
     {
         QMessageBox messageBox;
         messageBox.critical(0,"ERROR","Couldn't open database file for saving. Check if the file is still there and if it's writable.\nChanges to the database have NOT been saved.\nGiven path: " + fileName);
@@ -229,6 +228,7 @@ void DataBase::save(const QString &fileName)
     write(booksObject);
     QJsonDocument saveDoc(booksObject);
     saveFile.write(saveDoc.toJson());
+    saveFile.close();
 }
 
 void DataBase::load(const QString &fileName)
@@ -247,6 +247,7 @@ void DataBase::load(const QString &fileName)
 
     QJsonDocument loadDoc(QJsonDocument::fromJson(savedData));
     read(loadDoc.object());
+    savedFile.close();
 }
 
 void DataBase::error(const QString error)

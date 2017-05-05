@@ -11,6 +11,7 @@
 #include "src/Reader.h"
 #include "src/ReaderExtras.h"
 #include "src/Settings.h"
+//#include "QErrorMessage"
 
 class MainWindow : public QWidget
 {
