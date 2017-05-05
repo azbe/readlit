@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QJsonObject>
+#include <QPointer>
 /*
  *                                          ---Refactorizare---
  * Pentru optimizare transforma toate valorile in pointeri deoarece mapa din baza de date construieste obiectul

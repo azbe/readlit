@@ -10,7 +10,7 @@ bool DataBase::addBook(const Book& NewBook)
     if(books.count(NewBook.getFilePath()) != 0)
     {
         //TODO EROARE
-        qWarning("The book is already in the database!");
+        error("The book: " + NewBook.getFilePath() + "is not in data base: deleteBook(const QString &)");
         return false;
     }
     books.insert(std::pair<QString, Book>(NewBook.getFilePath(), NewBook));
@@ -25,6 +25,7 @@ bool DataBase::deleteBook(const QString &pathID)
     if(books.count(pathID) == 0)
     {
         return false;
+        error("The book: " + pathID + "is not in data base: deleteBook(const QString &)");
     }
     books.erase(pathID);
     return true;
@@ -34,7 +35,7 @@ bool DataBase::addAuthor(Author _author)
 {
     if(authors.count(_author.getName()) != 0)
     {
-        //TODO eroare , nu s-a putut adauga deoarece exista deja
+        error("The author " + _author.getName() + "is already in database !addAuthor(Author)");
         return false;
     }
     authors.insert(std::pair<QString, Author>(_author.getName(), _author));
@@ -45,6 +46,7 @@ bool DataBase::deleteAuthor(const QString &name)
 {
     if(authors.count(name) == 0)
     {
+        error("The author " + name + " is not data base: getBook()");
         return false;
     }
     authors.erase(name);
@@ -53,7 +55,11 @@ bool DataBase::deleteAuthor(const QString &name)
 
 bool DataBase::findBook(const QString &PathID)
 {
-    if (books.count(PathID) == 0) return false;
+    if (books.count(PathID) == 0)
+    {
+        return false;
+        error("The book: " + PathID + "is not in data base: findBook(const QString &)");
+    }
     return true;
 }
 
@@ -61,6 +67,7 @@ Book DataBase::getBook(const QString &PathID)
 {
     if(books.count(PathID) == 0)
     {
+        error("The book: " + PathID + "is not in data base: getBook(const QString &)");
         return Book();
     }
     return books[PathID];
@@ -72,6 +79,7 @@ Book DataBase::getBookByTitle(const QString &title)
         if (book.second.getTitle() == title)
             return book.second;
     return Book();
+    error("The book: " + title + "is not in data base: getBookByTitle(const QString &)");
 }
 
 QStringList DataBase::getBookTitles()
@@ -84,7 +92,11 @@ QStringList DataBase::getBookTitles()
 
 bool DataBase::findAuthor(const QString& name)
 {
-    if(authors.count(name) == 0) return false;
+    if(authors.count(name) == 0)
+    {
+        error("The author: " + name + " is not in database: findAuthor(const QString&)");
+        return false;
+    }
     return true;
 }
 
@@ -92,7 +104,7 @@ Author DataBase::getAuthor(const QString &name)
 {
     if(authors.count(name) == 0)
     {
-        //todo error;
+        error("The author: " + name + " isn't in database: getAuthor()");
         return Author();
     }
     return authors[name];
@@ -108,16 +120,18 @@ QStringList DataBase::getAuthorNames()
 
 bool DataBase::addBookToAuthor(const QString &title, const QString &name)
 {
-    authors[name].addBook(title);
+    return authors[name].addBook(title);
 }
 
 bool DataBase::removeBookFromAuthor(const QString &title, const QString &name)
 {
+    bool check = false;
     std::vector<QString> authorBooks = authors[name].getVector();
-    for (int index = 0; index < authorBooks.size(); index++)
+    for (unsigned index = 0; index < authorBooks.size(); index++)
     {
         if (authorBooks[index] == title)
         {
+            check = true;
             authorBooks.erase(authorBooks.begin() + index);
             break;
         }
@@ -125,23 +139,31 @@ bool DataBase::removeBookFromAuthor(const QString &title, const QString &name)
     Author newAuthor(authors[name].getName(), authorBooks, authors[name].getYearBirth(), authors[name].getYearDeath(), authors[name].getBio());
     deleteAuthor(name);
     if (authorBooks.size() > 0) addAuthor(newAuthor);
+    return check;
 }
 
 bool DataBase::editBook(const Book &newBook)
 {
+    bool check = false;
     QString oldTitle = books[newBook.getFilePath()].getTitle();
     QString oldAuthor = books[newBook.getFilePath()].getAuthor();
     removeBookFromAuthor(oldTitle, oldAuthor);
     if (!findAuthor(newBook.getAuthor()))
+    {
         addAuthor(Author(newBook.getAuthor()));
-    deleteBook(newBook.getFilePath());
-    addBook(newBook);
+        check = true;
+    }
+    check = deleteBook(newBook.getFilePath());
+    check = addBook(newBook);
+    return check;
 }
 
 bool DataBase::editAuthor(const Author &newAuthor)
 {
-    deleteAuthor(newAuthor.getName());
-    addAuthor(newAuthor);
+    bool check = false;
+    check = deleteAuthor(newAuthor.getName());
+    check = addAuthor(newAuthor);
+    return check;
 }
 
 void DataBase::write(QJsonObject &json)
@@ -196,7 +218,10 @@ void DataBase::save(const QString &fileName)
 
     if(!saveFile.exists() || !saveFile.open(QIODevice::WriteOnly))
     {
-        qWarning("Couldn't open save file!");
+        QMessageBox messageBox;
+        messageBox.critical(0,"database Error!","Couldn't open save file. Check it is writeable!");
+        messageBox.setFixedSize(500,200);
+        error("Couldn't save file because is not writeable!");
         return;
     }
 
@@ -212,7 +237,10 @@ void DataBase::load(const QString &fileName)
 
     if(!savedFile.exists() || !savedFile.open(QIODevice::ReadOnly))
     {
-        qWarning("couldnt open the file");
+        QMessageBox messageBox;
+        messageBox.critical(0,"database Error!","Couldn't open load file. Check if is readable!");
+        messageBox.setFixedSize(500,200);
+        error("Couldn't open load file because is not readable!");
         return;
     }
 
@@ -220,5 +248,10 @@ void DataBase::load(const QString &fileName)
 
     QJsonDocument loadDoc(QJsonDocument::fromJson(savedData));
     read(loadDoc.object());
+}
+
+void DataBase::error(const QString error)
+{
+    qDebug() << error + "\nClass name: Database";
 }
 
