@@ -219,7 +219,7 @@ void DataBase::save(const QString &fileName)
     if(!saveFile.exists() || !saveFile.open(QIODevice::WriteOnly))
     {
         QMessageBox messageBox;
-        messageBox.critical(0,"database Error!","Couldn't open save file. Check it is writeable!");
+        messageBox.critical(0,"ERROR","Couldn't open database file for saving. Check if the file is still there and if it's writable.\nChanges to the database have NOT been saved.\nGiven path: " + fileName);
         messageBox.setFixedSize(500,200);
         error("Couldn't save file because is not writeable!");
         return;
@@ -238,9 +238,8 @@ void DataBase::load(const QString &fileName)
     if(!savedFile.exists() || !savedFile.open(QIODevice::ReadOnly))
     {
         QMessageBox messageBox;
-        messageBox.critical(0,"database Error!","Couldn't open load file. Check if is readable!");
-        messageBox.setFixedSize(500,200);
-        error("Couldn't open load file because is not readable!");
+        messageBox.critical(0,"ERROR","Couldn't open database file for loading. Check if the file exists and if it's readable.\nGiven path: " + fileName);
+        error("Couldn't open load file because it is not readable!");
         return;
     }
 
