@@ -219,7 +219,6 @@ void DataBase::save(const QString &fileName)
     {
         QMessageBox messageBox;
         messageBox.critical(0,"ERROR","Couldn't open database file for saving. Check if the file is still there and if it's writable.\nChanges to the database have NOT been saved.\nGiven path: " + fileName);
-        messageBox.setFixedSize(500,200);
         error("Couldn't save file because is not writeable!");
         return;
     }
