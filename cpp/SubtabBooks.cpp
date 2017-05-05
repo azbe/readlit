@@ -125,7 +125,6 @@ void SubtabBooks::saveNewBook(const Book &book)
 
 void SubtabBooks::getBookDetails(QListWidgetItem *item)
 {
-    if (!item) return;
     Book book = database->getBookByTitle(item->text());
     emit updateBookDetails(book);
 }
@@ -154,6 +153,8 @@ void SubtabBooks::getSyncDetailsDone(const QStringList &details, const QString& 
 void SubtabBooks::getSyncDetailsError(const QString &error, SyncWorker *worker)
 {
     qDebug() << "SubtabBooks::getSyncDetailsError - Error: " << error;
+    QMessageBox messageBox;
+    messageBox.critical(0, "ERROR", "There was an error syncing: " + error);
     delete worker;
 }
 

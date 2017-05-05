@@ -27,14 +27,7 @@ SyncWorker::SyncWorker(QObject *parent, SyncType type, const QString& search, co
 
 void SyncWorker::start()
 {
-    try
-    {
-        script->start("python2", arguments);
-    }
-    catch (...)
-    {
-        //TO DO
-    }
+    script->start("python2", arguments);
 }
 
 SyncWorker::~SyncWorker()
@@ -54,5 +47,4 @@ void SyncWorker::readStdErr()
     QByteArray b = script->readAllStandardError();
     emit error(QString(b), this);
 }
-
 
