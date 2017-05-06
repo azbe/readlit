@@ -16,6 +16,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QMouseEvent>
+#include <QMessageBox>
 #include <qdebug.h>
 #include "src/BrowserButton.h"
 #include "src/Constants.h"

@@ -71,8 +71,11 @@ void MainWindow::openBookInReader(const QString &path)
     readerLayout->addWidget(readerExtras, 1);
     if (reader->isNull())
     {
+        QMessageBox messageBox;
+        messageBox.critical(0,"ERROR","There was an error opening the book.");
         qDebug() << "MainWindow::openBookInReader - Error: reader is null";
         delete reader;
+        reader = nullptr;
         return;
     }
     readerLayout->addWidget(reader, 3);

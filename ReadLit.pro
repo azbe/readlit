@@ -49,8 +49,7 @@ HEADERS  += \
     src/SyncWorker.h \
     src/ReaderExtras.h
 
-FORMS    += widget.ui \
-    ReaderExtras.ui
+FORMS    += widget.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../usr/lib/x86_64-linux-gnu/release/ -lpoppler-qt5
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../usr/lib/x86_64-linux-gnu/debug/ -lpoppler-qt5

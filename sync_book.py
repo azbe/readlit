@@ -8,21 +8,17 @@ if len(sys.argv) != 2:
 	sys.exit(1)
 searchTitle = re.sub(r'[^ \w]', '', ('goodreads ' + sys.argv[1]).lower())
 
-try:
-	urls = search(searchTitle, tld='com', lang='en', stop=5)
-	url = next(urls, None)
+urls = search(searchTitle, tld='com', lang='en', stop=5)
+url = next(urls, None)
 
-	page = requests.get(url)
-	tree = html.fromstring(page.content)
+page = requests.get(url)
+tree = html.fromstring(page.content)
 
-	title = re.sub(r'(^([ \n]*))|(\n)', '', tree.xpath('//h1[@id="bookTitle"]/text()')[0])
-	author = re.sub(r'(^([ \n]*))|(\n)', '', tree.xpath('//div[@id="bookAuthors"]/span[@itemprop="author"]/a[@class="authorName"]/span[@itemprop="name"]/text()')[0])
-	descriptionTree = tree.xpath('//div[@id="description"]/span')
-	description = re.sub(r'(&#[0-9]*;?)|(\n*<br/?>\n*)|(\n*</?[bi]>\n*)|(</?span[^>]*>)|(</?a[^>]*>)|(\n*$)', '', etree.tostring(descriptionTree[len(descriptionTree) - 1], pretty_print=True))
+title = re.sub(r'(^([ \n]*))|(\n)', '', tree.xpath('//h1[@id="bookTitle"]/text()')[0])
+author = re.sub(r'(^([ \n]*))|(\n)', '', tree.xpath('//div[@id="bookAuthors"]/span[@itemprop="author"]/a[@class="authorName"]/span[@itemprop="name"]/text()')[0])
+descriptionTree = tree.xpath('//div[@id="description"]/span')
+description = re.sub(r'(&#[0-9]*;?)|(\n*<br/?>\n*)|(\n*</?[bi]>\n*)|(</?span[^>]*>)|(</?a[^>]*>)|(\n*$)', '', etree.tostring(descriptionTree[len(descriptionTree) - 1], pretty_print=True))
 
-	print title
-	print author
-	print description
-except:
-	sys.stderr.write('ERROR\n')
-
+print title
+print author
+print description

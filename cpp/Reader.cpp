@@ -21,7 +21,7 @@ Reader::Reader(QWidget *parent) : QWidget(parent)
 Reader::Reader(QWidget *parent, const QString& path) : QWidget(parent)
 {
     book = Poppler::Document::load(path);
-    if(!book)
+    if(!book || book->isLocked())
     {
         qDebug() << "Reader::Reader(QWidget,QString,int) - Error opening poppler document at path = " << path << "\nUsing empty constructor instead";
         book = nullptr;
@@ -31,6 +31,7 @@ Reader::Reader(QWidget *parent, const QString& path) : QWidget(parent)
         pageAreaLayout = nullptr;
         pages = nullptr;
         isActualized = nullptr;
+        delete book;
         return;
     }
     if (!book->page(0))
@@ -43,6 +44,7 @@ Reader::Reader(QWidget *parent, const QString& path) : QWidget(parent)
         pageAreaLayout = nullptr;
         pages = nullptr;
         isActualized = nullptr;
+        delete book;
         return;
     }
     Poppler::Page *page = book->page(0);
@@ -85,9 +87,10 @@ bool Reader::isNull() const
 
 Reader::~Reader()
 {
-    for (int index = 0; index < pageCount; index++)
-        if (pages[index])
-            delete pages[index];
+    if (pages)
+        for (int index = 0; index < pageCount; index++)
+            if (pages[index])
+                delete pages[index];
     delete[] pages;
     delete[] isActualized;
     delete pageAreaLayout;

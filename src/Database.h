@@ -9,6 +9,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QMessageBox>
 
 #include <map>
 
@@ -38,6 +39,8 @@ public:
 
     void save(const QString & fileName);
     void load(const QString & fileName);
+
+    void error(const QString error);
 private:
     void write(QJsonObject &json);
     void read(const QJsonObject &JsonObj);

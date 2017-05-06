@@ -16,6 +16,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     defaultLayout->setSpacing(6);
     databaseTextLabel = new QLabel("Database", defaultText);
     databaseText = new QLineEdit(defaultText);
+    databaseText->setReadOnly(true);
     databaseBrowser = new BrowserButton(defaultText,BrowserButton::JSON);
     databaseDefault= new QPushButton("Default",defaultText);
     QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -33,6 +34,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     scannerDefault= new QPushButton("Default",defaultText);
     scannerText->setSizePolicy(sizePolicy1);
     scannerText->setText(scannerPath);
+    scannerText->setReadOnly(true);
     defaultLayout->addWidget(scannerTextLabel,1, 0, 1, 1);
     defaultLayout->addWidget(scannerText,1, 1, 1, 2);
     defaultLayout->addWidget(scannerBrowser,1, 3, 1, 2);
@@ -44,6 +46,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     pythonLayout->setSpacing(6);
     dictionaryTextLabel = new QLabel("Dictionary", pythonScripts);
     dictionaryText = new QLineEdit(pythonScripts);
+    dictionaryText->setReadOnly(true);
     dictionaryBrowser = new BrowserButton(pythonScripts,BrowserButton::PYTHON);
     dictionaryDefault= new QPushButton("Default",pythonScripts);
     dictionaryText->setSizePolicy(sizePolicy1);
@@ -54,6 +57,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     pythonLayout->addWidget(dictionaryDefault, 4, 5, 1, 1);
     python2TextLabel = new QLabel("Python2", pythonScripts);
     python2Text = new QLineEdit(pythonScripts);
+    python2Text->setReadOnly(true);
     python2Browser = new BrowserButton(pythonScripts,BrowserButton::PYTHON);
     python2Default= new QPushButton("Default",pythonScripts);
     python2Text->setSizePolicy(sizePolicy1);
@@ -64,6 +68,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     pythonLayout->addWidget(python2Default, 3, 5, 1, 1);
     translatorTextLabel = new QLabel("Translator", pythonScripts);
     translatorText = new QLineEdit(pythonScripts);
+    translatorText->setReadOnly(true);
     translatorBrowser = new BrowserButton(pythonScripts,BrowserButton::PYTHON);
     translatorDefault= new QPushButton("Default",pythonScripts);
     translatorText->setSizePolicy(sizePolicy1);
@@ -75,6 +80,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     saveButton = new QPushButton("Save",pythonScripts);
     bookSyncTextLabel = new QLabel("Books Sync", pythonScripts);
     bookSyncText = new QLineEdit(pythonScripts);
+    bookSyncText->setReadOnly(true);
     bookSyncBrowser = new BrowserButton(pythonScripts,BrowserButton::PYTHON);
     bookSyncDefault= new QPushButton("Default",pythonScripts);
     bookSyncText->setSizePolicy(sizePolicy1);
@@ -85,6 +91,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     pythonLayout->addWidget(bookSyncDefault, 6, 5, 1, 1);
     authorSyncTextLabel = new QLabel("Authors Sync", pythonScripts);
     authorSyncText = new QLineEdit(pythonScripts);
+    authorSyncText->setReadOnly(true);
     authorSyncBrowser = new BrowserButton(pythonScripts,BrowserButton::PYTHON);
     authorSyncDefault= new QPushButton("Default",pythonScripts);
     authorSyncText->setSizePolicy(sizePolicy1);
@@ -115,9 +122,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     connect(dictionaryBrowser,SIGNAL(sendPaths(QStringList)),this,SLOT(browserDictionary(QStringList)));
     connect(translatorBrowser,SIGNAL(sendPaths(QStringList)),this,SLOT(browserTranslator(QStringList)));
     connect(bookSyncBrowser,SIGNAL(sendPaths(QStringList)),this,SLOT(browserBookSync(QStringList)));
-    connect(databaseBrowser,SIGNAL(sendPaths(QStringList)),this,SLOT(browserDatabase(QStringList)));
     connect(saveButton, SIGNAL(clicked(bool)),this,SLOT(saveFile()));
-
 }
 
 QString Settings::databasePath = SettingsConstants::DATABASE_DEFAULT_PATH;
@@ -181,7 +186,10 @@ void Settings::updateBookSyncPath()
 void Settings::browserDatabase(const QStringList &folderPaths)
 {
     if(folderPaths.isEmpty()||folderPaths.value(0).isEmpty())
-        qDebug()<<"Settings::browserDatabase - Error: Folder Path neselectat";
+    {
+     QMessageBox msgBox;
+     msgBox.critical(0, "ERROR", "Folder Path not specified");
+     }
     else
         databaseText->setText(folderPaths.value(0));
 
@@ -191,7 +199,10 @@ void Settings::browserDatabase(const QStringList &folderPaths)
 void Settings::browserScanner(const QStringList &folderPaths)
 {
     if(folderPaths.isEmpty()||folderPaths.value(0).isEmpty())
-        qDebug()<<"Settings::browserScanner - Error: Folder Path neselectat";
+    {
+     QMessageBox msgBox;
+     msgBox.critical(0, "ERROR", "Folder Path not specified");
+     }
     else
         scannerText->setText(folderPaths.value(0));
 
@@ -201,7 +212,10 @@ void Settings::browserScanner(const QStringList &folderPaths)
 void Settings::browserPython2(const QStringList &folderPaths)
 {
     if(folderPaths.isEmpty()||folderPaths.value(0).isEmpty())
-        qDebug()<<"Settings::browserPython2 - Error: Folder Path neselectat";
+    {
+     QMessageBox msgBox;
+     msgBox.critical(0, "ERROR", "Folder Path not specified");
+     }
     else
         python2Text->setText(folderPaths.value(0));
 
@@ -211,7 +225,10 @@ void Settings::browserPython2(const QStringList &folderPaths)
 void Settings::browserDictionary(const QStringList &folderPaths)
 {
     if(folderPaths.isEmpty()||folderPaths.value(0).isEmpty())
-        qDebug()<<"Settings::browserDictionary - Error: Folder Path neselectat";
+    {
+     QMessageBox msgBox;
+     msgBox.critical(0, "ERROR", "Folder Path not specified");
+     }
     else
         dictionaryText->setText(folderPaths.value(0));
 
@@ -221,7 +238,10 @@ void Settings::browserDictionary(const QStringList &folderPaths)
 void Settings::browserTranslator(const QStringList &folderPaths)
 {
     if(folderPaths.isEmpty()||folderPaths.value(0).isEmpty())
-        qDebug()<<"Settings::browserTranslator - Error: Folder Path neselectat";
+    {
+     QMessageBox msgBox;
+     msgBox.critical(0, "ERROR", "Folder Path not specified");
+     }
     else
         translatorText->setText(folderPaths.value(0));
 
@@ -231,7 +251,10 @@ void Settings::browserTranslator(const QStringList &folderPaths)
 void Settings::browserBookSync(const QStringList &folderPaths)
 {
     if(folderPaths.isEmpty()||folderPaths.value(0).isEmpty())
-        qDebug()<<"Settings::browserBookSync - Error: Folder Path neselectat";
+       {
+        QMessageBox msgBox;
+        msgBox.critical(0, "ERROR", "Folder Path not specified");
+        }
     else
         bookSyncText->setText(folderPaths.value(0));
 
@@ -241,7 +264,10 @@ void Settings::browserBookSync(const QStringList &folderPaths)
 void Settings::browserAuthorSync(const QStringList &folderPaths)
 {
     if(folderPaths.isEmpty()||folderPaths.value(0).isEmpty())
-        qDebug()<<"Settings::browserDatabase - Error: Folder Path neselectat";
+    {
+     QMessageBox msgBox;
+     msgBox.critical(0, "ERROR", "Folder Path not specified");
+     }
     else
         authorSyncText->setText(folderPaths.value(0));
 
@@ -260,7 +286,7 @@ void Settings::save(const QString &fileName)
 
     if(!saveFile.exists()|| !saveFile.open(QIODevice::WriteOnly))
     {
-         qDebug()<<"Settings::save - Error: Fisier inexistent";
+         qDebug()<<"Settings::save - Error: Folder does not exist";
         return;
     }
 
@@ -281,7 +307,7 @@ void Settings::load(const QString &fileName)
 
     if(!savedFile.exists() || !savedFile.open(QIODevice::ReadOnly))
     {
-        qDebug()<<"Settings::load - Error: Fisier inexistent";
+        qDebug()<<"Settings::load - Error: Folder does not exist";
         return;
     }
     QStringList str,str1;
@@ -348,6 +374,4 @@ Settings::~Settings()
     delete defaultLayout;
     delete defaultText;
     delete layoutSettings;
-
-
 }

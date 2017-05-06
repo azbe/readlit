@@ -123,7 +123,9 @@ void SubtabAuthors::getSyncDetailsDone(const QStringList &details, const QString
 
 void SubtabAuthors::getSyncDetailsError(const QString &err, SyncWorker *worker)
 {
-    qDebug() << err;
+    qDebug() << "SutbabAuthors::getSyncDetailsError - Error: " << err;
+    QMessageBox messageBox;
+    messageBox.critical(0, "ERROR", "There was an error syncing: " + err);
     delete worker;
 }
 
