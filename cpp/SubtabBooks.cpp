@@ -17,6 +17,7 @@ SubtabBooks::SubtabBooks(QWidget *parent, DataBase& database) : QWidget(parent)
     bookWidgetsLayout0 = new QHBoxLayout(scanner);
     folderPathsLabel = new QLabel("Folder Paths", scanner);
     folderPaths = new QLineEdit(scanner);
+    folderPaths->setReadOnly(true);
     browserButton = new BrowserButton(scanner, BrowserButton::DIR);
     connect(browserButton, SIGNAL(sendPaths(QStringList)), this, SLOT(getBrowsePaths(QStringList)));
     scannerButton = new ScannerButton(scanner, folderPaths);
