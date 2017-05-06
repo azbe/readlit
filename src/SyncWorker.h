@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QProcess>
 
+#include "src/Settings.h"
+
 class SyncWorker : public QObject
 {
     Q_OBJECT

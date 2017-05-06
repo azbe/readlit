@@ -9,12 +9,12 @@ SyncWorker::SyncWorker(QObject *parent, SyncType type, const QString& search, co
     {
         case BOOK:
         {
-            arguments << "sync_book.py";
+            arguments << Settings::getBookSyncPath();
             break;
         }
         case AUTHOR:
         {
-            arguments << "sync_author.py";
+            arguments << Settings::getAuthorSyncPath();
             break;
         }
     }
@@ -27,7 +27,7 @@ SyncWorker::SyncWorker(QObject *parent, SyncType type, const QString& search, co
 
 void SyncWorker::start()
 {
-    script->start("python2", arguments);
+    script->start(Settings::getPython2Path(), arguments);
 }
 
 SyncWorker::~SyncWorker()

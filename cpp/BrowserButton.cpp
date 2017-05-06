@@ -17,7 +17,7 @@ void BrowserButton::mousePressEvent(QMouseEvent *event)
         {
             case ANY:
             {
-                fileNames = QFileDialog::getOpenFileNames(0, QString(), ".", "Any (*)");
+                fileNames.append(QFileDialog::getOpenFileName(0, QString(), ".", "Any (*)"));
                 break;
             }
             case DIR:

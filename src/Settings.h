@@ -30,14 +30,14 @@ class Settings : public QWidget
     ~Settings();
      void save(const QString& path);
     void load(const QString& path);
-    static QString databasePath;
-    static QString scannerPath;
-    static QString translatorPath;
-    static QString dictionaryPath;
-    static QString authorSyncPath;
-    static QString bookSyncPath;
-    static QString python2Path;
 
+    static QString getDatabasePath();
+    static QString getScannerPath();
+    static QString getTranslatorPath();
+    static QString getDictionaryPath();
+    static QString getAuthorSyncPath();
+    static QString getBookSyncPath();
+    static QString getPython2Path();
 
     private slots:
     void updateDatabasePath();
@@ -94,6 +94,14 @@ private:
     QPushButton *authorSyncDefault;
     QPushButton *dictionaryDefault;
     QPushButton *translatorDefault;
+
+    static QString databasePath;
+    static QString scannerPath;
+    static QString translatorPath;
+    static QString dictionaryPath;
+    static QString authorSyncPath;
+    static QString bookSyncPath;
+    static QString python2Path;
 };
 #endif // SETTINGS
 

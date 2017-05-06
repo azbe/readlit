@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
     settingsLayout = new QGridLayout(tabSettings);
     settings = new Settings(tabSettings, "settings.cfg");
     settingsLayout->addWidget(settings,0,0);
-    database.load(Settings::databasePath.trimmed());
+    database.load(Settings::getDatabasePath().trimmed());
 	mainTabs = new QTabWidget(this);
 	mainLayout = new QHBoxLayout(this);
 
@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 
     readerLayout = new QHBoxLayout(tabReader);
     readerExtras = new ReaderExtras(tabReader);
+    readerExtras->setHidden(true);
     reader = new Reader(tabReader);
     readerLayout->addWidget(readerExtras, 1);
     readerLayout->addWidget(reader, 3);
@@ -44,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 
 MainWindow::~MainWindow() 
 {
-    database.save(Settings::databasePath.trimmed());
+    database.save(Settings::getDatabasePath().trimmed());
     delete settings;
     delete settingsLayout;
     delete tabSettings;
@@ -76,8 +77,10 @@ void MainWindow::openBookInReader(const QString &path)
         qDebug() << "MainWindow::openBookInReader - Error: reader is null";
         delete reader;
         reader = nullptr;
+        readerExtras->setHidden(true);
         return;
     }
     readerLayout->addWidget(reader, 3);
+    readerExtras->setHidden(false);
     mainTabs->setCurrentIndex(0);
 }

@@ -58,7 +58,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     python2TextLabel = new QLabel("Python2", pythonScripts);
     python2Text = new QLineEdit(pythonScripts);
     python2Text->setReadOnly(true);
-    python2Browser = new BrowserButton(pythonScripts,BrowserButton::PYTHON);
+    python2Browser = new BrowserButton(pythonScripts,BrowserButton::ANY);
     python2Default= new QPushButton("Default",pythonScripts);
     python2Text->setSizePolicy(sizePolicy1);
     python2Text->setText(python2Path);
@@ -125,14 +125,6 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     connect(saveButton, SIGNAL(clicked(bool)),this,SLOT(saveFile()));
 }
 
-QString Settings::databasePath = SettingsConstants::DATABASE_DEFAULT_PATH;
-QString Settings::scannerPath = SettingsConstants::SCANNER_DEFAULT_PATH;
-QString Settings::dictionaryPath = SettingsConstants::DICTIONARY_DEFAULT_PATH;
-QString Settings::authorSyncPath = SettingsConstants::AUTHOR_SYNC_DEFAULT_PATH;
-QString Settings::bookSyncPath = SettingsConstants::BOOK_SYNC_DEFAULT_PATH;
-QString Settings::translatorPath = SettingsConstants::TRANSLATOR_DEFAULT_PATH;
-QString Settings::python2Path=SettingsConstants::PYTHON2_DEFAULT_PATH;
-
 void Settings::saveFile()
 {
     save(rememberPath);
@@ -185,100 +177,45 @@ void Settings::updateBookSyncPath()
 
 void Settings::browserDatabase(const QStringList &folderPaths)
 {
-    if(folderPaths.isEmpty()||folderPaths.value(0).isEmpty())
-    {
-     QMessageBox msgBox;
-     msgBox.critical(0, "ERROR", "Folder Path not specified");
-     }
-    else
+    if(!folderPaths.isEmpty()&&!folderPaths.value(0).isEmpty())
         databaseText->setText(folderPaths.value(0));
-
-
 }
 
 void Settings::browserScanner(const QStringList &folderPaths)
 {
-    if(folderPaths.isEmpty()||folderPaths.value(0).isEmpty())
-    {
-     QMessageBox msgBox;
-     msgBox.critical(0, "ERROR", "Folder Path not specified");
-     }
-    else
+    if(!folderPaths.isEmpty()&&!folderPaths.value(0).isEmpty())
         scannerText->setText(folderPaths.value(0));
-
-
 }
 
 void Settings::browserPython2(const QStringList &folderPaths)
 {
-    if(folderPaths.isEmpty()||folderPaths.value(0).isEmpty())
-    {
-     QMessageBox msgBox;
-     msgBox.critical(0, "ERROR", "Folder Path not specified");
-     }
-    else
+    if(!folderPaths.isEmpty()&&!folderPaths.value(0).isEmpty())
         python2Text->setText(folderPaths.value(0));
-
-
 }
 
 void Settings::browserDictionary(const QStringList &folderPaths)
 {
-    if(folderPaths.isEmpty()||folderPaths.value(0).isEmpty())
-    {
-     QMessageBox msgBox;
-     msgBox.critical(0, "ERROR", "Folder Path not specified");
-     }
-    else
+    if(!folderPaths.isEmpty()&&!folderPaths.value(0).isEmpty())
         dictionaryText->setText(folderPaths.value(0));
-
-
 }
 
 void Settings::browserTranslator(const QStringList &folderPaths)
 {
-    if(folderPaths.isEmpty()||folderPaths.value(0).isEmpty())
-    {
-     QMessageBox msgBox;
-     msgBox.critical(0, "ERROR", "Folder Path not specified");
-     }
-    else
+    if(!folderPaths.isEmpty()&&!folderPaths.value(0).isEmpty())
         translatorText->setText(folderPaths.value(0));
-
-
 }
 
 void Settings::browserBookSync(const QStringList &folderPaths)
 {
-    if(folderPaths.isEmpty()||folderPaths.value(0).isEmpty())
-       {
-        QMessageBox msgBox;
-        msgBox.critical(0, "ERROR", "Folder Path not specified");
-        }
-    else
-        bookSyncText->setText(folderPaths.value(0));
-
-
+    if(!folderPaths.isEmpty()&&!folderPaths.value(0).isEmpty())
+       bookSyncText->setText(folderPaths.value(0));
 }
 
 void Settings::browserAuthorSync(const QStringList &folderPaths)
 {
-    if(folderPaths.isEmpty()||folderPaths.value(0).isEmpty())
-    {
-     QMessageBox msgBox;
-     msgBox.critical(0, "ERROR", "Folder Path not specified");
-     }
-    else
+    if(!folderPaths.isEmpty()&&!folderPaths.value(0).isEmpty())
         authorSyncText->setText(folderPaths.value(0));
-
-
 }
-
-
-
-
-
-
 
 void Settings::save(const QString &fileName)
 {
@@ -338,9 +275,6 @@ void Settings::load(const QString &fileName)
 
 }
 
-
-
-
 Settings::~Settings()
 {
 
@@ -374,4 +308,47 @@ Settings::~Settings()
     delete defaultLayout;
     delete defaultText;
     delete layoutSettings;
+}
+
+QString Settings::databasePath = SettingsConstants::DATABASE_DEFAULT_PATH;
+QString Settings::scannerPath = SettingsConstants::SCANNER_DEFAULT_PATH;
+QString Settings::dictionaryPath = SettingsConstants::DICTIONARY_DEFAULT_PATH;
+QString Settings::authorSyncPath = SettingsConstants::AUTHOR_SYNC_DEFAULT_PATH;
+QString Settings::bookSyncPath = SettingsConstants::BOOK_SYNC_DEFAULT_PATH;
+QString Settings::translatorPath = SettingsConstants::TRANSLATOR_DEFAULT_PATH;
+QString Settings::python2Path=SettingsConstants::PYTHON2_DEFAULT_PATH;
+
+QString Settings::getDatabasePath()
+{
+    return databasePath;
+}
+
+QString Settings::getScannerPath()
+{
+    return scannerPath;
+}
+
+QString Settings::getTranslatorPath()
+{
+    return translatorPath;
+}
+
+QString Settings::getDictionaryPath()
+{
+    return dictionaryPath;
+}
+
+QString Settings::getAuthorSyncPath()
+{
+    return authorSyncPath;
+}
+
+QString Settings::getBookSyncPath()
+{
+    return bookSyncPath;
+}
+
+QString Settings::getPython2Path()
+{
+    return python2Path;
 }
