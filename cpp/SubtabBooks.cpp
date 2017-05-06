@@ -131,6 +131,8 @@ void SubtabBooks::getBookDetails(QListWidgetItem *item)
 
 void SubtabBooks::getSyncDetails()
 {
+    if (bookList->selectedItems().isEmpty())
+        return;
     SyncWorker *worker = new SyncWorker(this, SyncWorker::BOOK, bookData->getUnsavedBook().getTitle(), bookData->getBook().getFilePath(), bookList->currentRow());
     connect(worker, SIGNAL(sendSyncDetails(QStringList, QString, int)), this, SLOT(getSyncDetailsDone(QStringList, QString, int)));
     connect(worker, SIGNAL(error(QString, SyncWorker*)), this, SLOT(getSyncDetailsError(QString, SyncWorker*)));

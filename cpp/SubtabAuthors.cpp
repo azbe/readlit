@@ -103,6 +103,8 @@ void SubtabAuthors::newScan()
 
 void SubtabAuthors::getSyncDetails()
 {
+    if (authorList->selectedItems().isEmpty())
+        return;
     SyncWorker *worker = new SyncWorker(this, SyncWorker::AUTHOR, authorDataTable->getUnsavedName(), authorDataTable->getAuthor().getName(), authorList->currentRow());
     connect(worker, SIGNAL(sendSyncDetails(QStringList, QString, int)), this, SLOT(getSyncDetailsDone(QStringList, QString, int)));
     connect(worker, SIGNAL(error(QString, SyncWorker*)), this, SLOT(getSyncDetailsError(QString, SyncWorker*)));
