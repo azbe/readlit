@@ -17,6 +17,11 @@ SyncWorker::SyncWorker(QObject *parent, SyncType type, const QString& search, co
             arguments << Settings::getAuthorSyncPath();
             break;
         }
+        case DEFINE:
+        {
+            arguments << Settings::getDictionaryPath();
+            break;
+        }
     }
     arguments << QString("\'%1\'").arg(search);
 
@@ -27,7 +32,8 @@ SyncWorker::SyncWorker(QObject *parent, SyncType type, const QString& search, co
 
 void SyncWorker::start()
 {
-    script->start(Settings::getPython2Path(), arguments);
+    qDebug() << Settings::getPythonPath() << " " << arguments;
+    script->start(Settings::getPythonPath(), arguments);
 }
 
 SyncWorker::~SyncWorker()

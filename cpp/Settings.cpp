@@ -66,7 +66,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     pythonLayout->addWidget(python2Text,3, 1, 1, 2);
     pythonLayout->addWidget(python2Browser,3, 3, 1, 2);
     pythonLayout->addWidget(python2Default, 3, 5, 1, 1);
-    translatorTextLabel = new QLabel("Translator", pythonScripts);
+    /*translatorTextLabel = new QLabel("Translator", pythonScripts);
     translatorText = new QLineEdit(pythonScripts);
     translatorText->setReadOnly(true);
     translatorBrowser = new BrowserButton(pythonScripts,BrowserButton::PYTHON);
@@ -76,7 +76,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     pythonLayout->addWidget(translatorTextLabel,5, 0, 1, 1);
     pythonLayout->addWidget(translatorText,5, 1, 1, 2);
     pythonLayout->addWidget(translatorBrowser,5, 3, 1, 2);
-    pythonLayout->addWidget(translatorDefault, 5, 5, 1, 1);
+    pythonLayout->addWidget(translatorDefault, 5, 5, 1, 1);*/
     saveButton = new QPushButton("Save",pythonScripts);
     bookSyncTextLabel = new QLabel("Books Sync", pythonScripts);
     bookSyncText = new QLineEdit(pythonScripts);
@@ -111,7 +111,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     connect(databaseDefault, SIGNAL(clicked(bool)), this, SLOT(updateDatabasePath()));
     connect(scannerDefault, SIGNAL(clicked(bool)), this, SLOT(updateScannerPath()));
     connect(dictionaryDefault, SIGNAL(clicked(bool)), this, SLOT(updateDictionaryPath()));
-    connect(translatorDefault, SIGNAL(clicked(bool)), this, SLOT(updateTranslatorPath()));
+    //connect(translatorDefault, SIGNAL(clicked(bool)), this, SLOT(updateTranslatorPath()));
     connect(python2Default, SIGNAL(clicked(bool)), this, SLOT(updatePython2Path()));
     connect(bookSyncDefault, SIGNAL(clicked(bool)), this, SLOT(updateBookSyncPath()));
     connect(authorSyncDefault, SIGNAL(clicked(bool)), this, SLOT(updateAuthorSyncPath()));
@@ -120,7 +120,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     connect(python2Browser,SIGNAL(sendPaths(QStringList)),this,SLOT(browserPython2(QStringList)));
     connect(authorSyncBrowser,SIGNAL(sendPaths(QStringList)),this,SLOT(browserAuthorSync(QStringList)));
     connect(dictionaryBrowser,SIGNAL(sendPaths(QStringList)),this,SLOT(browserDictionary(QStringList)));
-    connect(translatorBrowser,SIGNAL(sendPaths(QStringList)),this,SLOT(browserTranslator(QStringList)));
+    //connect(translatorBrowser,SIGNAL(sendPaths(QStringList)),this,SLOT(browserTranslator(QStringList)));
     connect(bookSyncBrowser,SIGNAL(sendPaths(QStringList)),this,SLOT(browserBookSync(QStringList)));
     connect(saveButton, SIGNAL(clicked(bool)),this,SLOT(saveFile()));
 }
@@ -228,13 +228,13 @@ void Settings::save(const QString &fileName)
     }
 
     QTextStream textFisier(&saveFile);
-    textFisier<<("Database Path="+databaseText->text()+"\n");
-    textFisier<<("Scanner Path="+scannerText->text()+"\n");
-    textFisier<<("Dictionary Path="+dictionaryText->text()+"\n");
-    textFisier<<("Translator Path="+translatorText->text()+"\n");
-    textFisier<<("Author Sync Path="+authorSyncText->text()+"\n");
-    textFisier<<("Book Sync Path="+bookSyncText->text()+"\n");
-    textFisier<<("Python2 Path="+python2Text->text()+"\n");
+    textFisier<<"Database Path="<<databaseText->text()<<'\n';
+    textFisier<<"Scanner Path="<<scannerText->text()<<'\n';
+    textFisier<<"Dictionary Path="<<dictionaryText->text()<<'\n';
+    //textFisier<<("Translator Path="+translatorText->text()+'\n');
+    textFisier<<"Author Sync Path="<<authorSyncText->text()<<'\n';
+    textFisier<<"Book Sync Path="<<bookSyncText->text()<<'\n';
+    textFisier<<"Python2 Path="<<python2Text->text()<<'\n';
     saveFile.close();
 }
 
@@ -259,18 +259,33 @@ void Settings::load(const QString &fileName)
             }
 
             if(QString::compare(str[0],"Scanner Path")==0)
-            scannerPath=str[1];
-            if(QString::compare(str[0],"Dictionary Path")==0)
-            dictionaryPath=str[1];
-            if(QString::compare(str[0],"Translator Path")==0)
-            translatorPath=str[1];
-            if(QString::compare(str[0],"Book Sync Path")==0)
-            bookSyncPath=str[1];
-            if(QString::compare(str[0],"Author Sync Path")==0)
-            authorSyncPath=str[1];
-            if(QString::compare(str[0],"Python2 Path")==0)
-            python2Path=str[1];
+            {
+                str1 = str[1].split('\n');
+                scannerPath=str1[0];
             }
+            if(QString::compare(str[0],"Dictionary Path")==0)
+            {
+                str1 = str[1].split('\n');
+                dictionaryPath=str1[0];
+            }
+            /*if(QString::compare(str[0],"Translator Path")==0)
+            translatorPath=str[1];*/
+            if(QString::compare(str[0],"Book Sync Path")==0)
+            {
+                str1 = str[1].split('\n');
+                bookSyncPath=str1[0];
+            }
+            if(QString::compare(str[0],"Author Sync Path")==0)
+            {
+                str1 = str[1].split('\n');
+                authorSyncPath=str1[0];
+            }
+            if(QString::compare(str[0],"Python2 Path")==0)
+            {
+                str1 = str[1].split('\n');
+                python2Path=str1[0];
+            }
+      }
             savedFile.close();
 
 }
@@ -348,7 +363,7 @@ QString Settings::getBookSyncPath()
     return bookSyncPath;
 }
 
-QString Settings::getPython2Path()
+QString Settings::getPythonPath()
 {
     return python2Path;
 }

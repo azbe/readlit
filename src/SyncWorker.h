@@ -11,7 +11,7 @@ class SyncWorker : public QObject
     Q_OBJECT
 
 public:
-    enum SyncType { BOOK, AUTHOR };
+    enum SyncType { BOOK, AUTHOR, DEFINE };
 
     explicit SyncWorker(QObject *parent, SyncType type, const QString& search, const QString& _key, int _row);
     ~SyncWorker();

@@ -40,6 +40,7 @@ public:
     void getSyncDetailsError(const QString& error, SyncWorker *worker);
     void getBrowsePaths(QStringList browsePaths);
     void getBookPaths(QStringList bookPaths);
+    void clearBookPaths();
 
 private:
     DataBase *database;
@@ -49,6 +50,7 @@ private:
     QLayout *bookWidgetsLayout0;
     QLabel *folderPathsLabel;
     QLineEdit *folderPaths;
+    QPushButton *clearButton;
     BrowserButton *browserButton;
     ScannerButton *scannerButton;
     QLayout *bookWidgetsLayout1;

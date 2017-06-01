@@ -18,12 +18,16 @@ SubtabBooks::SubtabBooks(QWidget *parent, DataBase& database) : QWidget(parent)
     folderPathsLabel = new QLabel("Folder Paths", scanner);
     folderPaths = new QLineEdit(scanner);
     folderPaths->setReadOnly(true);
+    clearButton = new QPushButton("Clear", scanner);
+    clearButton->setMaximumWidth(UIConstants::DATA_BUTTON_DEFAULT_MAX_SIZE);
+    connect(clearButton, SIGNAL(clicked(bool)), this, SLOT(clearBookPaths()));
     browserButton = new BrowserButton(scanner, BrowserButton::DIR);
     connect(browserButton, SIGNAL(sendPaths(QStringList)), this, SLOT(getBrowsePaths(QStringList)));
     scannerButton = new ScannerButton(scanner, folderPaths);
     connect(scannerButton, SIGNAL(sendBookPaths(QStringList)), this, SLOT(getBookPaths(QStringList)));
 	bookWidgetsLayout0->addWidget(folderPathsLabel);
 	bookWidgetsLayout0->addWidget(folderPaths);
+    bookWidgetsLayout0->addWidget(clearButton);
 	bookWidgetsLayout0->addWidget(browserButton);
 	bookWidgetsLayout0->addWidget(scannerButton);
 	bookWidgetsLayout0->setContentsMargins(0, 0, 0, 0);
@@ -105,6 +109,7 @@ SubtabBooks::~SubtabBooks()
     delete books;
     delete scannerButton;
     delete browserButton;
+    delete clearButton;
     delete folderPaths;
     delete folderPathsLabel;
     delete bookWidgetsLayout0;
@@ -181,6 +186,11 @@ void SubtabBooks::getBookPaths(QStringList bookPaths)
     }
     updateBookList();
     emit updateAuthors();
+}
+
+void SubtabBooks::clearBookPaths()
+{
+    folderPaths->clear();
 }
 
 void SubtabBooks::updateBookList()

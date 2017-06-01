@@ -1,5 +1,4 @@
 #include "src/ReaderExtras.h"
-#include "ui_ReaderExtras.h"
 
 ReaderExtras::ReaderExtras(QWidget *parent) :
     QWidget(parent)
@@ -18,7 +17,7 @@ ReaderExtras::ReaderExtras(QWidget *parent) :
     findWidgetLayout->addWidget(findLineEdit);
     findWidgetLayout->addWidget(findButton);
 
-    for (int index = 0; index < 2; index++)
+    for (int index = 0; index < 1; index++)
     {
         lebtbWidget[index] = new QWidget(this);\
         lebtbWidget[index]->setContentsMargins(0,0,0,0);
@@ -33,6 +32,7 @@ ReaderExtras::ReaderExtras(QWidget *parent) :
             case 0:
             {
                 lebtbPushButton[index] = new QPushButton("Define", lebtbSubWidget[index]);
+                connect(lebtbPushButton[index], SIGNAL(clicked(bool)), this, SLOT(getDefinitions()));
                 break;
             }
             case 1:
@@ -50,12 +50,12 @@ ReaderExtras::ReaderExtras(QWidget *parent) :
 
     extrasLayout->addWidget(findWidget);
     extrasLayout->addWidget(lebtbWidget[0]);
-    extrasLayout->addWidget(lebtbWidget[1]);
+    //extrasLayout->addWidget(lebtbWidget[1]);
 }
 
 ReaderExtras::~ReaderExtras()
 {
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 1; i++)
     {
         delete lebtbTextBrowser[i];
         delete lebtbLineEdit[i];
@@ -70,4 +70,30 @@ ReaderExtras::~ReaderExtras()
     delete findWidgetLayout;
     delete findWidget;
     delete extrasLayout;
+}
+
+void ReaderExtras::getDefinitions()
+{
+    if (lebtbLineEdit[0]->text().isEmpty())
+        return;
+    SyncWorker *worker = new SyncWorker(this, SyncWorker::DEFINE, lebtbLineEdit[0]->text(), "doesn't matter", 0);
+    connect(worker, SIGNAL(sendSyncDetails(QStringList, QString, int)), this, SLOT(getDefinitionsDone(QStringList)));
+    connect(worker, SIGNAL(error(QString, SyncWorker*)), this, SLOT(getDefinitionsError(QString, SyncWorker*)));
+    worker->start();
+}
+
+void ReaderExtras::getDefinitionsDone(const QStringList& definitions)
+{
+    QString def;
+    for (int index = 0; index < definitions.size(); index++)
+        def.append(definitions.value(index)).append('\n');
+    lebtbTextBrowser[0]->setText(def);
+}
+
+void ReaderExtras::getDefinitionsError(const QString &error, SyncWorker *worker)
+{
+    qDebug() << "SubtabBooks::getSyncDetailsError - Error: " << error;
+    QMessageBox messageBox;
+    messageBox.critical(0, "ERROR", "There was an error getting word definitions: " + error);
+    delete worker;
 }

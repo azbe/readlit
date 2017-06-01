@@ -8,6 +8,8 @@
 #include <QPushButton>
 #include <QTextBrowser>
 
+#include "src/SyncWorker.h"
+
 namespace Ui {
 class ReaderExtras;
 }
@@ -33,7 +35,11 @@ private:
     QLineEdit *lebtbLineEdit[2];
     QPushButton *lebtbPushButton[2];
     QTextBrowser *lebtbTextBrowser[2];
-    //Ui::ReaderExtras *ui;
+
+private slots:
+    void getDefinitions();
+    void getDefinitionsDone(const QStringList& definitions);
+    void getDefinitionsError(const QString& error, SyncWorker *worker);
 };
 
 #endif // READEREXTRAS_H

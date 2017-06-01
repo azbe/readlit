@@ -37,7 +37,7 @@ class Settings : public QWidget
     static QString getDictionaryPath();
     static QString getAuthorSyncPath();
     static QString getBookSyncPath();
-    static QString getPython2Path();
+    static QString getPythonPath();
 
     private slots:
     void updateDatabasePath();
