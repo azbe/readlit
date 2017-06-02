@@ -41,6 +41,7 @@ public:
     void getBrowsePaths(QStringList browsePaths);
     void getBookPaths(QStringList bookPaths);
     void clearBookPaths();
+    void deleteBook();
 
 private:
     DataBase *database;

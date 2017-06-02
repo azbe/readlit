@@ -74,7 +74,8 @@ SubtabBooks::SubtabBooks(QWidget *parent, DataBase& database) : QWidget(parent)
             }
             case 2:
             {
-                text = "Load";
+                text = "Delete";
+                connect(dataButtons[i], SIGNAL(clicked(bool)), this, SLOT(deleteBook()));
                 break;
             }
             case 3:
@@ -131,6 +132,8 @@ void SubtabBooks::saveNewBook(const Book &book)
 
 void SubtabBooks::getBookDetails(QListWidgetItem *item)
 {
+    if (!item)
+        return;
     Book book = database->getBookByTitle(item->text());
     emit updateBookDetails(book);
 }
@@ -198,4 +201,17 @@ void SubtabBooks::updateBookList()
     QStringList books = database->getBookTitles();
     bookList->clear();
     bookList->addItems(books);
+}
+
+void SubtabBooks::deleteBook()
+{
+    if (bookList->selectedItems().isEmpty())
+        return;
+    Book book = bookData->getBook();
+    database->removeBookFromAuthor(book.getTitle(), book.getAuthor());
+    database->deleteBook(book.getFilePath());
+    bookData->clear();
+    bookList->clearSelection();
+    emit updateAuthors();
+    delete bookList->takeItem(bookList->currentRow());
 }
