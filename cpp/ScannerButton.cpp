@@ -7,6 +7,7 @@ ScannerButton::ScannerButton(QWidget *parent, QLineEdit *folderPaths) : QPushBut
 {
     this->folderPaths = folderPaths;
 	setText(UIConstants::SCANNER_BUTTON_DEFAULT_TEXT);
+    folderPaths->setText(Settings::getScannerPath());
 }
 
 ScannerButton::~ScannerButton() {}

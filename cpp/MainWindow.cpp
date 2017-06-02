@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
     settingsLayout = new QGridLayout(tabSettings);
     settings = new Settings(tabSettings, "settings.cfg");
     settingsLayout->addWidget(settings,0,0);
-    database.load(Settings::getDatabasePath().trimmed());
+    database.load(Settings::getDatabasePath());
 	mainTabs = new QTabWidget(this);
 	mainLayout = new QHBoxLayout(this);
 

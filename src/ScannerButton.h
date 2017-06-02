@@ -7,6 +7,7 @@
 #include <QMouseEvent>
 #include <QLineEdit>
 #include <QDebug>
+#include "src/Settings.h"
 
 class ScannerButton : public QPushButton
 {
