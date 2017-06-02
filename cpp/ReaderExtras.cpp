@@ -13,6 +13,7 @@ ReaderExtras::ReaderExtras(QWidget *parent) :
     findLineEdit = new QLineEdit(findWidget);
     findLineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     findButton = new QPushButton("Find", findWidget);
+    connect(findButton, SIGNAL(clicked(bool)), this, SLOT(emitFind()));
     findButton->setMaximumWidth(75);
     findWidgetLayout->addWidget(findLineEdit);
     findWidgetLayout->addWidget(findButton);
@@ -96,4 +97,11 @@ void ReaderExtras::getDefinitionsError(const QString &error, SyncWorker *worker)
     QMessageBox messageBox;
     messageBox.critical(0, "ERROR", "There was an error getting word definitions: " + error);
     delete worker;
+}
+
+void ReaderExtras::emitFind()
+{
+    if (findLineEdit->text().isEmpty())
+        return;
+    emit find(findLineEdit->text());
 }

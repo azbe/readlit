@@ -4,6 +4,7 @@
 #include <QResizeEvent>
 #include <QThread>
 #include <QDebug>
+#include <QPainter>
 
 #include "src/ImageLoader.h"
 
@@ -273,3 +274,31 @@ void Reader::handleImage(QImage image, int pagenum)
     pages[pagenum]->setPixmap(QPixmap::fromImage(image));
 }
 
+void Reader::find(const QString &search)
+{
+    if (search.size() < 3)
+        return;
+    for (int index = currentPage + 1; index < pageCount; index++)
+    {
+        Poppler::Page *page = book->page(index);
+        if (!page)
+            break;
+        QList<QRectF> found = page->search(search, Poppler::Page::CaseInsensitive);
+        int which = -1;
+        for (int i = 0; i < found.size(); i++)
+        {
+            if ((index != currentPage) || ((found[i].top() / page->pageSizeF().height()) > getScrollBarPercent() - (1.0 * currentPage / pageCount)))
+            {
+                which = i;
+                break;
+            }
+        }
+        if (which > -1)
+        {
+            scrollBar->setValue(((1.00 * index + (found[which].top() / page->pageSizeF().height())) / pageCount) * (scrollBar->maximum() - scrollBar->minimum()) + scrollBar->minimum());
+            delete page;
+            break;
+        }
+        delete page;
+    }
+}

@@ -80,6 +80,7 @@ void MainWindow::openBookInReader(const QString &path)
         readerExtras->setHidden(true);
         return;
     }
+    connect(readerExtras, SIGNAL(find(QString)), reader, SLOT(find(QString)));
     readerLayout->addWidget(reader, 3);
     readerExtras->setHidden(false);
     mainTabs->setCurrentIndex(0);

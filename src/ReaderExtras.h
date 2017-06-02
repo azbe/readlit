@@ -36,7 +36,11 @@ private:
     QPushButton *lebtbPushButton[2];
     QTextBrowser *lebtbTextBrowser[2];
 
+signals:
+    void find(const QString& search);
+
 private slots:
+    void emitFind();
     void getDefinitions();
     void getDefinitionsDone(const QStringList& definitions);
     void getDefinitionsError(const QString& error, SyncWorker *worker);

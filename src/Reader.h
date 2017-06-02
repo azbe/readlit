@@ -56,6 +56,7 @@ class Reader : public QWidget
     void scrollBarPressed();
     void scrollBarReleased();
     void handleImage(QImage image, int pagenum);
+    void find(const QString& search);
 };
 
 #endif // READER_H
