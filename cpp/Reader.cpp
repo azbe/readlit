@@ -63,10 +63,10 @@ Reader::Reader(QWidget *parent, const QString& path) : QWidget(parent)
     QObject::connect(scrollBar, SIGNAL(sliderReleased()), this, SLOT(scrollBarReleased()));
     QObject::connect(scrollBar, SIGNAL(valueChanged(int)), this, SLOT(scrollBarValueChanged()));
 
-    updateCurrentPage();
     pageArea = new QFrame(scrollArea);
     resizeTimerId = 0;
     pageAreaLayout = new QVBoxLayout(pageArea);
+    updateCurrentPage();
 
     pages = new QLabel*[pageCount];
     isActualized = new bool[pageCount];
@@ -133,17 +133,20 @@ void Reader::updatePageCount()
         }
         delete page;
     }
-    //Shitcode
+
     pageCount = index;
 }
 
 void Reader::updateCurrentPage()
 {
     if (1.0 * scrollBar->maximum() - scrollBar->minimum() != 0)
-        currentPage = (scrollBar->value() - scrollBar->minimum())/(1.0 * scrollBar->maximum() - scrollBar->minimum()) * pageCount;
+    {
+        double d = (scrollBar->value() - scrollBar->minimum())/(1.0 * scrollBar->maximum() - scrollBar->minimum()) * pageCount;
+        currentPage = d - d * pageArea->contentsMargins().top();
+    }
     else
         qDebug() << "Reader::updateCurrentPage - Error: division by 0 - scrollBar->maximum() = " << scrollBar->maximum() << " scrollBar->minimum() = " << scrollBar->minimum() << "\ncurrentPage unchanged.";
-    if (currentPage == pageCount) --currentPage; //Shitcode
+    if (currentPage >= pageCount) currentPage = pageCount - 1;
 }
 
 double Reader::getScrollBarPercent() const
@@ -222,6 +225,7 @@ void Reader::scrollBarValueChanged()
 {
     if (isMouseScrolling) return;
     updateCurrentPage();
+    qDebug() << getScrollBarPercent() << (scrollBar->value() - scrollBar->minimum())/(1.0 * scrollBar->maximum() - scrollBar->minimum()) * pageCount;
     for (int index = currentPage - ReaderConstants::PRELOAD_DEFAULT_NUMBER_PAGES; index <= currentPage + ReaderConstants::PRELOAD_DEFAULT_NUMBER_PAGES; index++)
     {
         if (index < 0 || index >= pageCount)
@@ -276,7 +280,7 @@ void Reader::handleImage(QImage image, int pagenum)
 
 void Reader::find(const QString &search)
 {
-    if (search.size() < 3)
+    if (search.size() < 2)
         return;
     for (int index = currentPage + 1; index < pageCount; index++)
     {
@@ -295,7 +299,7 @@ void Reader::find(const QString &search)
         }
         if (which > -1)
         {
-            scrollBar->setValue(((1.00 * index + (found[which].top() / page->pageSizeF().height())) / pageCount) * (scrollBar->maximum() - scrollBar->minimum()) + scrollBar->minimum());
+            scrollBar->setValue(((1.0 * index + (found[which].top() / page->pageSizeF().height())) / pageCount) * (scrollBar->maximum() - scrollBar->minimum()) + scrollBar->minimum());
             delete page;
             break;
         }
