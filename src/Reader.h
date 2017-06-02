@@ -22,6 +22,7 @@ class Reader : public QWidget
     double getScrollBarPercent() const;
     void updatePageCount();
     void updateCurrentPage();
+    void goToPage(int page);
 
     public:
     explicit Reader(QWidget *parent);
@@ -43,6 +44,7 @@ class Reader : public QWidget
     int pageCount;
     int currentPage;
     double lastScrollBarValue;
+    double pageScrollSize;
     bool isMouseScrolling;
 
     int resizeTimerId = 0;
@@ -50,6 +52,7 @@ class Reader : public QWidget
 
     void resizeEvent(QResizeEvent *event);
     void timerEvent(QTimerEvent *te);
+    void keyPressEvent(QKeyEvent *ke);
 
     private slots:
     void scrollBarValueChanged();

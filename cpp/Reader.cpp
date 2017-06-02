@@ -54,6 +54,7 @@ Reader::Reader(QWidget *parent, const QString& path) : QWidget(parent)
     updatePageCount();
 
     scrollArea = new QScrollArea(this);
+    scrollArea->setFocusPolicy(Qt::NoFocus);
     scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     scrollBar = scrollArea->verticalScrollBar();
     scrollBar->setMaximum(pageCount);
@@ -66,7 +67,6 @@ Reader::Reader(QWidget *parent, const QString& path) : QWidget(parent)
     pageArea = new QFrame(scrollArea);
     resizeTimerId = 0;
     pageAreaLayout = new QVBoxLayout(pageArea);
-    updateCurrentPage();
 
     pages = new QLabel*[pageCount];
     isActualized = new bool[pageCount];
@@ -78,7 +78,11 @@ Reader::Reader(QWidget *parent, const QString& path) : QWidget(parent)
         isActualized[index] = false;
     }
 
+    pageScrollSize = (1.0 * pages[0]->height() + pageAreaLayout->spacing() - scrollBar->minimum()) / (scrollBar->maximum() - scrollBar->minimum());
+    updateCurrentPage();
     scrollArea->setWidget(pageArea);
+
+    setFocusPolicy(Qt::StrongFocus);
 }
 
 bool Reader::isNull() const
@@ -119,6 +123,11 @@ QImage Reader::getPageImage(const int& index) const
     return image;
 }
 
+void Reader::goToPage(int page)
+{
+    scrollBar->setValue(page * pageScrollSize * (scrollBar->maximum() - scrollBar->minimum()) + scrollBar->minimum());
+}
+
 void Reader::updatePageCount()
 {
     int index;
@@ -139,13 +148,7 @@ void Reader::updatePageCount()
 
 void Reader::updateCurrentPage()
 {
-    if (1.0 * scrollBar->maximum() - scrollBar->minimum() != 0)
-    {
-        double d = (scrollBar->value() - scrollBar->minimum())/(1.0 * scrollBar->maximum() - scrollBar->minimum()) * pageCount;
-        currentPage = d - d * pageArea->contentsMargins().top();
-    }
-    else
-        qDebug() << "Reader::updateCurrentPage - Error: division by 0 - scrollBar->maximum() = " << scrollBar->maximum() << " scrollBar->minimum() = " << scrollBar->minimum() << "\ncurrentPage unchanged.";
+    currentPage = (int)(getScrollBarPercent() / pageScrollSize);
     if (currentPage >= pageCount) currentPage = pageCount - 1;
 }
 
@@ -178,7 +181,7 @@ void Reader::timerEvent(QTimerEvent *te)
     if(te->timerId() == resizeTimerId)
     {
         scrollArea->resize(newSize);
-        pageArea->resize(newSize.width() - 15, pageCount * pageAspectRatio * (newSize.width() - 15)); //Shitcode (magic numbers)
+        pageArea->resize(newSize.width() - 15, pageCount * pageAspectRatio * (newSize.width() - 15)); //magic numbers
 
         for (int index = 0; index < pageCount; index++)
         {
@@ -186,8 +189,9 @@ void Reader::timerEvent(QTimerEvent *te)
             isActualized[index] = false;
         }
         scrollBar->setValue(lastScrollBarValue * scrollBar->maximum());
+        pageScrollSize = (1.0 * pages[0]->height() + pageAreaLayout->spacing() - scrollBar->minimum()) / (scrollBar->maximum() - scrollBar->minimum());
         isMouseScrolling = false;
-        startTimer(100); //Shitcode (magic number)
+        startTimer(100); //magic number
 
         killTimer(te->timerId());
         resizeTimerId = 0;
@@ -195,6 +199,37 @@ void Reader::timerEvent(QTimerEvent *te)
     else
     {
         scrollBarValueChanged();
+    }
+}
+
+void Reader::keyPressEvent(QKeyEvent *ke)
+{
+    switch (ke->key())
+    {
+        case Qt::Key_Right:
+        {
+            if (currentPage < pageCount - 1)
+                scrollBar->setValue(scrollBar->value() + pages[0]->height() + pageAreaLayout->spacing());
+            break;
+        }
+        case Qt::Key_Left:
+        {
+            if (currentPage > 0)
+                scrollBar->setValue(scrollBar->value() - pages[0]->height() - pageAreaLayout->spacing());
+            break;
+        }
+        case Qt::Key_Down:
+        {
+            if (scrollBar->value() < scrollBar->maximum() - 9)
+                scrollBar->setValue(scrollBar->value() + 10);
+            break;
+        }
+        case Qt::Key_Up:
+        {
+            if (scrollBar->value() > 9)
+                scrollBar->setValue(scrollBar->value() - 10);
+            break;
+        }
     }
 }
 
@@ -225,7 +260,6 @@ void Reader::scrollBarValueChanged()
 {
     if (isMouseScrolling) return;
     updateCurrentPage();
-    qDebug() << getScrollBarPercent() << (scrollBar->value() - scrollBar->minimum())/(1.0 * scrollBar->maximum() - scrollBar->minimum()) * pageCount;
     for (int index = currentPage - ReaderConstants::PRELOAD_DEFAULT_NUMBER_PAGES; index <= currentPage + ReaderConstants::PRELOAD_DEFAULT_NUMBER_PAGES; index++)
     {
         if (index < 0 || index >= pageCount)
@@ -282,7 +316,7 @@ void Reader::find(const QString &search)
 {
     if (search.size() < 2)
         return;
-    for (int index = currentPage + 1; index < pageCount; index++)
+    for (int index = currentPage; index < pageCount; index++)
     {
         Poppler::Page *page = book->page(index);
         if (!page)
@@ -291,15 +325,18 @@ void Reader::find(const QString &search)
         int which = -1;
         for (int i = 0; i < found.size(); i++)
         {
-            if ((index != currentPage) || ((found[i].top() / page->pageSizeF().height()) > getScrollBarPercent() - (1.0 * currentPage / pageCount)))
+            qDebug() << pages[0]->height() * (found[i].top() / page->pageSizeF().height()) << (getScrollBarPercent() - (currentPage * pageScrollSize)) * (scrollBar->maximum() - scrollBar->minimum()) + scrollBar->minimum();
+            if ((index != currentPage) || (pages[0]->height() * (found[i].top() / page->pageSizeF().height()) > 1.0 + (getScrollBarPercent() - (currentPage * pageScrollSize)) * (scrollBar->maximum() - scrollBar->minimum()) + scrollBar->minimum()))
             {
+                qDebug() << "Taken";
                 which = i;
                 break;
             }
         }
         if (which > -1)
         {
-            scrollBar->setValue(((1.0 * index + (found[which].top() / page->pageSizeF().height())) / pageCount) * (scrollBar->maximum() - scrollBar->minimum()) + scrollBar->minimum());
+            goToPage(index);
+            scrollBar->setValue(scrollBar->value() + pages[0]->height() * (found[which].top() / page->pageSizeF().height()));
             delete page;
             break;
         }
