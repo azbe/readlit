@@ -11,7 +11,7 @@ SyncWorker::SyncWorker(QObject *parent, SyncType type, const QString& search, co
         case BOOK:
         {
             QFileInfo f(Settings::getBookSyncPath());
-            if(f.exists())
+            if(!f.exists())
             {
                 QMessageBox messageBox;
                 messageBox.critical(0, "ERROR", "Book sync script file does not exists: " + Settings::getBookSyncPath());
@@ -23,7 +23,7 @@ SyncWorker::SyncWorker(QObject *parent, SyncType type, const QString& search, co
         case AUTHOR:
         {
             QFileInfo f(Settings::getAuthorSyncPath());
-            if(f.exists())
+            if(!f.exists())
             {
                 QMessageBox messageBox;
                 messageBox.critical(0, "ERROR", "Author sync script file does not exists: " + Settings::getAuthorSyncPath());
@@ -35,7 +35,7 @@ SyncWorker::SyncWorker(QObject *parent, SyncType type, const QString& search, co
         case DEFINE:
         {
             QFileInfo f(Settings::getDictionaryPath());
-            if(f.exists())
+            if(!f.exists())
             {
                 QMessageBox messageBox;
                 messageBox.critical(0, "ERROR", "Dictionary script file does not exists: " + Settings::getDictionaryPath());
