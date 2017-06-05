@@ -113,11 +113,17 @@ void SubtabAuthors::getSyncDetails()
 
 void SubtabAuthors::getSyncDetailsDone(const QStringList &details, const QString &name, int row)
 {
+    if (details.size() < 4)
+    {
+        QMessageBox messageBox;
+        messageBox.critical(0, "ERROR", "There was an error with the author sycing script.\nNot enough results provided!\nExpected 4 (name, birth year, death year, biography), got " + details.size());
+        return;
+    }
     int currentRow = authorList->currentRow();
     QString description;
-    for (int index = 1; index < details.size(); index++)
+    for (int index = 3; index < details.size(); index++)
         description.append(details.value(index) + " ");
-    Author newAuthor(details.value(0), database->getAuthor(name).getVector(), database->getAuthor(name).getYearBirth(), database->getAuthor(name).getYearDeath(), description);
+    Author newAuthor(details.value(0), database->getAuthor(name).getVector(), details.value(1), details.value(2), description);
     database->editAuthor(newAuthor);
     authorList->item(row)->setText(details.value(0));
     authorList->setCurrentRow(currentRow);

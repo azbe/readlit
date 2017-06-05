@@ -150,6 +150,12 @@ void SubtabBooks::getSyncDetails()
 
 void SubtabBooks::getSyncDetailsDone(const QStringList &details, const QString& path, int row)
 {
+    if (details.size() < 3)
+    {
+        QMessageBox messageBox;
+        messageBox.critical(0, "ERROR", "There was an error with the book sycing script.\nNot enough results provided!\nExpected 3 (name, author, summary), got " + details.size());
+        return;
+    }
     int currentRow = bookList->currentRow();
     QString description;
     for (int index = 2; index < details.size(); index++)
