@@ -33,7 +33,7 @@ public:
     Author getAuthor(const QString &name);
     QStringList getAuthorNames();
     bool editBook(const Book &newBook);
-    bool editAuthor(const Author &newAuthor);
+    bool editAuthor(const QString& oldName, const Author &newAuthor);
     bool addBookToAuthor(const QString& title, const QString& name);
     bool removeBookFromAuthor(const QString& title, const QString& name);
 

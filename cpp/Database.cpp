@@ -157,10 +157,16 @@ bool DataBase::editBook(const Book &newBook)
     return check;
 }
 
-bool DataBase::editAuthor(const Author &newAuthor)
+bool DataBase::editAuthor(const QString& oldName, const Author &newAuthor)
 {
     bool check = false;
-    check = deleteAuthor(newAuthor.getName());
+    std::vector<QString> authorBooks = newAuthor.getVector();
+    for (QString title : authorBooks)
+        books[title].setAuthor(newAuthor.getName());
+    if (oldName == newAuthor.getName())
+        check = deleteAuthor(newAuthor.getName());
+    else
+        check = deleteAuthor(oldName);
     check = addAuthor(newAuthor);
     return check;
 }

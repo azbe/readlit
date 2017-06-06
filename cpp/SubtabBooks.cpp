@@ -142,6 +142,7 @@ void SubtabBooks::getSyncDetails()
 {
     if (bookList->selectedItems().isEmpty())
         return;
+    dataButtons[0]->setEnabled(false);
     SyncWorker *worker = new SyncWorker(this, SyncWorker::BOOK, bookData->getUnsavedBook().getTitle(), bookData->getBook().getFilePath(), bookList->currentRow());
     connect(worker, SIGNAL(sendSyncDetails(QStringList, QString, int)), this, SLOT(getSyncDetailsDone(QStringList, QString, int)));
     connect(worker, SIGNAL(error(QString, SyncWorker*)), this, SLOT(getSyncDetailsError(QString, SyncWorker*)));
@@ -156,6 +157,7 @@ void SubtabBooks::getSyncDetailsDone(const QStringList &details, const QString& 
         messageBox.critical(0, "ERROR", "There was an error with the book sycing script.\nNot enough results provided!\nExpected 3 (name, author, summary), got " + details.size());
         return;
     }
+    dataButtons[0]->setEnabled(true);
     int currentRow = bookList->currentRow();
     QString description;
     for (int index = 2; index < details.size(); index++)
@@ -169,6 +171,7 @@ void SubtabBooks::getSyncDetailsDone(const QStringList &details, const QString& 
 
 void SubtabBooks::getSyncDetailsError(const QString &error, SyncWorker *worker)
 {
+    dataButtons[0]->setEnabled(true);
     qDebug() << "SubtabBooks::getSyncDetailsError - Error: " << error;
     QMessageBox messageBox;
     messageBox.critical(0, "ERROR", "There was an error syncing: " + error);

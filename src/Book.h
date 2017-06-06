@@ -27,6 +27,8 @@ public:
     QString getDescription() const;
     QString getYearInt() const;
 
+    void setAuthor(const QString& newAuthor);
+
     bool operator == (const Book& b) const;
 
     void write(QJsonObject &json) ;

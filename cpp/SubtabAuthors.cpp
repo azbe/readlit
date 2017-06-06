@@ -86,7 +86,7 @@ SubtabAuthors::~SubtabAuthors()
 
 void SubtabAuthors::saveNewAuthor(const Author &author)
 {
-    database->editAuthor(author);
+    database->editAuthor(author.getName(), author);
 }
 
 void SubtabAuthors::newScan()
@@ -105,6 +105,7 @@ void SubtabAuthors::getSyncDetails()
 {
     if (authorList->selectedItems().isEmpty())
         return;
+    dataButtons[0]->setEnabled(false);
     SyncWorker *worker = new SyncWorker(this, SyncWorker::AUTHOR, authorDataTable->getUnsavedName(), authorDataTable->getAuthor().getName(), authorList->currentRow());
     connect(worker, SIGNAL(sendSyncDetails(QStringList, QString, int)), this, SLOT(getSyncDetailsDone(QStringList, QString, int)));
     connect(worker, SIGNAL(error(QString, SyncWorker*)), this, SLOT(getSyncDetailsError(QString, SyncWorker*)));
@@ -119,18 +120,20 @@ void SubtabAuthors::getSyncDetailsDone(const QStringList &details, const QString
         messageBox.critical(0, "ERROR", "There was an error with the author sycing script.\nNot enough results provided!\nExpected 4 (name, birth year, death year, biography), got " + details.size());
         return;
     }
+    dataButtons[0]->setEnabled(true);
     int currentRow = authorList->currentRow();
     QString description;
     for (int index = 3; index < details.size(); index++)
         description.append(details.value(index) + " ");
     Author newAuthor(details.value(0), database->getAuthor(name).getVector(), details.value(1), details.value(2), description);
-    database->editAuthor(newAuthor);
+    database->editAuthor(name, newAuthor);
     authorList->item(row)->setText(details.value(0));
     authorList->setCurrentRow(currentRow);
 }
 
 void SubtabAuthors::getSyncDetailsError(const QString &err, SyncWorker *worker)
 {
+    dataButtons[0]->setEnabled(true);
     qDebug() << "SutbabAuthors::getSyncDetailsError - Error: " << err;
     QMessageBox messageBox;
     messageBox.critical(0, "ERROR", "There was an error syncing: " + err);

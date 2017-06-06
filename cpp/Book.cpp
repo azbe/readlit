@@ -96,6 +96,12 @@ bool Book::operator == (const Book& b) const
     return false;
 }
 
+void Book::setAuthor(const QString &newAuthor)
+{
+    delete author;
+    author = new QString(newAuthor);
+}
+
 void Book::write(QJsonObject &json)
 {
     json["title"] = *title;

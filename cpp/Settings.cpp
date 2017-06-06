@@ -30,7 +30,7 @@ Settings::Settings(QWidget *parent, const QString& loadPath) : QWidget(parent)
     defaultLayout->addWidget(databaseDefault, 0, 5, 1, 1);
     scannerTextLabel = new QLabel("Scanner", defaultText);
     scannerText = new QLineEdit(defaultText);
-    scannerBrowser = new BrowserButton(defaultText,BrowserButton::DIR);
+    scannerBrowser = new BrowserButton(defaultText,BrowserButton::ANY);
     scannerDefault= new QPushButton("Default",defaultText);
     scannerText->setSizePolicy(sizePolicy1);
     scannerText->setText(scannerPath);
