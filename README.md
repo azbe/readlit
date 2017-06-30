@@ -1,6 +1,6 @@
 # ReadLit
 
-ReadLit is a small GUI desktop application made in Qt with C++ for opening, reading and storing a small databases of all pdfs from a given list of folders.
+A C++ with Qt GUI desktop application for reading and storing information regarding PDF files given lcoal folders.
 
 ## Usage
 
