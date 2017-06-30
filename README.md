@@ -2,7 +2,7 @@
 
 ReadLit is a small GUI desktop application made in Qt with C++ for opening, reading and storing a small databases of all pdfs from a given list of folders.
 
-##Usage:
+## Usage:
 
 The **_Reader_** tab contains the personalized PDF Reader made using the Poppler library. The reader is initially blank, if no pdf has been loaded:
 - upon loading a page (by double-clicking its name in the Local/Books tab), the reader becomes active, as do the find and dictionary modules
